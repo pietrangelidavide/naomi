@@ -1,0 +1,10 @@
+{
+  "name": "naomi-acciaro",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Sito vetrina della Dott.ssa Naomi Acciaro, biologa nutrizionista (Roma | Online)",
+  "scripts": {
+    "preview:build": "node scripts/preview.mjs"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  // Sito vetrina statico (cartella public/) su Cloudflare Workers.
+  "name": "naomi-acciaro",
+  "compatibility_date": "2026-10-12",
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "404-page"
+  }
+}
