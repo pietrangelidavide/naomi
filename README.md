@@ -4,11 +4,15 @@ Sito di una pagina per la Dott.ssa Naomi Acciaro, biologa nutrizionista (Roma | 
 
 ## Idea grafica
 
-Il ritratto sta dentro un piatto visto dall'alto: un anello a tre colori (verdure e frutta, cereali, proteine) con la proporzione del "piatto sano" (metà, un quarto, un quarto). Palette: verde bosco `#17382b` (testi e fogli scuri), giallo burro `#f4e7a6` (apertura e prenotazione), bianco latte `#fffcf4`, menta `#cfe5d3`, corallo `#f2785c` (pulsanti e accenti). Il corallo non regge il testo bianco: i pulsanti hanno testo verde bosco. Le sezioni si impilano come fogli con l'angolo alto arrotondato. Caratteri: Lora (titoli) e Instrument Sans (testo), entrambi con licenza OFL, self-hosted in `public/fonts/`.
+Il ritratto sta dentro un piatto visto dall'alto: un anello a tre segmenti con la proporzione del "piatto sano" (metà, un quarto, un quarto). Palette "dispensa fresca": verde spinacio `#0d3b2e` (testi e fogli scuri), lime `#d5f36b`, mandarino `#ff8a3d`, pesca `#ffe1cc`, salvia `#dfeadb` / `#9fcca5` su bianco latte `#fbf8f1`. Tutte le coppie testo/sfondo superano il rapporto di contrasto 4,5:1 (il testo spinacio sul mandarino è a 5,3:1).
+
+Giochi di design (solo CSS, nessun JavaScript): intestazione a pillola flottante, badge che ruota con il testo su un cerchio, adesivo inclinato, fascia scorrevole inclinata, griglia "bento" con le tessere che si inclinano al passaggio del mouse, schede che si impilano allo scorrimento (`position: sticky`), sezioni a fogli con l'angolo alto arrotondato, nome gigante nel piede. Le animazioni si disattivano con `prefers-reduced-motion`.
+
+Caratteri: Outfit (titoli e testo) e Lora corsivo (accenti), entrambi con licenza OFL, self-hosted in `public/fonts/`.
 
 ## Struttura
 
-- `public/index.html`, `public/style.css`: tutta la pagina. L'animazione d'apertura (l'anello che si compone) si disattiva con `prefers-reduced-motion`.
+- `public/index.html`, `public/style.css`: tutta la pagina. Nessuna dipendenza esterna.
 - `public/img/naomi.webp`: ritratto circolare ricavato da uno screenshot (870 px). Se Naomi ha l'originale ad alta risoluzione, va sostituito: rende meglio sugli schermi grandi.
 - `scripts/preview.mjs` (`npm run preview:build`): crea `.tmp/preview/sito.html`, pagina a file unico con font e immagini incorporati, per le anteprime.
 - `wrangler.jsonc`: sito statico su Cloudflare (cartella `public/`, nessun comando di build).
