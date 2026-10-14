@@ -27,6 +27,7 @@ Workers & Pages → collegare il repository → **Build command**: vuoto · **De
 - [ ] Dati obbligatori per i siti dei professionisti, da inserire nel piede: numero e sezione di iscrizione all'albo dei biologi (ONB), partita IVA, indirizzo dello studio (c'è un commento in `index.html`).
 - [ ] Far rileggere a Naomi i testi: sono bozze scritte a partire dalla sua bio Instagram (Chi sono, Di cosa mi occupo, Come si svolge una visita).
 - [ ] Aggiungere il profilo Instagram e, se vuole, telefono/email e indirizzo (oggi la pagina rimanda solo a MioDottore).
+- [ ] Valutazione e numero di recensioni (oggi "5,0 · 160", scritti a mano in `index.html`, due punti: apertura e sezione Prenota) sono quelli del profilo MioDottore: aggiornarli ogni tanto. Si mostra solo il dato aggregato, non i testi dei pazienti; farlo approvare a Naomi (regole sulla pubblicità sanitaria e termini di MioDottore).
 - [ ] Se si aggiungono moduli, statistiche o cookie: informativa privacy e cookie.
 
 Link di prenotazione (senza parametri di tracciamento): https://www.miodottore.it/profilo/naomi-acciaro

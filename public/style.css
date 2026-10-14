@@ -154,6 +154,17 @@ ul, ol { padding: 0; list-style: none; }
 @keyframes slide { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .marquee__track { animation: none; } .marquee__group:nth-child(2) { display: none; } }
 
+.rating {
+  margin-top: 1.5rem; display: inline-flex; align-items: center; gap: .3rem .75rem; padding: .5rem 1.1rem .5rem .85rem;
+  border-radius: 999px; background: var(--sage); color: var(--spinach); text-decoration: none; font-size: .98rem; line-height: 1.25;
+  transition: transform .25s cubic-bezier(.3, .7, .3, 1), box-shadow .25s;
+}
+.rating:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(13, 59, 46, .14); }
+.rating--on-lime { background: var(--cream); }
+.rating__stars { display: inline-flex; gap: 2px; flex: none; }
+.rating__stars svg { width: 1.05rem; height: 1.05rem; fill: var(--tangerine); stroke: var(--spinach); stroke-width: 1.4; }
+.rating__text strong { font-weight: 700; }
+
 /* ------------------------------------------------------------ chi sono */
 .about { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(2rem, 6vw, 5rem); align-items: start; }
 .about__head { position: sticky; top: 7rem; }
@@ -265,5 +276,7 @@ ul, ol { padding: 0; list-style: none; }
   .foot__word { padding-bottom: .12em; }
   .brand__role { display: none; }
   .book__action .btn { width: 100%; }
+  .rating { flex-wrap: wrap; border-radius: 1.4rem; }
+  .hero { padding-bottom: calc(var(--r) + 4.75rem); }
   .marquee { bottom: calc(var(--r) * .4); }
 }
