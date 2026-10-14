@@ -4,7 +4,7 @@ Sito di una pagina per la Dott.ssa Naomi Acciaro, biologa nutrizionista (Roma | 
 
 ## Idea grafica
 
-Il ritratto sta dentro un piatto visto dall'alto: un anello a tre colori (verdure e frutta, cereali, proteine) con la proporzione del "piatto sano" (metà, un quarto, un quarto). I colori vengono dalla camicia della foto (barbabietola) e da frutta e verdura (foglia, albicocca). Le sezioni si impilano come fogli con l'angolo alto arrotondato. Caratteri: Lora (titoli) e Instrument Sans (testo), entrambi con licenza OFL, self-hosted in `public/fonts/`.
+Il ritratto sta dentro un piatto visto dall'alto: un anello a tre colori (verdure e frutta, cereali, proteine) con la proporzione del "piatto sano" (metà, un quarto, un quarto). Palette: verde bosco `#17382b` (testi e fogli scuri), giallo burro `#f4e7a6` (apertura e prenotazione), bianco latte `#fffcf4`, menta `#cfe5d3`, corallo `#f2785c` (pulsanti e accenti). Il corallo non regge il testo bianco: i pulsanti hanno testo verde bosco. Le sezioni si impilano come fogli con l'angolo alto arrotondato. Caratteri: Lora (titoli) e Instrument Sans (testo), entrambi con licenza OFL, self-hosted in `public/fonts/`.
 
 ## Struttura
 
