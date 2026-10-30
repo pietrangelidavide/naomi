@@ -1,0 +1,19 @@
+<svg viewBox="0 0 420 340" aria-hidden="true" focusable="false">
+  <circle class="g-dash" cx="210" cy="172" r="84"/>
+  <line class="g-link" x1="210" y1="172" x2="82" y2="80"/>
+  <line class="g-link" x1="210" y1="172" x2="338" y2="80"/>
+  <line class="g-link" x1="210" y1="172" x2="210" y2="262"/>
+  <circle class="g-tab" cx="210" cy="172" r="58"/>
+  <text class="t-on t-b" x="210" y="183" text-anchor="middle" font-size="32">Tu</text>
+  <circle class="g-node" cx="82" cy="80" r="38"/>
+  <svg class="g-ico" x="66" y="64" width="32" height="32" viewBox="0 0 24 24"><use href="/img/icons.svg#plate"/></svg>
+  <text class="t-ink t-b" x="82" y="140" text-anchor="middle" font-size="15">Biologa</text>
+  <text class="t-ink t-b" x="82" y="158" text-anchor="middle" font-size="15">nutrizionista</text>
+  <circle class="g-node" cx="338" cy="80" r="38"/>
+  <svg class="g-ico" x="322" y="64" width="32" height="32" viewBox="0 0 24 24"><use href="/img/icons.svg#ecg"/></svg>
+  <text class="t-ink t-b" x="338" y="140" text-anchor="middle" font-size="15">Medico e</text>
+  <text class="t-ink t-b" x="338" y="158" text-anchor="middle" font-size="15">specialisti</text>
+  <circle class="g-node" cx="210" cy="262" r="38"/>
+  <svg class="g-ico" x="194" y="246" width="32" height="32" viewBox="0 0 24 24"><use href="/img/icons.svg#dumbbell"/></svg>
+  <text class="t-ink t-b" x="210" y="322" text-anchor="middle" font-size="15">Allenatore e preparatore</text>
+</svg>

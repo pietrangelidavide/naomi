@@ -1,0 +1,18 @@
+<svg viewBox="0 0 440 300" aria-hidden="true" focusable="false">
+  <defs><clipPath id="vn-l"><circle cx="158" cy="150" r="118"/></clipPath></defs>
+  <circle class="g-sal" cx="158" cy="150" r="118"/>
+  <circle class="g-tab" cx="282" cy="150" r="118"/>
+  <circle class="g-sab" cx="282" cy="150" r="118" clip-path="url(#vn-l)"/>
+  <circle class="g-ring" cx="158" cy="150" r="118"/>
+  <circle class="g-ring" cx="282" cy="150" r="118"/>
+  <text class="t-ink t-b" x="108" y="112" text-anchor="middle" font-size="21">Scienza</text>
+  <text class="t-ink" x="108" y="144" text-anchor="middle" font-size="16">Misure</text>
+  <text class="t-ink" x="108" y="168" text-anchor="middle" font-size="16">Protocolli</text>
+  <text class="t-ink" x="108" y="192" text-anchor="middle" font-size="16">Dati</text>
+  <text class="t-on t-b" x="334" y="112" text-anchor="middle" font-size="21">Coscienza</text>
+  <text class="t-on" x="334" y="144" text-anchor="middle" font-size="16">Ascolto</text>
+  <text class="t-on" x="334" y="168" text-anchor="middle" font-size="16">Onestà</text>
+  <text class="t-on" x="334" y="192" text-anchor="middle" font-size="16">Su misura</text>
+  <text class="t-ink t-b" x="220" y="146" text-anchor="middle" font-size="19">Il tuo</text>
+  <text class="t-ink t-b" x="220" y="169" text-anchor="middle" font-size="19">piano</text>
+</svg>

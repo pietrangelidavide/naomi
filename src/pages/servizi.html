@@ -26,7 +26,7 @@
     {{crumbs}}
     <div class="phero__grid phero__grid--wide">
       <div class="phero__text">
-        <h1 class="hero__title hero__title--page" id="page-title"><span class="hero__kicker">Servizi di nutrizione a Roma e online</span><span class="hero__main">Tre percorsi.<br>Un solo metodo: il tuo.</span></h1>
+        <h1 class="hero__title hero__title--page" id="page-title"><span class="hero__kicker">Servizi di nutrizione a Roma e online</span><span class="hero__main">Tre percorsi. Un solo metodo: il tuo.</span></h1>
         <p class="hero__lead">Ogni percorso parte dalla prima visita. Qui vedi a chi serve, cosa include e che cosa ottieni.</p>
         <div class="hero__cta">
           {{cta:Prenota la prima visita|Scegli giorno e orario su MioDottore}}
@@ -37,6 +37,7 @@
         <a class="jump__item" href="#antropometria">{{ico:ruler|ico--lg}}<span><b>Valutazione ISAK</b><i>Misure per vedere come cambia il corpo</i></span></a>
         <a class="jump__item" href="#sportiva">{{ico:dumbbell|ico--lg}}<span><b>Nutrizione sportiva</b><i>Energia e recupero per chi si allena</i></span></a>
       </nav>
+      {{swipe}}
     </div>
   </div>
 </section>
@@ -48,13 +49,15 @@
         {{ico:plate|ico--xl}}
         <h2 class="h2" id="clinica-title">Nutrizione clinica</h2>
         <p class="svcx__tag">Mangiare meglio, con un piano che ti somiglia.</p>
+        {{gfx:piatto|Esempio semplificato di piatto. Nel tuo piano le proporzioni cambiano con obiettivi, esami e abitudini.}}
       </header>
       <div class="svcx__body">
-        <div class="svcx__block">
+        <div class="svcx__cards">
+        <div class="svcx__card">
           <h3>Per chi è</h3>
           <p>Per chi vuole mangiare meglio e non sa da dove cominciare. Per chi ha esami da leggere insieme al proprio medico. Per chi ha già provato schemi uguali per tutti e non si è trovato bene.</p>
         </div>
-        <div class="svcx__block">
+        <div class="svcx__card">
           <h3>Cosa include</h3>
           <ul class="checks">
             <li>{{ico:check}}Colloquio su abitudini, orari, gusti e obiettivi</li>
@@ -63,17 +66,19 @@
             <li>{{ico:check}}Controlli periodici per aggiustare il percorso</li>
           </ul>
         </div>
-        <div class="svcx__block svcx__gain">
+        <div class="svcx__card svcx__card--gain">
           <h3>Cosa ottieni</h3>
           <p>Capisci che cosa mangi e perché. Hai un piano che entra nella tua giornata, anche quando pranzi fuori o hai poco tempo.</p>
         </div>
-        <div class="svcx__example">
+        <div class="svcx__card">
           <h3>Un esempio dal piatto</h3>
           <div class="mini">
             <figure class="dish"><img src="/img/piatti/spaghetti.webp" width="900" height="1125" loading="lazy" alt="Piatto di spaghetti con gamberi e pomodoro"><figcaption>Spaghetti con gamberi e pomodoro</figcaption></figure>
             <figure class="dish"><img src="/img/piatti/insalata.webp" width="1000" height="750" loading="lazy" alt="Insalata con prosciutto, formaggio fresco, cetrioli e carote, con pane scuro"><figcaption>Insalata con prosciutto e formaggio fresco, con pane scuro</figcaption></figure>
           </div>
         </div>
+        </div>
+        {{swipe}}
         {{cta:Prenota la nutrizione clinica|Prima visita a Roma o online}}
       </div>
     </div>
@@ -87,13 +92,15 @@
         {{ico:ruler|ico--xl}}
         <h2 class="h2" id="antropometria-title">Valutazione antropometrica ISAK</h2>
         <p class="svcx__tag">Numeri che puoi confrontare nel tempo.</p>
+        {{gfx:misure|Tre tipi di misura, sempre negli stessi punti: pliche, circonferenze e diametri.}}
       </header>
       <div class="svcx__body">
-        <div class="svcx__block">
+        <div class="svcx__cards">
+        <div class="svcx__card">
           <h3>Per chi è</h3>
           <p>Per chi vuole vedere come cambia il corpo, non solo quanto pesa. Per chi si allena e vuole seguire nel tempo massa grassa e massa magra.</p>
         </div>
-        <div class="svcx__block">
+        <div class="svcx__card">
           <h3>Cosa misuro</h3>
           <ul class="measure">
             <li>{{ico:ruler}}<b>Pliche</b><span>spessori cutanei in punti precisi</span></li>
@@ -101,11 +108,13 @@
             <li>{{ico:ruler}}<b>Diametri</b><span>larghezze ossee, per la struttura</span></li>
           </ul>
         </div>
-        <div class="svcx__block svcx__gain">
+        <div class="svcx__card svcx__card--gain">
           <h3>Cosa ottieni</h3>
           <p>Misure ripetibili, con lo stesso protocollo, per vedere cambiamenti che la bilancia non mostra. Obiettivi più realistici e scelte basate sui numeri.</p>
         </div>
-        <p class="svcx__note">{{ico:pin}}Si fa in studio a Roma: richiede le misure in presenza.</p>
+        <div class="svcx__card"><h3>Dove</h3><p class="svcx__note">{{ico:pin}}Si fa in studio a Roma: richiede le misure in presenza.</p></div>
+        </div>
+        {{swipe}}
         {{cta:Prenota la valutazione ISAK|Scegli giorno e orario su MioDottore}}
       </div>
     </div>
@@ -119,13 +128,15 @@
         {{ico:dumbbell|ico--xl}}
         <h2 class="h2" id="sportiva-title">Nutrizione sportiva</h2>
         <p class="svcx__tag">Arrivare all'allenamento con energia.</p>
+        {{gfx:giornata|Esempio di giornata di allenamento: cosa e quando mangiare cambia attorno alla seduta.}}
       </header>
       <div class="svcx__body">
-        <div class="svcx__block">
+        <div class="svcx__cards">
+        <div class="svcx__card">
           <h3>Per chi è</h3>
           <p>Per chi si allena con regolarità (corsa, palestra, sport di squadra) e vuole più energia, un recupero migliore e una composizione corporea in linea con l'obiettivo.</p>
         </div>
-        <div class="svcx__block">
+        <div class="svcx__card">
           <h3>Cosa include</h3>
           <ul class="checks">
             <li>{{ico:check}}Piano che segue il tuo calendario di allenamenti e gare</li>
@@ -134,17 +145,19 @@
             <li>{{ico:check}}Valutazione ISAK per seguire i cambiamenti, se serve</li>
           </ul>
         </div>
-        <div class="svcx__block svcx__gain">
+        <div class="svcx__card svcx__card--gain">
           <h3>Cosa ottieni</h3>
           <p>Un'alimentazione costruita attorno al tuo sport: sai cosa mangiare e quando, senza improvvisare il giorno della gara.</p>
         </div>
-        <div class="svcx__example">
+        <div class="svcx__card">
           <h3>Un esempio dal piatto</h3>
           <div class="mini">
             <figure class="dish"><img src="/img/piatti/toast.webp" width="900" height="1125" loading="lazy" alt="Due toast farciti e un bicchiere di caffellatte con la schiuma"><figcaption>Prima di una corsa leggera: toast e caffellatte</figcaption></figure>
             <figure class="dish"><img src="/img/piatti/colazione.webp" width="900" height="1123" loading="lazy" alt="Due toast al prosciutto e un bicchiere di caffellatte sul piatto"><figcaption>Toast al prosciutto e caffellatte</figcaption></figure>
           </div>
         </div>
+        </div>
+        {{swipe}}
         {{cta:Prenota la nutrizione sportiva|Roma o online, scegli tu}}
       </div>
     </div>
@@ -184,6 +197,7 @@
       <li class="step"><span class="step__n" aria-hidden="true">3</span>{{ico:plan|ico--lg}}<h3 class="step__title">Ricevi il tuo piano</h3><p class="step__text">Un piano alimentare scritto per te, con indicazioni chiare per metterlo in pratica.</p></li>
       <li class="step"><span class="step__n" aria-hidden="true">4</span>{{ico:ecg|ico--lg}}<h3 class="step__title">Ci rivediamo</h3><p class="step__text">Controlli periodici per vedere come stai e aggiustare il percorso.</p></li>
     </ol>
+    {{swipe}}
     {{cta:Inizia dal primo passo|Prenota in pochi clic su MioDottore}}
   </div>
 </section>
@@ -204,6 +218,7 @@
       <figure class="dish"><img src="/img/piatti/mezze.webp" width="900" height="1123" loading="lazy" alt="Mezze maniche con crema di zucca e macinato"><figcaption>Mezze maniche con crema di zucca e macinato</figcaption></figure>
       <figure class="dish"><img src="/img/piatti/insalata.webp" width="1000" height="750" loading="lazy" alt="Insalata con prosciutto, formaggio fresco, cetrioli e carote, con pane scuro"><figcaption>Insalata con prosciutto e formaggio fresco, con pane scuro</figcaption></figure>
     </div>
+    {{swipe}}
     <div class="split split--video">
       <div class="split__media split__media--sm">{{video:c}}</div>
       <div class="split__text">

@@ -29,6 +29,8 @@ const link = (label, href, micro = '') =>
   `<div class="cta cta--link"><a class="btn btn--ghost" href="${href}">${label}</a>${micro ? `<p class="cta__micro">${micro}</p>` : ''}</div>`;
 const final = (title, lead, micro) =>
   `<section class="sec final-sec" id="prenota" aria-labelledby="prenota-title"><div class="wrap"><div class="final"><div class="final__light" aria-hidden="true"></div><div class="final__text"><h2 class="final__title" id="prenota-title">${title}</h2><p class="final__lead">${lead}</p>${cta('Prenota la prima visita', micro, 'light')}</div><a class="final__rating" href="${site.booking}" target="_blank" rel="noopener" aria-label="Valutazione 5 su 5, 160 recensioni su MioDottore"><span class="final__score">5,0</span>${stars}<span class="final__count">160 recensioni su MioDottore</span></a></div></div></section>`;
+const gfx = (name, cap) => `<figure class="gfx gfx--${name}">${rd('src', 'gfx', name + '.svg').trim()}<figcaption>${cap}</figcaption></figure>`;
+const swipe = `<div class="swipe-ui" aria-hidden="true"><span class="swipe-bar"></span><span class="swipe-hint">Scorri ${ico('arrow')}</span></div>`;
 const usedVideos = new Set();
 const video = (k) => {
   const v = site.videos[k]; if (!v) throw new Error('video sconosciuto: ' + k); usedVideos.add(k);
@@ -42,6 +44,8 @@ function expand(html, meta) {
     .replace(/\{\{link:([^|}]*)\|([^|}]*)(?:\|([^}]*))?\}\}/g, (_m, l, h, m) => link(l, h, m))
     .replace(/\{\{final:([^|}]*)\|([^|}]*)\|([^}]*)\}\}/g, (_m, t, l, m) => final(t, l, m))
     .replace(/\{\{video:([a-z])\}\}/g, (_m, k) => video(k))
+    .replace(/\{\{gfx:([a-z-]+)\|([^}]*)\}\}/g, (_m, n, c) => gfx(n, c))
+    .replace(/\{\{swipe\}\}/g, swipe)
     .replace(/\{\{stars\}\}/g, stars)
     .replace(/\{\{book\}\}/g, site.booking)
     .replace(/\{\{crumbs\}\}/g, () => crumbsHtml(meta))
@@ -55,7 +59,7 @@ const siteGraph = [
   {
     '@type': 'Person', '@id': '/#naomi', name: 'Naomi Acciaro', honorificPrefix: 'Dott.ssa', jobTitle: 'Biologa nutrizionista',
     description: 'Biologa nutrizionista e antropometrista ISAK Level 1. Nutrizione clinica e sportiva a Roma e online.',
-    image: '/img/naomi-camice.webp',
+    image: '/img/naomi-camicia.webp',
     knowsAbout: ['Nutrizione clinica', 'Nutrizione sportiva', 'Antropometria ISAK', 'Piano alimentare personalizzato'],
     hasCredential: { '@type': 'EducationalOccupationalCredential', credentialCategory: 'certification', name: 'Antropometrista ISAK Level 1' },
     worksFor: { '@id': '/#studio' }

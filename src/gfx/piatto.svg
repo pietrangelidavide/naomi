@@ -1,0 +1,17 @@
+<svg viewBox="0 0 470 280" aria-hidden="true" focusable="false">
+  <circle class="g-rim" cx="130" cy="140" r="112"/>
+  <circle class="g-inner" cx="130" cy="140" r="92"/>
+  <path class="g-sal" d="M130 56 A84 84 0 0 0 130 224 Z"/>
+  <path class="g-tab" d="M130 140 L130 56 A84 84 0 0 1 214 140 Z"/>
+  <path class="g-tor" d="M130 140 L214 140 A84 84 0 0 1 130 224 Z"/>
+  <path class="g-cut" d="M130 52 V228 M130 140 H218"/>
+  <rect class="g-sal" x="268" y="66" width="20" height="20"/>
+  <text class="t-ink t-b" x="298" y="76" font-size="18">Verdure</text>
+  <text class="t-mut" x="298" y="96" font-size="15">crude o cotte</text>
+  <rect class="g-tab" x="268" y="132" width="20" height="20"/>
+  <text class="t-ink t-b" x="298" y="142" font-size="18">Proteine</text>
+  <text class="t-mut" x="298" y="162" font-size="15">pesce, carne, uova, legumi</text>
+  <rect class="g-tor" x="268" y="198" width="20" height="20"/>
+  <text class="t-ink t-b" x="298" y="208" font-size="18">Cereali</text>
+  <text class="t-mut" x="298" y="228" font-size="15">pasta, riso, pane</text>
+</svg>

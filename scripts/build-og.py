@@ -9,20 +9,19 @@ ROOT = Path(__file__).resolve().parent.parent
 PUB = ROOT / "public"
 u = lambda p: (PUB / p).as_uri()
 html = f"""<!doctype html><meta charset=utf-8><style>
-@font-face{{font-family:IS;src:url({u('fonts/instrumentserif-regular.woff')})}}
-@font-face{{font-family:ISa;font-weight:700;src:url({u('fonts/instrumentsans-bold.woff')})}}
-@font-face{{font-family:ISa;src:url({u('fonts/instrumentsans-regular.woff')})}}
+@font-face{{font-family:Nunito;font-weight:400 900;src:url({u('fonts/nunito-var.woff')})}}
 *{{margin:0;box-sizing:border-box;border-radius:0}}
-body{{width:1200px;height:630px;position:relative;overflow:hidden;background:#e9e5de;font-family:ISa}}
-.light{{position:absolute;inset:-10% -10% 0;background:repeating-linear-gradient(112deg,rgba(255,253,249,0) 0 90px,rgba(255,253,249,.85) 90px 200px,rgba(255,253,249,0) 200px 360px);filter:blur(22px);opacity:.9}}
-.logo{{position:absolute;left:70px;top:58px;height:64px}}
-h1{{position:absolute;left:70px;top:176px;width:610px;font:400 100px/.95 IS;letter-spacing:-.012em;color:#3a3033}}
-.sub{{position:absolute;left:72px;bottom:62px;font-weight:700;font-size:26px;color:#5b2a52}}
-.slab{{position:absolute;left:760px;top:70px;width:340px;height:490px;background:linear-gradient(160deg,#6d3b63,#5b2a52 55%,#43203d);transform:translate(40px,34px);box-shadow:0 40px 60px -30px rgba(67,32,61,.6)}}
-.mat{{position:absolute;left:760px;top:70px;width:340px;height:490px;padding:14px;background:#f8f6f2;box-shadow:0 0 0 1px rgba(58,48,51,.14),0 30px 50px -22px rgba(58,48,51,.5)}}
-.mat div{{width:100%;height:100%;background:url({u('img/naomi-studio.webp')}) 62% 28%/cover}}
+body{{width:1200px;height:630px;position:relative;overflow:hidden;background:#f2ece3;font-family:Nunito}}
+.light{{position:absolute;inset:-10% -10% 0;background:repeating-linear-gradient(112deg,rgba(255,252,247,0) 0 90px,rgba(255,252,247,.85) 90px 200px,rgba(255,252,247,0) 200px 360px);filter:blur(22px);opacity:.9}}
+.name{{position:absolute;left:72px;top:62px;font-weight:800;font-size:30px;color:#242321}}
+.role{{position:absolute;left:72px;top:102px;font-weight:600;font-size:21px;color:#5a564f}}
+h1{{position:absolute;left:70px;top:184px;width:640px;font:800 82px/1.04 Nunito;letter-spacing:-.015em;color:#242321}}
+.sub{{position:absolute;left:72px;bottom:60px;font-weight:700;font-size:25px;color:#70513f}}
+.slab{{position:absolute;left:770px;top:60px;width:340px;height:510px;background:linear-gradient(160deg,#7e6252,#70513f 55%,#4e3c32);transform:translate(38px,32px);box-shadow:0 40px 60px -30px rgba(78,60,50,.6)}}
+.mat{{position:absolute;left:770px;top:60px;width:340px;height:510px;padding:14px;background:#f9f7f3;box-shadow:0 0 0 1px rgba(36,35,33,.12),0 30px 50px -22px rgba(36,35,33,.5)}}
+.mat div{{width:100%;height:100%;background:url({u('img/naomi-camicia.webp')}) 74% 38%/auto 150%}}
 </style><div class=light></div>
-<img class=logo src="{u('img/logo.svg')}">
+<div class=name>Dott.ssa Naomi Acciaro</div><div class=role>Biologa nutrizionista</div>
 <h1>Un piano su misura. Letteralmente.</h1>
 <div class=sub>Roma | Online · prima visita su MioDottore</div>
 <div class=slab></div><div class=mat><div></div></div>"""

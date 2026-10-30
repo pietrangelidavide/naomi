@@ -1,0 +1,20 @@
+<svg viewBox="0 0 440 240" aria-hidden="true" focusable="false">
+  <path class="g-measure" d="M135 52 H305 M135 46 V58 M305 46 V58"/>
+  <text class="t-ink t-b" x="220" y="38" text-anchor="middle" font-size="16">il piano segue l'allenamento</text>
+  <line class="g-link" x1="24" y1="122" x2="416" y2="122"/>
+  <rect class="g-sal" x="24" y="95" width="54" height="54"/>
+  <svg class="g-ico" x="39" y="110" width="24" height="24" viewBox="0 0 24 24"><use href="/img/icons.svg#bowl"/></svg>
+  <text class="t-ink t-b" x="51" y="176" text-anchor="middle" font-size="15">Colazione</text>
+  <rect class="g-sal" x="108" y="95" width="54" height="54"/>
+  <svg class="g-ico" x="123" y="110" width="24" height="24" viewBox="0 0 24 24"><use href="/img/icons.svg#bolt"/></svg>
+  <text class="t-ink t-b" x="135" y="176" text-anchor="middle" font-size="15">Prima</text>
+  <rect class="g-tab" x="178" y="80" width="84" height="84"/>
+  <svg class="g-ico g-ico--on" x="200" y="102" width="40" height="40" viewBox="0 0 24 24"><use href="/img/icons.svg#dumbbell"/></svg>
+  <text class="t-ink t-b" x="220" y="190" text-anchor="middle" font-size="15">Allenamento</text>
+  <rect class="g-sal" x="278" y="95" width="54" height="54"/>
+  <svg class="g-ico" x="293" y="110" width="24" height="24" viewBox="0 0 24 24"><use href="/img/icons.svg#plate"/></svg>
+  <text class="t-ink t-b" x="305" y="176" text-anchor="middle" font-size="15">Dopo</text>
+  <rect class="g-sal" x="362" y="95" width="54" height="54"/>
+  <svg class="g-ico" x="377" y="110" width="24" height="24" viewBox="0 0 24 24"><use href="/img/icons.svg#bowl"/></svg>
+  <text class="t-ink t-b" x="389" y="176" text-anchor="middle" font-size="15">Cena</text>
+</svg>
