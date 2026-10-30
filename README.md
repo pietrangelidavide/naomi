@@ -4,20 +4,22 @@ Sito di una pagina per la Dott.ssa Naomi Acciaro, biologa nutrizionista (Roma | 
 
 ## Idea grafica
 
-"Luce da finestra": una pagina minimale in grigi freddi, dove la profondità la fanno le ombre. Una luce a strisce (come da tapparella) attraversa l'apertura, le card proiettano ombre morbide a più strati, il pulsante e i riquadri hanno rilievi in stile neumorfico, l'intestazione è un vetro smerigliato flottante, la sezione "La visita" è un pannello grafite con un fascio di luce.
+Una vetrina in "luce da finestra": spigoli netti (nessun angolo arrotondato, `border-radius: 0` ovunque) e nessun nero pieno. Il colore è tutto nei neutri caldi (pietra, sabbia, tortora); la profondità la fanno solo le ombre.
 
-Palette neutra: sfondo `#e7e9ea`, carta `#f3f4f4`, card `#fbfbfa`, inchiostro `#1b1f21` / `#2f3538`, testo secondario `#596165`, grafite `#333b3f` → `#14181a` per i pannelli scuri. Il colore lo mettono le foto. Il testo scuro su sfondo chiaro è a contrasto alto (> 12:1); il testo secondario `#596165` su `#e7e9ea` è a circa 5,2:1.
+Palette: muro `#e9e5de`, carta `#f1eee8`, card `#f8f6f2`, sabbia `#ddd7cc`, testo bruno caldo `#3b3631` / `#4c453f`, testo secondario `#62594f`, azione e pannello di prenotazione tortora `#665b50` (sfumato fino a `#54493f`). Contrasti calcolati: testo su tutti gli sfondi chiari ≥ 4,8:1 (il testo principale ≥ 8:1), testo chiaro sul tortora ≥ 4,7:1.
 
-Giochi di design (solo CSS, nessun JavaScript): strisce di luce con `repeating-linear-gradient` + sfocatura e maschera, ombre proiettate con pseudo-elementi sfocati e inclinati, vetro con `backdrop-filter`, oggetti disegnati con soli gradienti conici/radiali nelle schede "Di cosa mi occupo", galleria a colonne sfalsate, entrata della luce e leggero scorrimento (`animation-timeline: scroll()` dentro `@supports`). Tutto il movimento si disattiva con `prefers-reduced-motion`.
+Giochi di design (solo CSS, nessun JavaScript): strisce di luce da tapparella sfocate, la finestra proiettata sul muro (riquadro di luce con montanti in ombra) dietro la foto, foto come stampe incorniciate con passepartout e ombre portate a più strati, vetro smerigliato per l'intestazione e l'etichetta ISAK, rilievi sottili negli oggetti delle tre aree (tessera, righello, barre), sezioni "incassate" con ombre interne, pannello tortora per la prenotazione. Entrata della luce e leggero scorrimento (`animation-timeline: scroll()` dentro `@supports`); tutto il movimento si disattiva con `prefers-reduced-motion`.
 
-Caratteri: Gloock (titoli) e Work Sans 400/700 (testo), entrambi con licenza OFL, self-hosted in `public/fonts/` (sottoinsieme latino, formato WOFF).
+Impostazione: sito vetrina con fascia di prenotazione subito sotto l'apertura (dove, come si prenota, valutazione aggregata, pulsante), pulsante "Prenota" sempre visibile nell'intestazione e pannello di prenotazione in fondo. La prenotazione resta su MioDottore: il sito non raccoglie dati.
+
+Caratteri: Instrument Serif (titoli) e Instrument Sans 400/700 (testo), entrambi con licenza OFL, self-hosted in `public/fonts/` (sottoinsieme latino, formato WOFF).
 
 ## Struttura
 
 - `public/index.html`, `public/style.css`: tutta la pagina. Nessuna dipendenza esterna.
 - `public/img/naomi-studio.webp` (foto di apertura, 1040×1300) e `public/img/naomi-camice.webp` (sezione "Chi sono", 590×590): ricavate da screenshot di Instagram. Se Naomi ha gli originali ad alta risoluzione vanno sostituiti: rendono meglio sugli schermi grandi.
 - `public/img/piatti/*.webp`: otto piatti d'esempio per la sezione "A tavola", ricavati dalle storie Instagram con il testo sovrapposto rimosso (inpainting OpenCV; la foto "insalata" è ritagliata sopra l'adesivo). Sono esempi, non un piano alimentare: lo dice anche la didascalia della sezione. Anche qui vanno bene gli originali di Naomi, senza testo.
-- `public/img/favicon.svg`, `apple-touch-icon.png`, `icon-512.png`: la mezzaluna del logo su grafite.
+- `public/img/favicon.svg`, `apple-touch-icon.png`, `icon-512.png`: marchio quadrato a due strisce di luce su tortora (lo stesso dell'intestazione).
 - `scripts/preview.mjs` (`npm run preview:build`): crea `.tmp/preview/sito.html`, pagina a file unico con font e immagini incorporati, per le anteprime.
 - `wrangler.jsonc`: sito statico su Cloudflare (cartella `public/`, nessun comando di build).
 

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Dott.ssa Naomi Acciaro | Biologa nutrizionista a Roma e online</title>
 <meta name="description" content="Naomi Acciaro, biologa nutrizionista e antropometrista ISAK Level 1. Nutrizione clinica e sportiva a Roma e online. Con scienza e coscienza. Prenota una visita.">
-<meta name="theme-color" content="#e7e9ea">
+<meta name="theme-color" content="#e9e5de">
 <meta name="color-scheme" content="light">
 <!-- Finché il sito non ha il dominio definitivo resta fuori da Google: al go-live togliere noindex e robots.txt, poi aggiungere canonical e og:url. -->
 <meta name="robots" content="noindex, nofollow">
@@ -15,8 +15,8 @@
 <meta property="og:locale" content="it_IT">
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
-<link rel="preload" href="fonts/gloock-regular.woff" as="font" type="font/woff" crossorigin>
-<link rel="preload" href="fonts/worksans-regular.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="fonts/instrumentserif-regular.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="fonts/instrumentsans-regular.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="img/naomi-studio.webp" as="image" type="image/webp">
 <link rel="stylesheet" href="style.css">
 <script type="application/ld+json">
@@ -35,17 +35,18 @@
 <body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <symbol id="star" viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z" stroke-linejoin="round"/></symbol>
+  <symbol id="star" viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z" stroke-linejoin="miter"/></symbol>
 </svg>
 
 <a class="skip" href="#contenuto">Vai ai contenuti</a>
 
 <header class="top">
-  <div class="top__bar">
+  <div class="wrap top__bar">
     <a class="brand" href="#top" aria-label="Naomi Acciaro, torna all'inizio">
       <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
-        <circle cx="16" cy="16" r="15" fill="#1b1f21"/>
-        <circle cx="19.5" cy="12.5" r="11.5" fill="#e7e9ea"/>
+        <rect width="32" height="32" fill="#665b50"/>
+        <polygon points="0,14 14,0 22,0 0,22" fill="#f4f1ec" fill-opacity=".9"/>
+        <polygon points="2,32 32,2 32,10 10,32" fill="#f4f1ec" fill-opacity=".5"/>
       </svg>
       <span class="brand__text"><span class="brand__name">Naomi Acciaro</span><span class="brand__role">Biologa nutrizionista</span></span>
     </a>
@@ -63,6 +64,7 @@
 
   <section class="hero" id="top" aria-labelledby="hero-title">
     <div class="hero__light" aria-hidden="true"></div>
+    <div class="hero__window" aria-hidden="true"></div>
     <div class="wrap hero__grid">
       <div class="hero__text">
         <h1 class="hero__title" id="hero-title"><span>Con scienza</span> <span>e coscienza.</span></h1>
@@ -71,18 +73,26 @@
           <a class="btn btn--big" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota una visita</a>
           <a class="textlink" href="#visita">Come si svolge una visita</a>
         </div>
-        <a class="rating" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener" aria-label="Valutazione 5 su 5, 160 recensioni su MioDottore">
-          <span class="rating__stars" aria-hidden="true"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg></span>
-          <span class="rating__text"><strong>5,0</strong> · 160 recensioni su MioDottore</span>
-        </a>
       </div>
 
       <figure class="portrait">
-        <div class="portrait__frame">
+        <div class="portrait__mat">
           <img src="img/naomi-studio.webp" width="1040" height="1300" alt="Naomi Acciaro nel suo studio, in camicia azzurra, sorride allo specchio">
         </div>
         <figcaption class="portrait__chip"><b>Antropometrista</b><span>ISAK Level 1</span></figcaption>
       </figure>
+    </div>
+
+    <div class="wrap">
+      <div class="strip" role="group" aria-label="Prenotazione">
+        <div class="strip__cell"><span class="strip__k">Dove</span><span class="strip__v">Roma | Online</span></div>
+        <div class="strip__cell"><span class="strip__k">Come si prenota</span><span class="strip__v">Su MioDottore</span></div>
+        <a class="strip__cell strip__rating" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener" aria-label="Valutazione 5 su 5, 160 recensioni su MioDottore">
+          <span class="strip__k">Valutazione</span>
+          <span class="strip__v"><span class="stars" aria-hidden="true"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg></span> 5,0 · 160 recensioni</span>
+        </a>
+        <a class="strip__go" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota una visita</a>
+      </div>
     </div>
   </section>
 
@@ -113,24 +123,24 @@
     </div>
   </section>
 
-  <section class="sec" id="ambiti" aria-labelledby="ambiti-title">
+  <section class="sec sec--paper" id="ambiti" aria-labelledby="ambiti-title">
     <div class="wrap">
       <h2 class="h2" id="ambiti-title">Di cosa mi occupo</h2>
       <div class="svc-grid">
         <article class="svc">
-          <div class="obj obj--plate" aria-hidden="true"></div>
+          <div class="obj obj--tile" aria-hidden="true"></div>
           <h3 class="svc__title">Nutrizione clinica</h3>
           <p class="svc__text">Un percorso alimentare costruito sulle tue abitudini, sui tuoi esami e sui tuoi obiettivi.</p>
           <ul class="tags"><li>Abitudini</li><li>Esami</li><li>Obiettivi</li></ul>
         </article>
         <article class="svc">
-          <div class="obj obj--dial" aria-hidden="true"></div>
+          <div class="obj obj--ruler" aria-hidden="true"></div>
           <h3 class="svc__title">Valutazione antropometrica</h3>
           <p class="svc__text">Le misure del corpo prese con il protocollo ISAK, da ripetere nel tempo per vedere come cambia.</p>
           <ul class="tags"><li>Pliche</li><li>Circonferenze</li><li>Diametri</li></ul>
         </article>
         <article class="svc">
-          <div class="obj obj--arc" aria-hidden="true"></div>
+          <div class="obj obj--bars" aria-hidden="true"></div>
           <h3 class="svc__title">Nutrizione sportiva</h3>
           <p class="svc__text">L'alimentazione di chi si allena, in base al tuo sport e al tuo calendario.</p>
           <ul class="tags"><li>Energia</li><li>Recupero</li><li>Composizione corporea</li></ul>
@@ -166,10 +176,9 @@
     </div>
   </section>
 
-  <section class="sec night" id="visita" aria-labelledby="visita-title">
-    <div class="night__beam" aria-hidden="true"></div>
+  <section class="sec visita" id="visita" aria-labelledby="visita-title">
     <div class="wrap">
-      <h2 class="h2 h2--light" id="visita-title">Come si svolge una visita</h2>
+      <h2 class="h2" id="visita-title">Come si svolge una visita</h2>
       <ol class="steps">
         <li class="step">
           <span class="step__n" aria-hidden="true">1</span>
@@ -198,17 +207,18 @@
   <section class="sec book-sec" id="prenota" aria-labelledby="prenota-title">
     <div class="wrap">
       <div class="book">
+        <div class="book__light" aria-hidden="true"></div>
         <div class="book__text">
           <h2 class="book__title" id="prenota-title">Prenota la tua visita</h2>
           <p class="book__lead">La prenotazione si fa su MioDottore, dove trovi i giorni e gli orari disponibili.</p>
           <div class="book__action">
-            <a class="btn btn--big" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota su MioDottore</a>
+            <a class="btn btn--light btn--big" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota su MioDottore</a>
             <p class="book__where">Roma | Online</p>
           </div>
         </div>
         <a class="book__rating" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener" aria-label="Valutazione 5 su 5, 160 recensioni su MioDottore">
           <span class="book__score">5,0</span>
-          <span class="rating__stars" aria-hidden="true"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg></span>
+          <span class="stars" aria-hidden="true"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg></span>
           <span class="book__count">160 recensioni su MioDottore</span>
         </a>
       </div>
