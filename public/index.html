@@ -3,227 +3,296 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Dott.ssa Naomi Acciaro | Biologa nutrizionista a Roma e online</title>
-<meta name="description" content="Naomi Acciaro, biologa nutrizionista e antropometrista ISAK Level 1. Nutrizione clinica e sportiva a Roma e online. Con scienza e coscienza. Prenota una visita.">
+<title>Biologa nutrizionista a Roma e online | Dott.ssa Naomi Acciaro</title>
+<meta name="description" content="Piani alimentari su misura con la Dott.ssa Naomi Acciaro, biologa nutrizionista e antropometrista ISAK a Roma e online. Prenota la prima visita.">
 <meta name="theme-color" content="#e9e5de">
 <meta name="color-scheme" content="light">
-<!-- Finché il sito non ha il dominio definitivo resta fuori da Google: al go-live togliere noindex e robots.txt, poi aggiungere canonical e og:url. -->
+<!-- Finché il sito non ha il dominio definitivo resta fuori da Google. Al go-live: node scripts/build.mjs --site-url https://dominio -->
 <meta name="robots" content="noindex, nofollow">
-<meta property="og:title" content="Dott.ssa Naomi Acciaro | Biologa nutrizionista">
-<meta property="og:description" content="Nutrizione clinica e sportiva a Roma e online. Con scienza e coscienza.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="it_IT">
-<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
-<link rel="preload" href="fonts/instrumentserif-regular.woff" as="font" type="font/woff" crossorigin>
-<link rel="preload" href="fonts/instrumentsans-regular.woff" as="font" type="font/woff" crossorigin>
-<link rel="preload" href="img/naomi-studio.webp" as="image" type="image/webp">
-<link rel="stylesheet" href="style.css">
+<meta property="og:site_name" content="Dott.ssa Naomi Acciaro">
+<meta property="og:title" content="Dott.ssa Naomi Acciaro | Biologa nutrizionista a Roma e online">
+<meta property="og:description" content="Piani alimentari su misura con la Dott.ssa Naomi Acciaro, biologa nutrizionista e antropometrista ISAK a Roma e online. Prenota la prima visita.">
+<meta property="og:image" content="/img/og.jpg">
+<meta property="og:image:alt" content="Dott.ssa Naomi Acciaro, biologa nutrizionista a Roma e online">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="preload" href="/fonts/instrumentserif-regular.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="/fonts/instrumentsans-regular.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="/img/naomi-studio.webp" as="image" type="image/webp">
+<link rel="stylesheet" href="/style.css">
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Naomi Acciaro",
-  "honorificPrefix": "Dott.ssa",
-  "jobTitle": "Biologa nutrizionista",
-  "description": "Biologa nutrizionista e antropometrista ISAK Level 1. Nutrizione clinica e sportiva a Roma e online.",
-  "knowsAbout": ["Nutrizione clinica", "Nutrizione sportiva", "Antropometria ISAK"],
-  "workLocation": { "@type": "Place", "address": { "@type": "PostalAddress", "addressLocality": "Roma", "addressCountry": "IT" } }
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Person",
+   "@id": "/#naomi",
+   "name": "Naomi Acciaro",
+   "honorificPrefix": "Dott.ssa",
+   "jobTitle": "Biologa nutrizionista",
+   "description": "Biologa nutrizionista e antropometrista ISAK Level 1. Nutrizione clinica e sportiva a Roma e online.",
+   "image": "/img/naomi-camice.webp",
+   "knowsAbout": [
+    "Nutrizione clinica",
+    "Nutrizione sportiva",
+    "Antropometria ISAK",
+    "Piano alimentare personalizzato"
+   ],
+   "hasCredential": {
+    "@type": "EducationalOccupationalCredential",
+    "credentialCategory": "certification",
+    "name": "Antropometrista ISAK Level 1"
+   },
+   "worksFor": {
+    "@id": "/#studio"
+   }
+  },
+  {
+   "@type": "ProfessionalService",
+   "@id": "/#studio",
+   "name": "Dott.ssa Naomi Acciaro, biologa nutrizionista",
+   "description": "Visite nutrizionali, valutazione antropometrica ISAK e nutrizione sportiva a Roma e online.",
+   "image": "/img/og.jpg",
+   "areaServed": {
+    "@type": "City",
+    "name": "Roma"
+   },
+   "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Roma",
+    "addressCountry": "IT"
+   },
+   "availableLanguage": "it",
+   "employee": {
+    "@id": "/#naomi"
+   },
+   "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Servizi",
+    "itemListElement": [
+     {
+      "@type": "Offer",
+      "itemOffered": {
+       "@type": "Service",
+       "name": "Nutrizione clinica"
+      }
+     },
+     {
+      "@type": "Offer",
+      "itemOffered": {
+       "@type": "Service",
+       "name": "Valutazione antropometrica ISAK"
+      }
+     },
+     {
+      "@type": "Offer",
+      "itemOffered": {
+       "@type": "Service",
+       "name": "Nutrizione sportiva"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "@type": "WebPage",
+   "@id": "/#page",
+   "url": "/",
+   "name": "Biologa nutrizionista a Roma e online | Dott.ssa Naomi Acciaro",
+   "description": "Piani alimentari su misura con la Dott.ssa Naomi Acciaro, biologa nutrizionista e antropometrista ISAK a Roma e online. Prenota la prima visita.",
+   "inLanguage": "it",
+   "about": {
+    "@id": "/#naomi"
+   },
+   "isPartOf": {
+    "@id": "/#site"
+   }
+  },
+  {
+   "@type": "WebSite",
+   "@id": "/#site",
+   "url": "/",
+   "name": "Dott.ssa Naomi Acciaro",
+   "inLanguage": "it"
+  },
+  {
+   "@type": "VideoObject",
+   "name": "Con scienza e coscienza",
+   "description": "Breve video che presenta il metodo della Dott.ssa Naomi Acciaro, biologa nutrizionista a Roma e online: misure, ascolto e piano alimentare su misura.",
+   "thumbnailUrl": "/img/video/con-scienza-e-coscienza.webp",
+   "contentUrl": "/video/con-scienza-e-coscienza.mp4",
+   "uploadDate": "2026-10-30",
+   "duration": "PT10S",
+   "inLanguage": "it"
+  },
+  {
+   "@type": "VideoObject",
+   "name": "La prima visita in 4 passi",
+   "description": "Breve video che mostra come si svolge una visita nutrizionale con la Dott.ssa Naomi Acciaro: prenotazione, colloquio, piano alimentare e controlli.",
+   "thumbnailUrl": "/img/video/la-prima-visita.webp",
+   "contentUrl": "/video/la-prima-visita.mp4",
+   "uploadDate": "2026-10-30",
+   "duration": "PT12S",
+   "inLanguage": "it"
+  }
+ ]
 }
 </script>
 </head>
-<body>
-
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <symbol id="star" viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z" stroke-linejoin="miter"/></symbol>
-</svg>
+<body class="page-home">
 
 <a class="skip" href="#contenuto">Vai ai contenuti</a>
 
 <header class="top">
   <div class="wrap top__bar">
-    <a class="brand" href="#top" aria-label="Naomi Acciaro, torna all'inizio">
-      <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
-        <rect width="32" height="32" fill="#665b50"/>
-        <polygon points="0,14 14,0 22,0 0,22" fill="#f4f1ec" fill-opacity=".9"/>
-        <polygon points="2,32 32,2 32,10 10,32" fill="#f4f1ec" fill-opacity=".5"/>
-      </svg>
+    <a class="brand" href="/" aria-label="Naomi Acciaro, biologa nutrizionista: vai alla home">
+      <svg class="brand__mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" fill="#5b2a52"/><polygon points="0,0 16,0 32,32 48,0 64,0 32,64" fill="#f6f4f1"/><path d="M23 0 L32 17 L41 0" fill="none" stroke="#c2a373" stroke-width="2.4" stroke-miterlimit="10"/></svg>
       <span class="brand__text"><span class="brand__name">Naomi Acciaro</span><span class="brand__role">Biologa nutrizionista</span></span>
     </a>
-    <nav class="nav" aria-label="Sezioni">
-      <a class="nav__link" href="#chi-sono">Chi sono</a>
-      <a class="nav__link" href="#ambiti">Di cosa mi occupo</a>
-      <a class="nav__link" href="#a-tavola">A tavola</a>
-      <a class="nav__link" href="#visita">La visita</a>
+    <nav class="nav" aria-label="Pagine del sito">
+      <a class="nav__link" href="/chi-siamo">Chi siamo</a>
+      <a class="nav__link" href="/servizi">Servizi</a>
+      <a class="nav__link" href="/dove">Dove</a>
+      <a class="nav__link" href="/contatti">Contatti</a>
     </nav>
-    <a class="btn btn--small" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota</a>
+    <a class="btn btn--small top__cta" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota</a>
+    <details class="menu">
+      <summary><span class="menu__label">Menu</span><span class="menu__bars" aria-hidden="true"></span></summary>
+      <nav class="menu__panel" aria-label="Menu">
+      <a class="nav__link" href="/chi-siamo">Chi siamo</a>
+      <a class="nav__link" href="/servizi">Servizi</a>
+      <a class="nav__link" href="/dove">Dove</a>
+      <a class="nav__link" href="/contatti">Contatti</a>
+      </nav>
+    </details>
   </div>
 </header>
 
 <main id="contenuto">
-
-  <section class="hero" id="top" aria-labelledby="hero-title">
-    <div class="hero__light" aria-hidden="true"></div>
-    <div class="hero__window" aria-hidden="true"></div>
-    <div class="wrap hero__grid">
-      <div class="hero__text">
-        <h1 class="hero__title" id="hero-title"><span>Con scienza</span> <span>e coscienza.</span></h1>
-        <p class="hero__lead">Sono Naomi Acciaro, biologa nutrizionista. Mi occupo di nutrizione clinica e sportiva, a Roma e online.</p>
-        <div class="hero__cta">
-          <a class="btn btn--big" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota una visita</a>
-          <a class="textlink" href="#visita">Come si svolge una visita</a>
-        </div>
-      </div>
-
-      <figure class="portrait">
-        <div class="portrait__mat">
-          <img src="img/naomi-studio.webp" width="1040" height="1300" alt="Naomi Acciaro nel suo studio, in camicia azzurra, sorride allo specchio">
-        </div>
-        <figcaption class="portrait__chip"><b>Antropometrista</b><span>ISAK Level 1</span></figcaption>
-      </figure>
-    </div>
-
-    <div class="wrap">
-      <div class="strip" role="group" aria-label="Prenotazione">
-        <div class="strip__cell"><span class="strip__k">Dove</span><span class="strip__v">Roma | Online</span></div>
-        <div class="strip__cell"><span class="strip__k">Come si prenota</span><span class="strip__v">Su MioDottore</span></div>
-        <a class="strip__cell strip__rating" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener" aria-label="Valutazione 5 su 5, 160 recensioni su MioDottore">
-          <span class="strip__k">Valutazione</span>
-          <span class="strip__v"><span class="stars" aria-hidden="true"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg></span> 5,0 · 160 recensioni</span>
-        </a>
-        <a class="strip__go" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota una visita</a>
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="hero__light" aria-hidden="true"></div>
+  <div class="hero__window" aria-hidden="true"></div>
+  <div class="wrap hero__grid">
+    <div class="hero__text">
+      <h1 class="hero__title" id="hero-title"><span class="hero__kicker">Biologa nutrizionista a Roma e online</span><span class="hero__main">Un piano su misura. Letteralmente.</span></h1>
+      <p class="hero__lead">Misuro il tuo corpo con il protocollo ISAK, ascolto le tue abitudini e costruisco un piano alimentare che puoi seguire davvero.</p>
+      <div class="hero__cta">
+        <div class="cta"><a class="btn btn--big" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota la prima visita</a><p class="cta__micro">Scegli giorno e orario su MioDottore · Roma o online</p></div>
+        <a class="textlink" href="/servizi">Scopri i servizi</a>
       </div>
     </div>
-  </section>
-
-  <section class="sec about" id="chi-sono" aria-labelledby="chi-title">
-    <div class="wrap about__grid">
-      <figure class="about__photo">
-        <img src="img/naomi-camice.webp" width="590" height="590" loading="lazy" alt="Naomi Acciaro in camice bianco, con le braccia incrociate">
-      </figure>
-      <div class="about__body">
-        <h2 class="h2" id="chi-title">Chi sono</h2>
-        <p class="about__lead">Mi occupo di come mangiamo e di come il corpo risponde: a tavola, in allenamento, nella vita di tutti i giorni.</p>
-        <div class="prose">
-          <p>Sono biologa nutrizionista e lavoro a Roma e online con persone che vogliono mangiare meglio, allenarsi meglio o semplicemente capire che cosa funziona per loro.</p>
-          <p>Sono anche antropometrista ISAK Level 1: misuro il corpo con un protocollo internazionale, così si parte da dati precisi e non da impressioni.</p>
-        </div>
-        <ul class="pillars" aria-label="Con scienza e coscienza">
-          <li><h3>Evidenze e misure</h3><p>Le scelte partono da dati, non da impressioni.</p></li>
-          <li><h3>Spiegato con chiarezza</h3><p>Capisci il perché di ogni indicazione.</p></li>
-          <li><h3>Niente schemi uguali per tutti</h3><p>Il percorso si costruisce sulle tue abitudini.</p></li>
-        </ul>
-        <dl class="facts">
-          <div><dt>Titolo</dt><dd>Biologa nutrizionista</dd></div>
-          <div><dt>Formazione</dt><dd>Antropometrista ISAK Level 1</dd></div>
-          <div><dt>Ambiti</dt><dd>Nutrizione clinica e sportiva</dd></div>
-          <div><dt>Dove</dt><dd>Roma | Online</dd></div>
-        </dl>
+    <figure class="portrait">
+      <div class="portrait__mat">
+        <img src="/img/naomi-studio.webp" width="1040" height="1300" alt="Naomi Acciaro, biologa nutrizionista, nel suo studio a Roma">
       </div>
+      <figcaption class="portrait__chip"><b>Antropometrista</b><span>ISAK Level 1</span></figcaption>
+    </figure>
+  </div>
+  <div class="wrap">
+    <div class="strip" role="group" aria-label="Prenotazione">
+      <div class="strip__cell"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#pin"/></svg><span><span class="strip__k">Dove</span><span class="strip__v">Roma | Online</span></span></div>
+      <div class="strip__cell"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#calendar"/></svg><span><span class="strip__k">Come si prenota</span><span class="strip__v">Su MioDottore</span></span></div>
+      <a class="strip__cell strip__rating" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener" aria-label="Valutazione 5 su 5, 160 recensioni su MioDottore"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#star"/></svg><span><span class="strip__k">Valutazione</span><span class="strip__v">5,0 · 160 recensioni</span></span></a>
+      <a class="strip__go" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota una visita</a>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="sec sec--paper" id="ambiti" aria-labelledby="ambiti-title">
-    <div class="wrap">
-      <h2 class="h2" id="ambiti-title">Di cosa mi occupo</h2>
-      <div class="svc-grid">
-        <article class="svc">
-          <div class="obj obj--tile" aria-hidden="true"></div>
-          <h3 class="svc__title">Nutrizione clinica</h3>
-          <p class="svc__text">Un percorso alimentare costruito sulle tue abitudini, sui tuoi esami e sui tuoi obiettivi.</p>
-          <ul class="tags"><li>Abitudini</li><li>Esami</li><li>Obiettivi</li></ul>
-        </article>
-        <article class="svc">
-          <div class="obj obj--ruler" aria-hidden="true"></div>
-          <h3 class="svc__title">Valutazione antropometrica</h3>
-          <p class="svc__text">Le misure del corpo prese con il protocollo ISAK, da ripetere nel tempo per vedere come cambia.</p>
-          <ul class="tags"><li>Pliche</li><li>Circonferenze</li><li>Diametri</li></ul>
-        </article>
-        <article class="svc">
-          <div class="obj obj--bars" aria-hidden="true"></div>
-          <h3 class="svc__title">Nutrizione sportiva</h3>
-          <p class="svc__text">L'alimentazione di chi si allena, in base al tuo sport e al tuo calendario.</p>
-          <ul class="tags"><li>Energia</li><li>Recupero</li><li>Composizione corporea</li></ul>
-        </article>
-      </div>
+<section class="sec" id="bisogni" aria-labelledby="bisogni-title">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2 class="h2" id="bisogni-title">Da dove parti tu?</h2>
+      <p class="sec__lead">Ognuno arriva con una domanda diversa. Queste sono le più frequenti, e che cosa puoi ottenere da un percorso su misura.</p>
     </div>
-  </section>
+    <ul class="needs">
+      <li class="need"><svg class="ico ico--lg" aria-hidden="true" focusable="false"><use href="/img/icons.svg#plate"/></svg><h3>«Mangio, ma non so se è giusto per me»</h3><p>Capisci che cosa mangi e perché: un piano chiaro, con alternative, pensato sulle tue giornate reali.</p></li>
+      <li class="need"><svg class="ico ico--lg" aria-hidden="true" focusable="false"><use href="/img/icons.svg#dumbbell"/></svg><h3>«Mi alleno e vorrei più energia»</h3><p>Un'alimentazione calibrata su sport, orari e calendario, per arrivare all'allenamento carico e recuperare meglio.</p></li>
+      <li class="need"><svg class="ico ico--lg" aria-hidden="true" focusable="false"><use href="/img/icons.svg#doc"/></svg><h3>«Ho esami da tradurre a tavola»</h3><p>Un percorso che parte dai tuoi esami e dialoga con il tuo medico, senza improvvisare.</p></li>
+      <li class="need"><svg class="ico ico--lg" aria-hidden="true" focusable="false"><use href="/img/icons.svg#ruler"/></svg><h3>«Voglio vedere come cambia il corpo»</h3><p>Misure ripetibili (pliche, circonferenze, diametri) per seguire i cambiamenti che la sola bilancia non mostra.</p></li>
+    </ul>
+    <div class="cta"><a class="btn btn--big" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Trova il tuo percorso</a><p class="cta__micro">Tre percorsi, un unico metodo</p></div>
+  </div>
+</section>
 
-  <section class="sec tavola" id="a-tavola" aria-labelledby="tavola-title">
-    <div class="wrap">
-      <div class="sec__head">
-        <h2 class="h2" id="tavola-title">A tavola</h2>
-        <p class="sec__lead">Qualche esempio di piatti semplici da preparare a casa. Non sono un piano alimentare: ogni percorso viene costruito sulla persona.</p>
-      </div>
-      <div class="gallery">
-        <div class="gcol">
-          <figure class="dish"><img src="img/piatti/colazione.webp" width="900" height="1123" loading="lazy" alt="Due toast al prosciutto e un bicchiere di caffellatte sul piatto"><figcaption>Toast al prosciutto e caffellatte</figcaption></figure>
-          <figure class="dish"><img src="img/piatti/gnocchetti.webp" width="900" height="900" loading="lazy" alt="Gnocchetti con zucchine e gamberetti in una ciotola"><figcaption>Gnocchetti con zucchine e gamberetti</figcaption></figure>
-        </div>
-        <div class="gcol gcol--down">
-          <figure class="dish"><img src="img/piatti/spaghetti.webp" width="900" height="1125" loading="lazy" alt="Piatto di spaghetti con gamberi e pomodoro"><figcaption>Spaghetti con gamberi e pomodoro</figcaption></figure>
-          <figure class="dish"><img src="img/piatti/salmone.webp" width="1000" height="750" loading="lazy" alt="Toast con trota salmonata e avocado"><figcaption>Toast con trota salmonata, avocado e Philadelphia</figcaption></figure>
-        </div>
-        <div class="gcol">
-          <figure class="dish"><img src="img/piatti/toast.webp" width="900" height="1125" loading="lazy" alt="Due toast farciti e un bicchiere di caffellatte con la schiuma"><figcaption>Prima di una corsa leggera: toast e caffellatte</figcaption></figure>
-          <figure class="dish"><img src="img/piatti/spatzle.webp" width="900" height="900" loading="lazy" alt="Spätzle verdi con macinato in una ciotola"><figcaption>Spätzle con macinato e Philadelphia</figcaption></figure>
-        </div>
-        <div class="gcol gcol--down">
-          <figure class="dish"><img src="img/piatti/mezze.webp" width="900" height="1123" loading="lazy" alt="Mezze maniche con crema di zucca e macinato"><figcaption>Mezze maniche con crema di zucca e macinato</figcaption></figure>
-          <figure class="dish"><img src="img/piatti/insalata.webp" width="1000" height="750" loading="lazy" alt="Insalata con prosciutto, formaggio fresco, cetrioli e carote, con pane scuro"><figcaption>Insalata con prosciutto e formaggio fresco, con pane scuro</figcaption></figure>
-        </div>
-      </div>
+<section class="sec sec--paper" id="metodo" aria-labelledby="metodo-title">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2 class="h2" id="metodo-title">Prima le misure, poi il piano.</h2>
+      <p class="sec__lead">Con scienza e coscienza: parto da dati precisi e dalla tua vita di tutti i giorni, non da uno schema uguale per tutti.</p>
     </div>
-  </section>
+    <ol class="method">
+      <li class="mstep"><span class="mstep__n" aria-hidden="true">1</span><svg class="ico ico--lg" aria-hidden="true" focusable="false"><use href="/img/icons.svg#ruler"/></svg><h3>Misuro</h3><p>Peso, altezza, pliche, circonferenze e diametri con protocollo ISAK, quando serve. Parti da numeri affidabili, non da impressioni.</p></li>
+      <li class="mstep"><span class="mstep__n" aria-hidden="true">2</span><svg class="ico ico--lg" aria-hidden="true" focusable="false"><use href="/img/icons.svg#chat"/></svg><h3>Ascolto</h3><p>Abitudini, orari, gusti, obiettivi, esami. Il piano deve entrare nella tua vita, non il contrario.</p></li>
+      <li class="mstep"><span class="mstep__n" aria-hidden="true">3</span><svg class="ico ico--lg" aria-hidden="true" focusable="false"><use href="/img/icons.svg#plan"/></svg><h3>Costruisco</h3><p>Un piano alimentare scritto per te, con indicazioni chiare. Poi ci rivediamo e lo aggiustiamo insieme.</p></li>
+    </ol>
+    <div class="cta"><a class="btn btn--big" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota la prima visita</a><p class="cta__micro">Si prenota online su MioDottore</p></div>
+  </div>
+</section>
 
-  <section class="sec visita" id="visita" aria-labelledby="visita-title">
-    <div class="wrap">
-      <h2 class="h2" id="visita-title">Come si svolge una visita</h2>
-      <ol class="steps">
-        <li class="step">
-          <span class="step__n" aria-hidden="true">1</span>
-          <h3 class="step__title">Prenoti</h3>
-          <p class="step__text">Scegli giorno e orario su MioDottore, a Roma o online.</p>
-        </li>
-        <li class="step">
-          <span class="step__n" aria-hidden="true">2</span>
-          <h3 class="step__title">Ci conosciamo</h3>
-          <p class="step__text">Parliamo di abitudini, obiettivi ed esami. Se serve, misuro il corpo con il protocollo ISAK.</p>
-        </li>
-        <li class="step">
-          <span class="step__n" aria-hidden="true">3</span>
-          <h3 class="step__title">Ricevi il tuo piano</h3>
-          <p class="step__text">Un piano alimentare scritto per te, con indicazioni chiare per metterlo in pratica.</p>
-        </li>
-        <li class="step">
-          <span class="step__n" aria-hidden="true">4</span>
-          <h3 class="step__title">Ci rivediamo</h3>
-          <p class="step__text">Controlli periodici per vedere come stai e aggiustare il percorso. Tempi e numero di incontri dipendono dal tuo obiettivo.</p>
-        </li>
-      </ol>
+<section class="sec" id="video" aria-labelledby="video-title">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2 class="h2" id="video-title">Il metodo in 10 secondi.</h2>
+      <p class="sec__lead">Due brevi video, senza audio: come lavoro e come si svolge la prima visita. Premi play.</p>
     </div>
-  </section>
+    <div class="videos videos--2">
+      <figure class="video"><video controls preload="none" playsinline width="720" height="900" poster="/img/video/con-scienza-e-coscienza.webp" aria-label="Con scienza e coscienza"><source src="/video/con-scienza-e-coscienza.mp4" type="video/mp4">Il tuo browser non riproduce i video.</video><figcaption><strong>Con scienza e coscienza</strong><span>Misuro, ascolto, costruisco: il metodo in 10 secondi.</span></figcaption></figure>
+      <figure class="video"><video controls preload="none" playsinline width="720" height="900" poster="/img/video/la-prima-visita.webp" aria-label="La prima visita in 4 passi"><source src="/video/la-prima-visita.mp4" type="video/mp4">Il tuo browser non riproduce i video.</video><figcaption><strong>La prima visita in 4 passi</strong><span>Prenoti, ci conosciamo, ricevi il piano, ci rivediamo.</span></figcaption></figure>
+    </div>
+    <div class="cta"><a class="btn btn--big" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota la prima visita</a><p class="cta__micro">Roma | Online · scegli giorno e orario</p></div>
+  </div>
+</section>
 
-  <section class="sec book-sec" id="prenota" aria-labelledby="prenota-title">
-    <div class="wrap">
-      <div class="book">
-        <div class="book__light" aria-hidden="true"></div>
-        <div class="book__text">
-          <h2 class="book__title" id="prenota-title">Prenota la tua visita</h2>
-          <p class="book__lead">La prenotazione si fa su MioDottore, dove trovi i giorni e gli orari disponibili.</p>
-          <div class="book__action">
-            <a class="btn btn--light btn--big" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota su MioDottore</a>
-            <p class="book__where">Roma | Online</p>
-          </div>
-        </div>
-        <a class="book__rating" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener" aria-label="Valutazione 5 su 5, 160 recensioni su MioDottore">
-          <span class="book__score">5,0</span>
-          <span class="stars" aria-hidden="true"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg></span>
-          <span class="book__count">160 recensioni su MioDottore</span>
-        </a>
-      </div>
+<section class="sec sec--paper" id="servizi" aria-labelledby="servizi-title">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2 class="h2" id="servizi-title">Tre percorsi, scegli quello che ti serve.</h2>
+      <p class="sec__lead">Ogni percorso parte dalla prima visita e si costruisce su di te. Qui in breve; nella pagina Servizi trovi cosa include ciascuno.</p>
     </div>
-  </section>
+    <div class="svc3">
+      <article class="svc-card"><svg class="ico ico--lg" aria-hidden="true" focusable="false"><use href="/img/icons.svg#plate"/></svg><h3>Nutrizione clinica</h3><p>Per chi vuole mangiare meglio con un piano costruito su abitudini, esami e obiettivi.</p><a class="textlink" href="/servizi#clinica">Scopri la nutrizione clinica</a></article>
+      <article class="svc-card"><svg class="ico ico--lg" aria-hidden="true" focusable="false"><use href="/img/icons.svg#ruler"/></svg><h3>Valutazione antropometrica ISAK</h3><p>Misure precise del corpo, da ripetere nel tempo per vedere come cambia.</p><a class="textlink" href="/servizi#antropometria">Scopri la valutazione ISAK</a></article>
+      <article class="svc-card"><svg class="ico ico--lg" aria-hidden="true" focusable="false"><use href="/img/icons.svg#dumbbell"/></svg><h3>Nutrizione sportiva</h3><p>Per chi si allena: energia, recupero e composizione corporea in linea con l'obiettivo.</p><a class="textlink" href="/servizi#sportiva">Scopri la nutrizione sportiva</a></article>
+    </div>
+    <div class="cta"><a class="btn btn--big" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Vedi tutti i servizi</a><p class="cta__micro">Con esempi reali di piatti e di visita</p></div>
+  </div>
+</section>
+
+<section class="sec tavola" id="a-tavola" aria-labelledby="tavola-title">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2 class="h2" id="tavola-title">Cosa c'è nel piatto.</h2>
+      <p class="sec__lead">Esempi reali di piatti semplici, da preparare a casa. Non sono un piano alimentare: il tuo sarà costruito su di te.</p>
+    </div>
+    <div class="gallery gallery--4">
+      <figure class="dish"><img src="/img/piatti/colazione.webp" width="900" height="1123" loading="lazy" alt="Due toast al prosciutto e un bicchiere di caffellatte sul piatto"><figcaption>Toast al prosciutto e caffellatte</figcaption></figure>
+      <figure class="dish"><img src="/img/piatti/spaghetti.webp" width="900" height="1125" loading="lazy" alt="Piatto di spaghetti con gamberi e pomodoro"><figcaption>Spaghetti con gamberi e pomodoro</figcaption></figure>
+      <figure class="dish"><img src="/img/piatti/salmone.webp" width="1000" height="750" loading="lazy" alt="Toast con trota salmonata e avocado"><figcaption>Toast con trota salmonata e avocado</figcaption></figure>
+      <figure class="dish"><img src="/img/piatti/mezze.webp" width="900" height="1123" loading="lazy" alt="Mezze maniche con crema di zucca e macinato"><figcaption>Mezze maniche con crema di zucca</figcaption></figure>
+    </div>
+    <div class="cta cta--link"><a class="btn btn--ghost" href="/servizi#esempi">Guarda tutti gli esempi</a><p class="cta__micro">Otto piatti reali, dalla colazione alla cena</p></div>
+  </div>
+</section>
+
+<section class="sec" id="fiducia" aria-labelledby="fiducia-title">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2 class="h2" id="fiducia-title">Perché puoi fidarti.</h2>
+      <p class="sec__lead">Formazione, metodo e un profilo pubblico che puoi controllare da solo.</p>
+    </div>
+    <ul class="proof">
+      <li class="proof__item"><svg class="ico ico--lg" aria-hidden="true" focusable="false"><use href="/img/icons.svg#shield"/></svg><h3>Biologa nutrizionista</h3><p>Mi occupo di nutrizione clinica e sportiva, a Roma e online.</p></li>
+      <li class="proof__item"><svg class="ico ico--lg" aria-hidden="true" focusable="false"><use href="/img/icons.svg#ruler"/></svg><h3>Antropometrista ISAK Level 1</h3><p>Misuro con un protocollo internazionale, ripetibile nel tempo.</p></li>
+      <li class="proof__item"><svg class="ico ico--lg" aria-hidden="true" focusable="false"><use href="/img/icons.svg#flask"/></svg><h3>Spiegato, non imposto</h3><p>Ogni indicazione ha una ragione, e te la racconto con parole semplici.</p></li>
+      <li class="proof__item proof__item--rating"><svg class="ico ico--lg" aria-hidden="true" focusable="false"><use href="/img/icons.svg#star"/></svg><h3>5,0 su MioDottore</h3><p>160 recensioni sul profilo pubblico. Leggile da sole, direttamente sulla piattaforma.</p><a class="textlink" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Leggi le recensioni su MioDottore</a></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec final-sec" id="prenota" aria-labelledby="prenota-title"><div class="wrap"><div class="final"><div class="final__light" aria-hidden="true"></div><div class="final__text"><h2 class="final__title" id="prenota-title">Il tuo piano comincia con una misura.</h2><p class="final__lead">Prenota la prima visita: scegli giorno e orario su MioDottore, a Roma o online.</p><div class="cta cta--light"><a class="btn btn--big btn--light" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota la prima visita</a><p class="cta__micro">Roma | Online · si prenota in pochi clic</p></div></div><a class="final__rating" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener" aria-label="Valutazione 5 su 5, 160 recensioni su MioDottore"><span class="final__score">5,0</span><span class="stars" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#star"/></svg><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#star"/></svg><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#star"/></svg><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#star"/></svg><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#star"/></svg></span><span class="final__count">160 recensioni su MioDottore</span></a></div></div></section>
 
 </main>
 
@@ -232,11 +301,27 @@
     <div class="foot__id">
       <p class="foot__name">Dott.ssa Naomi Acciaro</p>
       <p class="foot__role">Biologa nutrizionista · Roma | Online</p>
+      <p class="foot__tag">Con scienza e coscienza.</p>
     </div>
-    <p class="foot__note">I contenuti di questo sito hanno scopo informativo e non sostituiscono il parere del medico.</p>
-    <!-- DA COMPLETARE prima del go-live (obblighi di legge per i siti dei professionisti): numero e sezione di iscrizione all'albo dei biologi (ONB), partita IVA, indirizzo dello studio, informativa privacy se si aggiungono moduli o statistiche. -->
+    <nav class="foot__nav" aria-label="Pagine">
+      <a href="/">Home</a>
+      <a href="/chi-siamo">Chi siamo</a>
+      <a href="/servizi">Servizi</a>
+      <a href="/dove">Dove</a>
+      <a href="/contatti">Contatti</a>
+    </nav>
+    <div class="foot__book">
+      <a class="btn" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota su MioDottore</a>
+      <p>Roma | Online</p>
+    </div>
+  </div>
+  <div class="wrap foot__legal">
+    <p>I contenuti di questo sito hanno scopo informativo e non sostituiscono il parere del medico. Il sito non usa cookie né strumenti di tracciamento: la prenotazione avviene su MioDottore, che tratta i dati secondo la propria informativa.</p>
+    <!-- DA COMPLETARE prima del go-live (obblighi per i siti dei professionisti sanitari): numero e sezione di iscrizione all'albo dei biologi (ONB), partita IVA, indirizzo dello studio. -->
   </div>
 </footer>
+
+<div class="mbar"><a class="btn btn--big" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota la prima visita</a></div>
 
 </body>
 </html>

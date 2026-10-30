@@ -1,0 +1,85 @@
+<!--
+{
+  "file": "contatti", "path": "/contatti", "nav": "contatti", "crumbs": "Contatti",
+  "title": "Contatti e prenotazioni | Dott.ssa Naomi Acciaro, Roma",
+  "ogTitle": "Contatti | Dott.ssa Naomi Acciaro, biologa nutrizionista",
+  "description": "Prenota la prima visita con la Dott.ssa Naomi Acciaro, biologa nutrizionista a Roma e online: scegli giorno e orario su MioDottore.",
+  "preload": [],
+  "faq": [
+    { "q": "Come prenoto la prima visita?", "a": "Dal profilo di Naomi Acciaro su MioDottore: scegli se in studio a Roma o online, poi giorno e orario tra quelli disponibili." },
+    { "q": "Cosa devo portare alla prima visita?", "a": "Se li hai, esami recenti e l'elenco di eventuali farmaci o integratori. Se ti alleni, il tuo programma. Se non hai nulla di tutto questo, ne parliamo in visita." },
+    { "q": "Posso farti una domanda prima di prenotare?", "a": "Per ora la prenotazione e i contatti passano da MioDottore, dove disponibilità e orari sono sempre aggiornati." }
+  ]
+}
+-->
+<section class="phero" aria-labelledby="page-title">
+  <div class="hero__light" aria-hidden="true"></div>
+  <div class="wrap">
+    {{crumbs}}
+    <div class="phero__grid phero__grid--wide">
+      <div class="phero__text">
+        <h1 class="hero__title hero__title--page" id="page-title"><span class="hero__kicker">Contatti e prenotazioni</span><span class="hero__main">Il primo passo è scegliere un orario.</span></h1>
+        <p class="hero__lead">La prenotazione si fa online su MioDottore, dove trovi i giorni e gli orari disponibili, a Roma o online.</p>
+      </div>
+      <div class="bookcard">
+        <div class="bookcard__light" aria-hidden="true"></div>
+        <p class="bookcard__k">Prima visita</p>
+        <p class="bookcard__t">Scegli giorno e orario.</p>
+        <p class="bookcard__where">{{ico:pin}}Roma | Online</p>
+        {{cta:Prenota su MioDottore|Si apre il profilo di prenotazione|light}}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="prima" aria-labelledby="prima-title">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2 class="h2" id="prima-title">Prima di venire, porta con te:</h2>
+      <p class="sec__lead">Niente di obbligatorio. Più materiale hai, più il piano nasce preciso fin dal primo incontro.</p>
+    </div>
+    <ul class="bring">
+      <li class="bring__item">{{ico:doc|ico--lg}}<h3>Esami recenti</h3><p>Se li hai: analisi del sangue, referti, indicazioni del medico.</p></li>
+      <li class="bring__item">{{ico:plate|ico--lg}}<h3>La tua giornata tipo</h3><p>Orari dei pasti, cosa mangi di solito, cosa non ti piace o non puoi mangiare.</p></li>
+      <li class="bring__item">{{ico:dumbbell|ico--lg}}<h3>Il tuo allenamento</h3><p>Se ti alleni, il programma: giorni, durata, eventuali gare in calendario.</p></li>
+      <li class="bring__item">{{ico:target|ico--lg}}<h3>Il tuo obiettivo</h3><p>Anche in una riga: cosa vorresti ottenere e perché adesso.</p></li>
+    </ul>
+    {{cta:Prenota la prima visita|Ci pensiamo insieme anche se non hai nulla di tutto questo}}
+  </div>
+</section>
+
+<section class="sec sec--paper" id="dati" aria-labelledby="dati-title">
+  <div class="wrap">
+    <div class="split split--even">
+      <div>
+        <h2 class="h2" id="dati-title">I dati utili, in breve.</h2>
+        <dl class="facts facts--one">
+          <div><dt>Professionista</dt><dd>Dott.ssa Naomi Acciaro, biologa nutrizionista</dd></div>
+          <div><dt>Dove</dt><dd>Roma | Online</dd></div>
+          <div><dt>Come si prenota</dt><dd>Su MioDottore, scegliendo giorno e orario</dd></div>
+          <div><dt>Lingua</dt><dd>Italiano</dd></div>
+        </dl>
+        <!-- DA COMPLETARE: telefono, email, profilo Instagram, indirizzo dello studio, orari, ONB, partita IVA. Inserirli qui e nel footer (src/layout.html) e nel JSON-LD (scripts/build.mjs: telephone, email, sameAs, address). -->
+      </div>
+      <div class="reviews reviews--stack">
+        <a class="reviews__score" href="{{book}}" target="_blank" rel="noopener" aria-label="Valutazione 5 su 5, 160 recensioni su MioDottore">
+          <span class="reviews__num">5,0</span>{{stars}}<span class="reviews__count">160 recensioni su MioDottore</span>
+        </a>
+        <div class="reviews__text">
+          <h3 class="h3">Leggi cosa dicono i pazienti.</h3>
+          <p>Le recensioni complete sono sul profilo MioDottore.</p>
+          <a class="textlink" href="{{book}}" target="_blank" rel="noopener">Vai alle recensioni</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="domande" aria-labelledby="domande-title">
+  <div class="wrap wrap--narrow">
+    <h2 class="h2" id="domande-title">Prima di prenotare.</h2>
+    {{faq}}
+  </div>
+</section>
+
+{{final:Un orario, e il tuo piano parte.|Prenota la prima visita: scegli giorno e orario su MioDottore, a Roma o online.|Roma | Online · si prenota in pochi clic}}

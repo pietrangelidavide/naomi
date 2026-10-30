@@ -1,0 +1,46 @@
+{
+  "name": "Dott.ssa Naomi Acciaro",
+  "person": "Naomi Acciaro",
+  "role": "Biologa nutrizionista",
+  "tagline": "Con scienza e coscienza.",
+  "locale": "it_IT",
+  "themeColor": "#e9e5de",
+  "booking": "https://www.miodottore.it/profilo/naomi-acciaro",
+  "ogImage": "/img/og.jpg",
+  "nav": [
+    { "key": "chi-siamo", "label": "Chi siamo", "href": "/chi-siamo" },
+    { "key": "servizi", "label": "Servizi", "href": "/servizi" },
+    { "key": "dove", "label": "Dove", "href": "/dove" },
+    { "key": "contatti", "label": "Contatti", "href": "/contatti" }
+  ],
+  "videos": {
+    "a": {
+      "file": "/video/con-scienza-e-coscienza.mp4",
+      "poster": "/img/video/con-scienza-e-coscienza.webp",
+      "title": "Con scienza e coscienza",
+      "text": "Misuro, ascolto, costruisco: il metodo in 10 secondi.",
+      "description": "Breve video che presenta il metodo della Dott.ssa Naomi Acciaro, biologa nutrizionista a Roma e online: misure, ascolto e piano alimentare su misura.",
+      "duration": "PT10S",
+      "w": 720, "h": 900
+    },
+    "b": {
+      "file": "/video/la-prima-visita.mp4",
+      "poster": "/img/video/la-prima-visita.webp",
+      "title": "La prima visita in 4 passi",
+      "text": "Prenoti, ci conosciamo, ricevi il piano, ci rivediamo.",
+      "description": "Breve video che mostra come si svolge una visita nutrizionale con la Dott.ssa Naomi Acciaro: prenotazione, colloquio, piano alimentare e controlli.",
+      "duration": "PT12S",
+      "w": 720, "h": 900
+    },
+    "c": {
+      "file": "/video/a-tavola.mp4",
+      "poster": "/img/video/a-tavola.webp",
+      "title": "A tavola: piatti d'esempio",
+      "text": "Colazioni, pranzi e spuntini semplici, da fare a casa.",
+      "description": "Breve video con esempi reali di piatti semplici da preparare a casa, dalla colazione al pranzo. Sono esempi, non un piano alimentare.",
+      "duration": "PT10S",
+      "w": 720, "h": 900
+    }
+  },
+  "uploadDate": "2026-10-30"
+}

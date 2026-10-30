@@ -1,0 +1,112 @@
+<!--
+{
+  "file": "dove", "path": "/dove", "nav": "dove", "crumbs": "Dove",
+  "title": "Biologa nutrizionista a Roma e online: dove ricevo",
+  "ogTitle": "Dove | Dott.ssa Naomi Acciaro, biologa nutrizionista a Roma e online",
+  "description": "Visite nutrizionali con la Dott.ssa Naomi Acciaro in studio a Roma oppure online, da dove sei. Scopri come funziona e prenota su MioDottore.",
+  "preload": [],
+  "faq": [
+    { "q": "Dove si trova lo studio?", "a": "Lo studio è a Roma. L'indirizzo preciso lo vedi sul profilo di prenotazione su MioDottore, al momento di scegliere giorno e orario." },
+    { "q": "Una visita online vale quanto una in studio?", "a": "Sì per colloquio, piano alimentare e controlli: il metodo è lo stesso. Cambia solo la valutazione antropometrica ISAK, che richiede le misure in presenza e si fa in studio." },
+    { "q": "Cosa mi serve per una visita online?", "a": "Una connessione stabile, un posto tranquillo e, se li hai, esami recenti, peso e altezza. Un metro da sarta aiuta a prendere alcune circonferenze." },
+    { "q": "Posso iniziare online e poi passare in studio?", "a": "Sì. Il percorso è lo stesso: puoi alternare visite online e in studio, a seconda di cosa ti serve in quel momento." }
+  ]
+}
+-->
+<section class="phero" aria-labelledby="page-title">
+  <div class="hero__light" aria-hidden="true"></div>
+  <div class="wrap">
+    {{crumbs}}
+    <div class="phero__grid phero__grid--wide">
+      <div class="phero__text">
+        <h1 class="hero__title hero__title--page" id="page-title"><span class="hero__kicker">Dove ricevo</span><span class="hero__main">A Roma, oppure da dove sei tu.</span></h1>
+        <p class="hero__lead">Scegli se venire in studio o collegarti online. Il metodo è lo stesso: cambia solo dove ci incontriamo.</p>
+        <div class="hero__cta">
+          {{cta:Prenota la prima visita|Scegli studio o online su MioDottore}}
+        </div>
+      </div>
+      <div class="place-hero" aria-hidden="true">
+        <div class="place-hero__pane"><svg class="ico ico--xl"><use href="/img/icons.svg#pin"/></svg><b>Roma</b><span>in studio</span></div>
+        <div class="place-hero__pane place-hero__pane--b"><svg class="ico ico--xl"><use href="/img/icons.svg#video"/></svg><b>Online</b><span>da casa tua</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="modi" aria-labelledby="modi-title">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2 class="h2" id="modi-title">Due modi per incontrarci.</h2>
+      <p class="sec__lead">Scegli quello che si incastra meglio con la tua settimana.</p>
+    </div>
+    <div class="places">
+      <article class="place" id="studio">
+        {{ico:pin|ico--xl}}
+        <h3 class="h3">In studio, a Roma</h3>
+        <p>Ci vediamo di persona. È la scelta giusta se vuoi la valutazione ISAK completa o se preferisci il confronto faccia a faccia.</p>
+        <ul class="checks">
+          <li>{{ico:check}}Misure complete: pliche, circonferenze, diametri</li>
+          <li>{{ico:check}}Colloquio e piano alimentare di persona</li>
+          <li>{{ico:check}}Controlli con le stesse misure, per confrontarle nel tempo</li>
+        </ul>
+        <!-- DA COMPLETARE: indirizzo dello studio (via, CAP, quartiere, come arrivare), orari. Inserirli qui e nel JSON-LD (src/build.mjs, address). -->
+        {{cta:Prenota in studio|Roma · vedi l'indirizzo in prenotazione}}
+      </article>
+      <article class="place place--online" id="online">
+        {{ico:video|ico--xl}}
+        <h3 class="h3">Online, da dove sei</h3>
+        <p>Ti colleghi da casa o dall'ufficio. È la scelta giusta se vivi fuori Roma, viaggi o hai poco tempo.</p>
+        <ul class="checks">
+          <li>{{ico:check}}Niente spostamenti, niente traffico</li>
+          <li>{{ico:check}}Colloquio, piano alimentare e controlli, come in studio</li>
+          <li>{{ico:check}}Funziona da qualsiasi città, in Italia e all'estero</li>
+        </ul>
+        {{cta:Prenota online|Ti colleghi all'orario scelto}}
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--paper" id="confronto" aria-labelledby="confronto-title">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2 class="h2" id="confronto-title">Cosa cambia, in breve.</h2>
+      <p class="sec__lead">Il piano alimentare e i controlli sono uguali. Cambia una cosa sola: le misure ISAK si prendono in presenza.</p>
+    </div>
+    <div class="tablewrap" tabindex="0" role="region" aria-label="Confronto tra studio e online">
+      <table class="compare compare--2">
+        <thead><tr><th scope="col"><span class="sr">Voce</span></th><th scope="col">In studio a Roma</th><th scope="col">Online</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Colloquio e piano alimentare</th><td><span class="yes">{{ico:check}}Sì</span></td><td><span class="yes">{{ico:check}}Sì</span></td></tr>
+          <tr><th scope="row">Controlli periodici</th><td><span class="yes">{{ico:check}}Sì</span></td><td><span class="yes">{{ico:check}}Sì</span></td></tr>
+          <tr><th scope="row">Valutazione ISAK completa</th><td><span class="yes">{{ico:check}}Sì</span></td><td><span class="no">Solo in studio</span></td></tr>
+          <tr><th scope="row">Senza spostamenti</th><td><span class="no">No</span></td><td><span class="yes">{{ico:check}}Sì</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="online-passi" aria-labelledby="online-passi-title">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2 class="h2" id="online-passi-title">La visita online, in tre passi.</h2>
+      <p class="sec__lead">Se non l'hai mai fatta, è più semplice di quello che pensi.</p>
+    </div>
+    <ol class="method">
+      <li class="mstep"><span class="mstep__n" aria-hidden="true">1</span>{{ico:calendar|ico--lg}}<h3>Prenoti</h3><p>Scegli su MioDottore la visita online e l'orario che ti va bene.</p></li>
+      <li class="mstep"><span class="mstep__n" aria-hidden="true">2</span>{{ico:doc|ico--lg}}<h3>Ti prepari</h3><p>Tieni a portata di mano esami recenti, peso e altezza e, se ce l'hai, un metro da sarta. Basta questo.</p></li>
+      <li class="mstep"><span class="mstep__n" aria-hidden="true">3</span>{{ico:video|ico--lg}}<h3>Ti colleghi</h3><p>Parliamo come in studio e ricevi il tuo piano alimentare scritto, con indicazioni chiare.</p></li>
+    </ol>
+    {{cta:Prenota la visita online|Da casa, dall'ufficio, da dove vuoi}}
+  </div>
+</section>
+
+<section class="sec sec--paper" id="domande" aria-labelledby="domande-title">
+  <div class="wrap wrap--narrow">
+    <h2 class="h2" id="domande-title">Domande su studio e online.</h2>
+    {{faq}}
+  </div>
+</section>
+
+{{final:Dove preferisci, ci vediamo.|Prenota la prima visita: scegli giorno e orario su MioDottore, in studio a Roma o online.|Roma | Online · si prenota in pochi clic}}
