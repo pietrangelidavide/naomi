@@ -65,7 +65,7 @@ const siteGraph = [
     worksFor: { '@id': '/#studio' }
   },
   {
-    '@type': 'ProfessionalService', '@id': '/#studio', name: 'Dott.ssa Naomi Acciaro, biologa nutrizionista',
+    '@type': 'ProfessionalService', '@id': '/#studio', name: 'Dott.ssa Naomi Acciaro, biologa nutrizionista', logo: site.logo,
     description: 'Visite nutrizionali, valutazione antropometrica ISAK e nutrizione sportiva a Roma e online.',
     image: site.ogImage, areaServed: { '@type': 'City', name: 'Roma' },
     address: { '@type': 'PostalAddress', addressLocality: 'Roma', addressCountry: 'IT' },

@@ -17,7 +17,9 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parent.parent
 PUB = ROOT / "public"
 W, H, FPS = 720, 900, 24
-TAB, TAB2, TAB3, CARD, WALL, PAPER, SALVIA, INK, INK2 = "#70513f", "#4e3c32", "#7e6252", "#f9f7f3", "#f2ece3", "#e4d9c7", "#a6b3a1", "#242321", "#413e3a"
+# palette «Lime energia»: TAB = verde del marchio, TAB2 = verde profondo, TAB3 = verde più chiaro, LIME = accento
+TAB, TAB2, TAB3, CARD, WALL, PAPER, SALVIA, INK, INK2 = "#2f4b3a", "#1d2b22", "#3f6049", "#fbfaf6", "#f5f3ec", "#e9eddd", "#8fa68e", "#1d2b22", "#2f4035"
+LIME, LIME_HI, LIME_LO, ONDARK2 = "#c6f135", "#d9f875", "#aedb18", "#cad7c6"
 
 # icone del sito (stessa griglia 24, tratto 1,5): le prendo dalla sprite e le incorporo
 SPRITE = (PUB / "img/icons.svg").read_text()
@@ -59,25 +61,31 @@ body{{font-family:'Nu',sans-serif;color:{INK};-webkit-font-smoothing:antialiased
 def A(name, dur, delay, extra="", ease="cubic-bezier(.2,.7,.2,1)"):  # stringa style per un'animazione
     return f"animation:{name} {dur}s {ease} {delay:.2f}s both;{extra}"
 
-def print_frame(x, y, w, h, img, t0, zoom_dur, pos="50% 30%", mat=14, slab_dx=38, slab_dy=38, slab=TAB):
-    """Foto in cornice con passepartout, lastra tabacco dietro e lieve zoom."""
+def print_frame(x, y, w, h, img, t0, zoom_dur, pos="50% 30%", mat=14, slab_dx=38, slab_dy=38, slab=f"linear-gradient(160deg,{LIME_HI},{LIME} 55%,{LIME_LO})"):
+    """Foto in cornice con passepartout, lastra lime dietro e lieve zoom."""
     return (f'<div class="abs" style="left:{x+slab_dx}px;top:{y+slab_dy}px;width:{w}px;height:{h}px;background:{slab};'
-            f'box-shadow:0 40px 60px -30px rgba(78,60,50,.55);{A("slab",.9,t0)}"></div>'
-            f'<div class="abs" style="left:{x}px;top:{y}px;width:{w}px;height:{h}px;padding:{mat}px;background:#f9f7f3;'
-            f'box-shadow:0 0 0 1px rgba(36,35,33,.14),0 30px 50px -22px rgba(36,35,33,.45);{A("up",.9,t0)}">'
+            f'box-shadow:0 40px 60px -30px rgba(45,70,8,.5);{A("slab",.9,t0)}"></div>'
+            f'<div class="abs" style="left:{x}px;top:{y}px;width:{w}px;height:{h}px;padding:{mat}px;background:{CARD};'
+            f'box-shadow:0 0 0 1px rgba(29,43,34,.14),0 30px 50px -22px rgba(29,43,34,.45);{A("up",.9,t0)}">'
             f'<div style="width:100%;height:100%;overflow:hidden"><div style="width:100%;height:100%;background:url({fu(img)}) {pos}/cover;'
             f'{A("zoom",zoom_dur,t0,ease="linear")};transform-origin:60% 40%"></div></div></div>')
 
 def tile(x, y, s, name, t0, dark=False):
-    c = SALVIA if dark else TAB
-    bg = "rgba(249,247,243,.1)" if dark else "linear-gradient(145deg,#fbf9f5,#e4d9c7)"
-    sh = "inset 0 0 0 1.5px rgba(249,247,243,.25)" if dark else "0 0 0 1px rgba(36,35,33,.14),6px 10px 18px -8px rgba(36,35,33,.4)"
+    c = LIME if dark else TAB
+    bg = "rgba(245,243,236,.1)" if dark else "linear-gradient(145deg,#fbfaf6,#e1e9cf)"
+    sh = "inset 0 0 0 1.5px rgba(245,243,236,.25)" if dark else "0 0 0 1px rgba(29,43,34,.14),6px 10px 18px -8px rgba(29,43,34,.4)"
     return (f'<div class="abs" style="left:{x}px;top:{y}px;width:{s}px;height:{s}px;padding:{s*.22:.0f}px;background:{bg};box-shadow:{sh};{A("up",.7,t0)}">'
             f'{icon(name, s*.56, c, 1.5)}</div>')
 
+def brandmark(t0, color=INK, left=48, top=40, shadow=False):
+    """Marchio: la foto tonda di Naomi (il logo) e il nome."""
+    sh = "text-shadow:0 2px 12px rgba(0,0,0,.45);" if shadow else ""
+    return (f'<div class="abs" style="left:{left}px;top:{top}px;display:flex;align-items:center;gap:14px;{A("fade",.8,t0)}">'
+            f'<img src="{fu("img/logo-naomi.png")}" width="52" height="52" style="display:block;filter:drop-shadow(0 4px 8px rgba(0,0,0,.28))">'
+            f'<span class="serif" style="font-size:32px;color:{color};{sh}">Naomi Acciaro</span></div>')
+
 def brandline(t0, text=INK, left=48, top=44):
-    return (f'<div class="abs" style="left:{left}px;top:{top}px;{A("fade",.8,t0)}">'
-            f'<span class="serif" style="font-size:32px;color:{text}">Naomi Acciaro</span></div>')
+    return brandmark(t0, text, left, top - 4)
 
 # ------------------------------------------------------------------ A: Con scienza e coscienza (10 s)
 def film_a():
@@ -90,13 +98,13 @@ def film_a():
     f.scene(0, 3.6, WALL, s1)
     def s2(t):
         rows = [("ruler", "Misuro.", "peso, pliche, circonferenze"), ("chat", "Ascolto.", "abitudini, orari, esami"), ("plan", "Costruisco.", "un piano scritto per te")]
-        out = f'<div class="abs" style="left:48px;top:44px;{A("fade",.6,t)}"><span class="serif" style="font-size:32px;color:{CARD}">Naomi Acciaro</span></div>'
-        out += f'<div class="abs" style="left:48px;top:200px;width:3px;height:560px;background:{SALVIA};transform-origin:top;{A("growy",2.6,t+.2,ease="ease-in-out")}"></div>'
+        out = brandmark(t, CARD, top=40)
+        out += f'<div class="abs" style="left:48px;top:200px;width:3px;height:560px;background:{LIME};transform-origin:top;{A("growy",2.6,t+.2,ease="ease-in-out")}"></div>'
         for i, (ic, w, sub) in enumerate(rows):
             y = 190 + i * 210; d = t + .5 + i * .85
             out += tile(96, y + 20, 108, ic, d, dark=True)
             out += (f'<div class="abs" style="left:236px;top:{y}px;{A("left",.8,d+.1)}"><div class="serif" style="font-size:66px;line-height:1.05;color:{CARD};letter-spacing:-.015em">{w}</div>'
-                    f'<div style="margin-top:8px;font-size:30px;color:#e4d9c7">{sub}</div></div>')
+                    f'<div style="margin-top:8px;font-size:30px;color:{ONDARK2}">{sub}</div></div>')
         return out
     f.scene(3.4, 7.1, TAB, s2)
     def s3(t):
@@ -125,14 +133,14 @@ def film_b():
                 if k < i: fill = f'<div style="width:100%;height:100%;background:{TAB}"></div>'
                 elif k == i: fill = f'<div style="width:100%;height:100%;background:{TAB};transform-origin:left;{A("grow",3.0,t,ease="linear")}"></div>'
                 else: fill = ""
-                out += f'<div class="abs" style="left:{48+k*158}px;top:130px;width:146px;height:6px;background:rgba(36,35,33,.16)">{fill}</div>'
+                out += f'<div class="abs" style="left:{48+k*158}px;top:130px;width:146px;height:6px;background:rgba(29,43,34,.16)">{fill}</div>'
             out += f'<div class="abs serif" style="right:38px;top:150px;font-size:280px;line-height:1;color:transparent;-webkit-text-stroke:2px {SALVIA};{A("fade",.9,t+.1)}">{i+1}</div>'
             out += tile(56, 330, 150, ic, t + .3)
             out += f'<div class="abs serif" style="left:56px;top:524px;font-size:68px;line-height:1.02;color:{INK};letter-spacing:-.015em;{A("up",.8,t+.5)}">{title}</div>'
             out += f'<div class="abs" style="left:56px;top:640px;width:600px;font-size:36px;line-height:1.35;color:{INK2};{A("up",.8,t+.8)}">{text}</div>'
             if i == 3:
-                out += (f'<div class="abs" style="left:56px;top:800px;padding:26px 40px;background:linear-gradient(180deg,{TAB3},{TAB});color:{CARD};font-weight:700;font-size:30px;'
-                        f'box-shadow:0 18px 30px -14px rgba(78,60,50,.6);{A("up",.7,t+1.5)}">Prenota su MioDottore</div>')
+                out += (f'<div class="abs" style="left:56px;top:800px;padding:26px 40px;background:linear-gradient(180deg,{LIME_HI},{LIME});color:{INK};font-weight:700;font-size:30px;'
+                        f'box-shadow:0 18px 30px -14px rgba(45,70,8,.6);{A("up",.7,t+1.5)}">Prenota su MioDottore</div>')
             return out
         f.scene(i * 3.0, (i + 1) * 3.0, WALL if i % 2 == 0 else PAPER, body, fade=0.3)
     return f
@@ -141,10 +149,10 @@ def film_b():
 def film_c():
     f = Film(10.0)
     def intro(t):
-        return (f'<div class="abs" style="left:0;top:0;width:{W}px;height:{H}px;background:radial-gradient(120% 90% at 80% 0%,{TAB3},{TAB2})"></div>'
-                f'<div class="abs" style="left:48px;top:44px;{A("fade",.6,t)}"><span class="serif" style="font-size:32px;color:{CARD}">Naomi Acciaro</span></div>'
+        return (f'<div class="abs" style="left:0;top:0;width:{W}px;height:{H}px;background:radial-gradient(120% 90% at 80% 0%,{TAB3},{TAB2})"></div>' +
+                brandmark(t, CARD, top=40) +
                 f'<div class="abs serif" style="left:56px;top:350px;font-size:126px;line-height:.95;color:{CARD};letter-spacing:-.025em;{A("up",.9,t+.2)}">A tavola</div>'
-                f'<div class="abs serif" style="left:60px;top:500px;font-size:50px;color:{SALVIA};{A("up",.9,t+.7)}">piatti d\'esempio</div>')
+                f'<div class="abs serif" style="left:60px;top:500px;font-size:50px;color:{LIME};{A("up",.9,t+.7)}">piatti d\'esempio</div>')
     f.scene(0, 1.5, TAB2, intro, fade=0.3)
     dishes = [("colazione", "Toast al prosciutto e caffellatte", "50% 45%"), ("spaghetti", "Spaghetti con gamberi e pomodoro", "50% 40%"),
               ("salmone", "Toast con trota salmonata e avocado", "50% 50%"), ("mezze", "Mezze maniche con crema di zucca", "50% 40%"),
@@ -153,16 +161,16 @@ def film_c():
         s = 1.3 + i * 1.25
         def body(t, fn=fn, cap=cap, pos=pos):
             return (f'<div class="abs" style="inset:0;overflow:hidden"><div style="width:100%;height:100%;background:url({fu(f"img/piatti/{fn}.webp")}) {pos}/cover;{A("zoom",1.8,t,ease="linear")}"></div></div>'
-                    f'<div class="abs" style="left:0;right:0;bottom:0;height:300px;background:linear-gradient(to top,rgba(78,60,50,.92),rgba(78,60,50,0))"></div>'
-                    f'<div class="abs" style="left:48px;top:44px"><span class="serif" style="font-size:32px;color:{CARD};text-shadow:0 2px 12px rgba(0,0,0,.45)">Naomi Acciaro</span></div>'
+                    f'<div class="abs" style="left:0;right:0;bottom:0;height:300px;background:linear-gradient(to top,rgba(20,38,27,.92),rgba(20,38,27,0))"></div>' +
+                    brandmark(t, CARD, top=40, shadow=True) +
                     f'<div class="abs serif" style="left:48px;right:48px;bottom:60px;font-size:54px;line-height:1.06;color:{CARD};{A("up",.6,t+.15)}">{cap}</div>'
-                    f'<div class="abs" style="left:48px;bottom:36px;width:96px;height:3px;background:{SALVIA};transform-origin:left;{A("grow",.6,t+.3)}"></div>')
+                    f'<div class="abs" style="left:48px;bottom:36px;width:96px;height:4px;background:{LIME};transform-origin:left;{A("grow",.6,t+.3)}"></div>')
         f.scene(s, s + 1.25, TAB2, body, fade=0.3)
     def outro(t):
         return (f'<div class="abs" style="inset:0;background:radial-gradient(120% 90% at 20% 100%,{TAB3},{TAB2})"></div>'
                 f'<div class="abs serif" style="left:56px;top:230px;width:610px;font-size:72px;line-height:1.06;color:{CARD};letter-spacing:-.015em;{A("up",.8,t+.1)}">Esempi, non un piano alimentare.</div>'
-                f'<div class="abs serif" style="left:58px;top:560px;width:610px;font-size:44px;line-height:1.15;color:{SALVIA};{A("up",.8,t+.6)}">Il tuo lo costruiamo su di te.</div>'
-                f'<div class="abs" style="left:56px;top:790px;padding:24px 38px;background:{CARD};color:{TAB2};font-weight:700;font-size:30px;box-shadow:0 18px 30px -14px rgba(0,0,0,.5);{A("up",.7,t+1.0)}">Prenota la prima visita</div>')
+                f'<div class="abs serif" style="left:58px;top:560px;width:610px;font-size:44px;line-height:1.15;color:{LIME};{A("up",.8,t+.6)}">Il tuo lo costruiamo su di te.</div>'
+                f'<div class="abs" style="left:56px;top:790px;padding:24px 38px;background:linear-gradient(180deg,{LIME_HI},{LIME});color:{INK};font-weight:700;font-size:30px;box-shadow:0 18px 30px -14px rgba(0,0,0,.5);{A("up",.7,t+1.0)}">Prenota la prima visita</div>')
     f.scene(8.7, 10.0, TAB2, outro, fade=0.35)
     return f
 

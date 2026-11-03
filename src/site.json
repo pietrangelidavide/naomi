@@ -4,9 +4,10 @@
   "role": "Biologa nutrizionista",
   "tagline": "Con scienza e coscienza.",
   "locale": "it_IT",
-  "themeColor": "#f2ece3",
+  "themeColor": "#f5f3ec",
   "booking": "https://www.miodottore.it/profilo/naomi-acciaro",
   "ogImage": "/img/og.jpg",
+  "logo": "/img/logo-naomi.png",
   "nav": [
     { "key": "chi-siamo", "label": "Chi siamo", "href": "/chi-siamo" },
     { "key": "servizi", "label": "Servizi", "href": "/servizi" },

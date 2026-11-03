@@ -4,15 +4,16 @@ Sito di 5 pagine per la Dott.ssa Naomi Acciaro, biologa nutrizionista (Roma | On
 
 ## Identità
 
-Palette scelta dalla cliente: **Sabbia, Tortora, Salvia, Tabacco, Nero**, con poche tinte derivate per sfondi e superfici. **Nessun logo**: il nome in testo («Dott.ssa Naomi Acciaro», Nunito ExtraBold) è il marchio; favicon e icone dell'app sono la sola iniziale *N*. Slogan: *Con scienza e coscienza.*
+Palette **«Lime energia»**, scelta dalla cliente: **Lime** `#c6f135`, **Base** `#f5f3ec`, **Verde profondo** `#1d2b22`, **Salvia** `#8fa68e`, con poche tinte derivate per sfondi e superfici. **Il logo è il ritratto tondo di Naomi** (mezzaluna lime, fondo salvia sfumato): in testata accanto al nome, nel piede, nelle icone (favicon dal ritaglio sul viso, icona dell'app a tutto campo). Slogan: *Con scienza e coscienza.*
 
-- Scheda completa (colori con contrasti, carattere, icone, grafica, voce dei testi): `brand/linee-guida.html` (si apre nel browser; rigenerabile con `python3 scripts/build-brand-guide.py`).
-- Palette: Sabbia `#e4d9c7`, Tortora `#a39a89`, Salvia `#a6b3a1`, Tabacco `#70513f`, Nero `#242321`. Derivate: fondo `#f2ece3`, card `#f9f7f3`, salvia chiara `#d7ddd5`, tabacco scuro `#4e3c32`, testo secondario `#5a564f`. Contrasti calcolati: testo ≥ 5,2:1 su tutti gli sfondi; il Tortora si usa solo per filetti e grafica, mai per testo.
+- Scheda completa (colori con contrasti, logo, carattere, icone, grafica, voce dei testi): `brand/linee-guida.html` (si apre nel browser; rigenerabile con `python3 scripts/build-brand-guide.py`).
+- Derivate: verde del marchio `#2f4b3a` (icone, titoli di accento, riquadri), verde chiaro `#3f6049`, card `#fbfaf6`, fasce `#e9eddd` e `#dce6d6`, salvia chiara `#b9c8b5`, salvia scura `#5b7561`, testo secondario `#4b5c50`. Contrasti calcolati: testo ≥ 5,5:1 su tutti gli sfondi chiari. **Il lime non si usa mai come testo su fondo chiaro** (1,2:1): sui chiari è fondo dei bottoni (testo verde profondo, 11,3:1), evidenziatore delle etichette, filetto delle schede; sui riquadri scuri è anche colore di icone, stelle e link (≥ 5,4:1). Salvia e salvia chiara solo per tratti e grafica.
+- Logo: `public/img/logo-naomi.webp` (320 px, tondo, trasparente) e `logo-naomi.png` (512 px, usato nei dati strutturati); `favicon.ico`, `favicon-32.png`, `favicon-48.png`, `apple-touch-icon.png` (180), `icon-512.png`. Il tondo è già ritagliato nell'immagine: nessun `border-radius` nel CSS.
 - Carattere: **Nunito** (tondo, leggibile), un solo file variabile 400–900, OFL, self-hosted in `public/fonts/` (WOFF subsettato, 44 KB).
 - Icone: set proprio in `public/img/icons.svg` (griglia 24, tratto 1,5, angoli vivi).
-- Grafica: spigoli vivi (nessun `border-radius`, anche con il carattere tondo: se si preferiscono angoli arrotondati basta introdurre un raggio nel `*` di `style.css`), luce a strisce da tapparella, foto come stampe con passe-partout e lastra tabacco, ombre a più strati. Entrata della luce e leggero scorrimento solo con `prefers-reduced-motion: no-preference`.
+- Grafica: spigoli vivi (nessun `border-radius`, anche con il carattere tondo: se si preferiscono angoli arrotondati basta introdurre un raggio nel `*` di `style.css`), luce a strisce da tapparella, foto come stampe con passe-partout e lastra lime, ombre a più strati verdi. Entrata della luce e leggero scorrimento solo con `prefers-reduced-motion: no-preference`.
 - Liste da sfogliare: sotto i 1020 px le liste di schede diventano carosello orizzontale (solo CSS, `scroll-snap`, schede successiva accennata, barra di avanzamento e «Scorri →»); da desktop restano in griglia. Macro `{{swipe}}` dopo ogni lista.
-- Grafiche esplicative: cinque SVG in linea in `src/gfx/` (`venn`, `squadra`, `piatto`, `misure`, `giornata`), richiamati con `{{gfx:nome|didascalia}}`. Sono decorativi (`aria-hidden`), la didascalia porta il significato; sono esempi illustrativi, non indicazioni cliniche.
+- Grafiche esplicative: cinque SVG in linea in `src/gfx/` (`venn`, `squadra`, `piatto`, `misure`, `giornata`), richiamati con `{{gfx:nome|didascalia}}`. Sono decorativi (`aria-hidden`), la didascalia porta il significato; sono esempi illustrativi, non indicazioni cliniche. Le classi `g-tab`, `g-sab`, `g-tor`, `g-sal` hanno nomi storici: oggi puntano a verde del marchio, fascia chiara, salvia chiara e salvia.
 
 ## Come è fatto
 
@@ -24,7 +25,7 @@ scripts/build.mjs    genera public/*.html (+ dati strutturati, sitemap, robots)
 public/              il sito pubblicato (file generati e committati: su Cloudflare non serve alcuna build)
 ```
 
-Macro nelle pagine: `{{ico:nome}}` icona, `{{cta:Etichetta|Microcopy}}` bottone + frase sotto, `{{link:Etichetta|/pagina|Microcopy}}`, `{{video:a|b|c}}`, `{{faq}}`, `{{crumbs}}`, `{{final:Titolo|Testo|Microcopy}}` (chiusura tabacco con voto), `{{gfx:nome|didascalia}}` (grafica esplicativa), `{{swipe}}` (barra e indicazione «Scorri» sotto una lista a carosello), `{{book}}` (link di prenotazione).
+Macro nelle pagine: `{{ico:nome}}` icona, `{{cta:Etichetta|Microcopy}}` bottone + frase sotto, `{{link:Etichetta|/pagina|Microcopy}}`, `{{video:a|b|c}}`, `{{faq}}`, `{{crumbs}}`, `{{final:Titolo|Testo|Microcopy}}` (chiusura in verde profondo con voto), `{{gfx:nome|didascalia}}` (grafica esplicativa), `{{swipe}}` (barra e indicazione «Scorri» sotto una lista a carosello), `{{book}}` (link di prenotazione).
 
 Comandi (Node 20+):
 
