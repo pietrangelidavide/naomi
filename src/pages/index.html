@@ -4,7 +4,7 @@
   "title": "Biologa nutrizionista a Roma e online | Dott.ssa Naomi Acciaro",
   "ogTitle": "Dott.ssa Naomi Acciaro | Biologa nutrizionista a Roma e online",
   "description": "Piani alimentari su misura con la Dott.ssa Naomi Acciaro, biologa nutrizionista e antropometrista ISAK a Roma e online. Prenota la prima visita.",
-  "preload": ["/img/naomi-camicia.webp"]
+  "preload": ["/img/scrivania-1.webp"]
 }
 -->
 <section class="hero" id="top" aria-labelledby="hero-title">
@@ -19,12 +19,15 @@
         <a class="textlink" href="/servizi">Scopri i servizi</a>
       </div>
     </div>
-    <figure class="portrait">
-      <div class="portrait__mat">
-        <img src="/img/naomi-camicia.webp" width="1100" height="1338" alt="Naomi Acciaro, biologa nutrizionista, in camicia azzurra nel suo studio a Roma">
-      </div>
-      <figcaption class="portrait__chip"><b>Antropometrista</b><span>ISAK Level 1</span></figcaption>
-    </figure>
+    <div class="duo">
+      <figure class="duo__a">
+        <div class="portrait__mat"><img src="/img/scrivania-1.webp" width="900" height="1121" alt="Naomi Acciaro, biologa nutrizionista, al lavoro al computer nel suo studio"></div>
+      </figure>
+      <figure class="duo__b">
+        <div class="portrait__mat"><img src="/img/scrivania-2.webp" width="900" height="1126" alt="Naomi Acciaro legge con attenzione lo schermo del computer"></div>
+      </figure>
+      <div class="portrait__chip"><b>Antropometrista</b><span>ISAK Level 1</span></div>
+    </div>
   </div>
   <div class="wrap">
     <div class="strip" role="group" aria-label="Prenotazione">
@@ -133,6 +136,23 @@
       <li class="proof__item proof__item--rating">{{ico:star|ico--lg}}<h3>5,0 su MioDottore</h3><p>160 recensioni sul profilo pubblico. Leggile da sole, direttamente sulla piattaforma.</p><a class="textlink" href="{{book}}" target="_blank" rel="noopener">Leggi le recensioni su MioDottore</a></li>
     </ul>
     {{swipe}}
+  </div>
+</section>
+
+<section class="sec sec--paper" id="recensioni" aria-labelledby="recensioni-title">
+  <div class="wrap">
+    <div class="sec__head sec__head--rev">
+      <div>
+        <h2 class="h2" id="recensioni-title">Le parole di chi ha già cominciato.</h2>
+        <p class="sec__lead sec__lead--solo">Recensioni lasciate su MioDottore dopo la visita, e qualche messaggio di ringraziamento. Aprine una per leggerla più grande.</p>
+      </div>
+      <a class="reviews__score" href="{{book}}" target="_blank" rel="noopener" aria-label="Valutazione 5 su 5, 160 recensioni su MioDottore">
+        <span class="reviews__num">5,0</span>{{stars}}<span class="reviews__count">160 recensioni su MioDottore</span>
+      </a>
+    </div>
+    {{reviews}}
+    {{swipe}}
+    <div class="cta cta--link"><a class="btn btn--ghost" href="{{book}}" target="_blank" rel="noopener">Leggi tutte le recensioni su MioDottore</a><p class="cta__micro">Il profilo pubblico, con il testo di ogni recensione</p></div>
   </div>
 </section>
 

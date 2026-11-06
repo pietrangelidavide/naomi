@@ -21,11 +21,16 @@ Palette **«Lime energia»**, scelta dalla cliente: **Lime** `#c6f135`, **Base**
 src/site.json        dati comuni (nome, link prenotazione, menu, video)
 src/layout.html      intestazione, piede, meta tag (uguali per tutte le pagine)
 src/pages/*.html     una pagina ciascuna: blocco JSON iniziale (title, description, FAQ, servizi) + contenuto
+src/reviews.json     le schermate delle recensioni (file, misure, data, testo alternativo) mostrate in home dalla macro {{reviews}}
 scripts/build.mjs    genera public/*.html (+ dati strutturati, sitemap, robots)
+scripts/photos.py    ritaglia e ritocca le foto di novembre 2026 (recensioni, scrivania, trittico di Chi siamo)
+scripts/enhance.py   il ritocco (riduzione del rumore, livelli, nitidezza) e la rimozione delle scritte sulle foto
 public/              il sito pubblicato (file generati e committati: su Cloudflare non serve alcuna build)
 ```
 
-Macro nelle pagine: `{{ico:nome}}` icona, `{{cta:Etichetta|Microcopy}}` bottone + frase sotto, `{{link:Etichetta|/pagina|Microcopy}}`, `{{video:a|b|c}}`, `{{faq}}`, `{{crumbs}}`, `{{final:Titolo|Testo|Microcopy}}` (chiusura in verde profondo con voto), `{{gfx:nome|didascalia}}` (grafica esplicativa), `{{swipe}}` (barra e indicazione «Scorri» sotto una lista a carosello), `{{book}}` (link di prenotazione).
+Macro nelle pagine: `{{ico:nome}}` icona, `{{cta:Etichetta|Microcopy}}` bottone + frase sotto, `{{link:Etichetta|/pagina|Microcopy}}`, `{{video:a|b|c}}`, `{{faq}}`, `{{crumbs}}`, `{{final:Titolo|Testo|Microcopy}}` (chiusura in verde profondo con voto), `{{gfx:nome|didascalia}}` (grafica esplicativa), `{{swipe}}` (barra e indicazione «Scorri» sotto una lista a carosello), `{{reviews}}` (le schermate delle recensioni di `src/reviews.json`: da desktop righe di tessere affiancate, da telefono carosello; toccandone una si apre ingrandita, senza JavaScript, con frecce avanti e indietro), `{{book}}` (link di prenotazione).
+
+Le macro non si possono annidare (niente `{{ }}` dentro un'altra macro): per un bottone con il link di prenotazione dentro un `{{link:…}}` si scrive l'HTML a mano, come in fondo alla sezione recensioni della home.
 
 Comandi (Node 20+):
 
@@ -36,6 +41,7 @@ Comandi (Node 20+):
 | `npm run preview:build` | crea `.tmp/preview/sito.html`: anteprima a file unico con tutte le pagine |
 | `node scripts/build.mjs --site-url https://dominio.it` | **versione di go-live**: indicizzabile, `canonical`, `og:url`, URL assoluti nei dati strutturati, `sitemap.xml`, `robots.txt` |
 | `python3 scripts/build-video.py [a\|b\|c]` | rigenera i 3 video e le copertine (Playwright + ffmpeg) |
+| `python3 scripts/photos.py CARTELLA [nome ...]` | rifà dalle foto originali (la cartella con i file consegnati) i ritagli in `public/img`: recensioni `r1`–`r7`, `scrivania-1`, `scrivania-2`, `naomi-stacco`, `naomi-casa`, `naomi-tesi`; riquadri di ritaglio e di cancellazione delle scritte sono nelle tabelle in cima al file (serve `opencv-contrib-python`) |
 | `python3 scripts/build-og.py` | rigenera `public/img/og.jpg` (anteprima social 1200×630) |
 | `python3 scripts/build-brand-guide.py` | rigenera `brand/linee-guida.html` |
 
@@ -55,8 +61,8 @@ Tre clip brevi, senza audio, 720×900: *Con scienza e coscienza* (10 s), *La pri
 - [ ] **Dati obbligatori** per i siti dei professionisti sanitari, da inserire nel piede (`src/layout.html`, c'è un commento): numero e sezione di iscrizione all'albo dei biologi (ONB), partita IVA, indirizzo dello studio. L'indirizzo va anche in `scripts/build.mjs` (`address` di `ProfessionalService`) e nella pagina Dove.
 - [ ] **Far rileggere a Naomi tutti i testi**: sono bozze scritte sulla sua bio e sulle sue foto. In particolare: «Con scienza e coscienza» (Chi siamo, c'è un commento dove aggiungere 2-3 righe di storia personale vera), la sezione squadra (quali professionisti collaborano davvero: medico, allenatore, fisioterapista; con nomi e foto se vuole), formazione e titoli, le FAQ.
 - [ ] **Contatti diretti**: telefono, email, Instagram, orari (oggi la prenotazione e i contatti passano solo da MioDottore; i punti da completare sono segnalati nei commenti di `contatti.html`).
-- [ ] **Recensioni**: sul sito c'è solo il dato aggregato (5,0 · 160 su MioDottore, scritto a mano in 4 punti: `build.mjs` macro `final`, `index.html`, `chi-siamo.html`, `contatti.html`) con il link al profilo; aggiornarlo ogni tanto e farlo approvare a Naomi. **Nessuna testimonianza è stata inventata**: con il consenso scritto dei pazienti si possono aggiungere 2-3 citazioni vere con il componente `.quote` (`<blockquote class="quote"><p>…</p><cite>Nome, età/città</cite></blockquote>`). Regole sulla pubblicità sanitaria: niente promesse di risultato, niente prima/dopo.
-- [ ] **Foto**: sostituire con gli originali ad alta risoluzione le foto ricavate da Instagram (`naomi-camicia.webp`, `naomi-camicia-quadrata.webp`, `naomi-camice.webp`, `piatti/*.webp`, le foto dei piatti senza testo sovrapposto).
+- [ ] **Recensioni**: in home (`#recensioni`) ci sono 7 schermate di recensioni MioDottore e messaggi di ringraziamento, così come le ha consegnate Naomi (`src/reviews.json`, immagini in `public/img/recensioni/`); il dato aggregato (5,0 · 160 su MioDottore) è scritto a mano in 4 punti: `build.mjs` macro `final`, `index.html`, `chi-siamo.html`, `contatti.html`. Da verificare con Naomi prima del go-live: il **consenso dei pazienti** a pubblicare il testo (in 2 schermate si legge un nome o parte di un cognome: «Cecilia C.» in `r5`, un cognome in parte visibile in `r3`; nelle altre i nomi sono già sfocati), la **data di ogni recensione**, e che il messaggio WhatsApp in `r4` sia pubblicabile. Regole sulla pubblicità sanitaria (ONB): niente promesse di risultato, niente prima/dopo. Per togliere una recensione basta eliminarla da `src/reviews.json` e rilanciare la build.
+- [ ] **Foto**: sostituire con gli originali ad alta risoluzione le foto ricavate da Instagram (`naomi-camicia.webp`, `naomi-camicia-quadrata.webp`, `naomi-camice.webp`, `naomi-stacco.webp`, `naomi-casa.webp`, `naomi-tesi.webp`, `scrivania-1.webp`, `scrivania-2.webp`, `piatti/*.webp`, le foto dei piatti senza testo sovrapposto). Le foto del 6 novembre sono fotogrammi di storie e video: il ritocco ha tolto rumore e scritte, ma la risoluzione di partenza non si recupera.
 - [ ] Se si aggiungono moduli, statistiche o cookie: informativa privacy e cookie.
 
 ## Pubblicazione su Cloudflare

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "r1",
+    "src": "/img/recensioni/r1.webp",
+    "w": 1100,
+    "h": 1404,
+    "date": "28 ottobre 2026",
+    "alt": "Recensione di una paziente su MioDottore, 28 ottobre 2026, cinque stelle: «Naomi è la mia nutrizionista da qualche mese e ormai posso dire di trovarmi benissimo con lei.»"
+  },
+  {
+    "id": "r2",
+    "src": "/img/recensioni/r2.webp",
+    "w": 1020,
+    "h": 1280,
+    "date": "16 settembre 2026",
+    "alt": "Recensione di una paziente su MioDottore, 16 settembre 2026, cinque stelle: «È una professionista impeccabile!! La visita ha una durata importante perché è minuziosa nell'anamnesi ed accogliente nell'ascoltare.»"
+  },
+  {
+    "id": "r3",
+    "src": "/img/recensioni/r3.webp",
+    "w": 1100,
+    "h": 1851,
+    "date": "aprile 2026",
+    "alt": "Tre recensioni su MioDottore di aprile 2026, tutte con cinque stelle. Una dice: «Ho portato mia figlia di 15 anni! La dottoressa sin da subito ha messo a suo agio mia figlia.»"
+  },
+  {
+    "id": "r4",
+    "src": "/img/recensioni/r4.webp",
+    "w": 1090,
+    "h": 1870,
+    "date": "18 marzo 2026",
+    "alt": "Recensione su MioDottore del 18 marzo 2026, cinque stelle: «Seguivo sui social la dottoressa e sono rimasta subito colpita dal suo approccio.» Sotto, un messaggio di ringraziamento ricevuto su WhatsApp."
+  },
+  {
+    "id": "r5",
+    "src": "/img/recensioni/r5.webp",
+    "w": 1020,
+    "h": 1170,
+    "date": "25 febbraio 2026",
+    "alt": "Recensione di Cecilia C. su MioDottore, 25 febbraio 2026, consulenza online, cinque stelle: «La mia prima visita è stata un'esperienza estremamente positiva.»"
+  },
+  {
+    "id": "r6",
+    "src": "/img/recensioni/r6.webp",
+    "w": 1100,
+    "h": 1370,
+    "date": "6 maggio 2025",
+    "alt": "Recensione su MioDottore del 6 maggio 2025, cinque stelle: «Naomi, oltre ad essere una persona splendida sia dentro che fuori, è una professionista estremamente competente e appassionata del suo lavoro.»"
+  },
+  {
+    "id": "r7",
+    "src": "/img/recensioni/r7.webp",
+    "w": 1100,
+    "h": 1552,
+    "date": "19 marzo 2025",
+    "alt": "Recensione su MioDottore del 19 marzo 2025, consulenza online, cinque stelle: «Ho avuto il piacere di seguire un piano alimentare con la Dott.ssa Naomi e non posso che esprimere la mia gratitudine.»"
+  }
+]

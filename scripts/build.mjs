@@ -31,6 +31,19 @@ const final = (title, lead, micro) =>
   `<section class="sec final-sec" id="prenota" aria-labelledby="prenota-title"><div class="wrap"><div class="final"><div class="final__light" aria-hidden="true"></div><div class="final__text"><h2 class="final__title" id="prenota-title">${title}</h2><p class="final__lead">${lead}</p>${cta('Prenota la prima visita', micro, 'light')}</div><a class="final__rating" href="${site.booking}" target="_blank" rel="noopener" aria-label="Valutazione 5 su 5, 160 recensioni su MioDottore"><span class="final__score">5,0</span>${stars}<span class="final__count">160 recensioni su MioDottore</span></a></div></div></section>`;
 const gfx = (name, cap) => `<figure class="gfx gfx--${name}">${rd('src', 'gfx', name + '.svg').trim()}<figcaption>${cap}</figcaption></figure>`;
 const swipe = `<div class="swipe-ui" aria-hidden="true"><span class="swipe-bar"></span><span class="swipe-hint">Scorri ${ico('arrow')}</span></div>`;
+// recensioni: schermate dei pazienti (src/reviews.json, immagini in public/img/recensioni). Ogni riquadro apre la sua versione
+// grande con :target (nessun JavaScript): prev/next passano alla recensione accanto, «Chiudi» riporta sul riquadro.
+const reviewsData = JSON.parse(rd('src/reviews.json'));
+const reviews = () => {
+  const n = reviewsData.length;
+  const tiles = reviewsData.map((r) =>
+    `<li class="rv__item" id="t-${r.id}" style="--ar:${(r.w / r.h).toFixed(3)}"><a class="rv__open" href="#rv-${r.id}" aria-label="Apri la recensione: ${esc(r.date)}"><img src="${r.src}" width="${r.w}" height="${r.h}" alt="${esc(r.alt)}" loading="lazy" decoding="async"></a></li>`).join('');
+  const boxes = reviewsData.map((r, i) => {
+    const prev = reviewsData[(i + n - 1) % n].id, next = reviewsData[(i + 1) % n].id;
+    return `<div class="rvbox" id="rv-${r.id}" role="dialog" aria-modal="true" aria-label="Recensione: ${esc(r.date)} (${i + 1} di ${n})"><a class="rvbox__bg" href="#t-${r.id}" tabindex="-1" aria-hidden="true"></a><figure class="rvbox__fig"><img src="${r.src}" width="${r.w}" height="${r.h}" alt="${esc(r.alt)}" loading="lazy" decoding="async"></figure><a class="rvbox__x" href="#t-${r.id}">Chiudi</a><a class="rvbox__nav rvbox__nav--prev" href="#rv-${prev}" aria-label="Recensione precedente">${ico('arrow')}</a><a class="rvbox__nav rvbox__nav--next" href="#rv-${next}" aria-label="Recensione successiva">${ico('arrow')}</a></div>`;
+  }).join('');
+  return `<ul class="rv" aria-label="Recensioni dei pazienti">${tiles}</ul>${boxes}`;
+};
 const usedVideos = new Set();
 const video = (k) => {
   const v = site.videos[k]; if (!v) throw new Error('video sconosciuto: ' + k); usedVideos.add(k);
@@ -46,6 +59,7 @@ function expand(html, meta) {
     .replace(/\{\{video:([a-z])\}\}/g, (_m, k) => video(k))
     .replace(/\{\{gfx:([a-z-]+)\|([^}]*)\}\}/g, (_m, n, c) => gfx(n, c))
     .replace(/\{\{swipe\}\}/g, swipe)
+    .replace(/\{\{reviews\}\}/g, () => reviews())
     .replace(/\{\{stars\}\}/g, stars)
     .replace(/\{\{book\}\}/g, site.booking)
     .replace(/\{\{crumbs\}\}/g, () => crumbsHtml(meta))

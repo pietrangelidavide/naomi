@@ -432,7 +432,7 @@ section[id] { scroll-margin-top: 4.5rem; }
   @keyframes settle { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
   .hero__light { animation: sweep 2.6s cubic-bezier(.16, .7, .2, 1) both; }
   .hero__window { animation: cast 2.2s cubic-bezier(.16, .7, .2, 1) .1s both; }
-  .portrait { animation: settle 1.3s cubic-bezier(.2, .7, .2, 1) .15s both; }
+  .portrait, .duo { animation: settle 1.3s cubic-bezier(.2, .7, .2, 1) .15s both; }
   @supports (animation-timeline: scroll()) {
     @keyframes drift { to { translate: 7% 0; opacity: .25; } }
     .hero .hero__light { animation: sweep 2.6s cubic-bezier(.16, .7, .2, 1) both, drift linear both; animation-timeline: auto, scroll(root); animation-range: normal, 0 90vh; }
@@ -452,6 +452,7 @@ section[id] { scroll-margin-top: 4.5rem; }
   .hero__grid, .phero__grid, .phero__grid--wide, .split, .split--even, .svcx__grid { grid-template-columns: minmax(0, 1fr); }
   .hero__window { width: 92vw; right: -8%; top: 26%; height: 52%; }
   .portrait { justify-self: center; width: min(100%, 440px); margin-top: .5rem; }
+  .duo { justify-self: center; width: min(100%, 460px); margin-top: .5rem; }
   .portrait::before { inset: 7% -5% -5% 18%; }
   .portrait__chip { left: .9rem; }
   .strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -593,7 +594,7 @@ section[id] { scroll-margin-top: 4.5rem; }
 @supports (animation-timeline: scroll()) {
   section { timeline-scope: --sw; }
   @media (max-width: 1020px) {
-    .needs, .bring, .method, .svc3, .proof, .values, .team, .steps, .gallery, .videos--2, .places, .jump, .svcx__cards { scroll-timeline: --sw x; }
+    .needs, .bring, .method, .svc3, .proof, .values, .team, .steps, .gallery, .videos--2, .places, .jump, .svcx__cards, .rv { scroll-timeline: --sw x; }
     .swipe-bar { display: block; }
     .swipe-bar::after { content: ""; position: absolute; inset: 0; background: var(--brand); transform-origin: left; transform: scaleX(.22); animation: swipe-fill linear both; animation-timeline: --sw; }
     @keyframes swipe-fill { to { transform: scaleX(1); } }
@@ -603,4 +604,76 @@ section[id] { scroll-margin-top: 4.5rem; }
   .idcard { grid-template-columns: minmax(0, 1fr); }
   .idcard__photo { max-width: 14rem; }
   .svcx__card { padding: 1.3rem; }
+}
+
+
+/* ---------- apertura della home: le due foto alla scrivania, sovrapposte come stampe su una lastra lime ---------- */
+.duo { position: relative; isolation: isolate; width: min(100%, 540px); justify-self: end; aspect-ratio: 1 / 1.12; }
+.duo::before { content: ""; position: absolute; z-index: -2; top: 3%; right: -7%; width: 52%; height: 56%; background: linear-gradient(160deg, var(--lime-hi) 0%, var(--lime) 55%, var(--lime-lo) 100%); box-shadow: inset 0 1px 0 rgb(255 255 255 / 45%), 0 40px 60px -30px rgb(45 70 8 / 50%); }
+.duo figure { position: absolute; }
+.duo__a { left: 0; top: 0; width: 58%; z-index: 1; }
+.duo__b { right: 0; bottom: 0; width: 56%; z-index: 2; }
+.duo__b .portrait__mat { box-shadow: inset 0 0 0 1px rgb(255 255 255 / 80%), 0 0 0 1px var(--line), var(--sh-3), -14px 18px 34px -18px rgb(29 43 34 / 45%); }
+.duo .portrait__mat img { aspect-ratio: 4 / 5; object-position: 50% 30%; }
+.duo .portrait__chip { left: 0; bottom: 1%; z-index: 3; }
+
+/* ---------- recensioni (home): le schermate dei pazienti, in righe di pari altezza; ogni riquadro si apre grande con :target (nessun JavaScript) ---------- */
+.sec__head--rev { align-items: end; }
+.sec__head--rev .reviews__score { justify-self: end; }
+.rv { display: flex; flex-wrap: wrap; gap: clamp(.8rem, 1.6vw, 1.4rem); }
+.rv__item { flex: var(--ar) 1 calc(var(--ar) * 22rem); min-width: 0; scroll-margin-top: 6rem; }
+.rv__open { position: relative; display: block; padding: clamp(5px, .6vw, 8px); background: var(--card); box-shadow: 0 0 0 1px var(--line), var(--sh-2); cursor: zoom-in; transition: transform .3s ease, box-shadow .3s ease; }
+.rv__open:hover { transform: translateY(-4px); box-shadow: 0 0 0 1px var(--line), var(--sh-3); }
+.rv__open img { width: 100%; height: auto; }
+.rv__open::after { /* «+»: si apre più grande */
+  content: ""; position: absolute; right: clamp(5px, .6vw, 8px); bottom: clamp(5px, .6vw, 8px); width: 2.3rem; height: 2.3rem;
+  background: linear-gradient(var(--deep), var(--deep)) center / 1rem 2px no-repeat, linear-gradient(var(--deep), var(--deep)) center / 2px 1rem no-repeat, var(--lime);
+  box-shadow: 0 6px 14px -6px rgb(29 43 34 / 55%);
+}
+.rvbox { position: fixed; inset: 0; z-index: 80; display: none; overflow: auto; overscroll-behavior: contain; background: rgb(18 28 21 / 88%); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.rvbox:target { display: grid; place-items: start center; padding: 4.6rem 1rem 3rem; }
+html:has(.rvbox:target) { overflow: hidden; }
+.rvbox__bg { position: fixed; inset: 0; cursor: zoom-out; }
+.rvbox__fig { position: relative; width: min(100%, 720px); padding: 8px; background: var(--card); box-shadow: var(--sh-3); }
+.rvbox__fig img { width: 100%; height: auto; }
+.rvbox__x { position: fixed; top: max(1rem, env(safe-area-inset-top, 0px)); right: 1rem; z-index: 2; padding: .8rem 1.3rem; font-weight: 700; text-decoration: none; color: var(--deep); background: var(--lime); box-shadow: 0 10px 20px -10px rgb(0 0 0 / 55%); }
+.rvbox__nav { position: fixed; z-index: 2; top: 50%; translate: 0 -50%; display: grid; place-items: center; width: 3.2rem; height: 3.2rem; color: var(--deep); background: rgb(251 250 246 / 94%); box-shadow: 0 10px 20px -10px rgb(0 0 0 / 55%); }
+.rvbox__nav .ico { width: 1.5rem; height: 1.5rem; }
+.rvbox__nav--prev { left: max(1rem, calc(50% - 360px - 5rem)); }
+.rvbox__nav--next { right: max(1rem, calc(50% - 360px - 5rem)); }
+.rvbox__nav--prev .ico { transform: scaleX(-1); }
+.rvbox__x:focus-visible, .rvbox__nav:focus-visible { outline-color: var(--lime); }
+
+/* ---------- Chi siamo: tre foto di Naomi, a griglia sfalsata su una lastra lime ---------- */
+.split__media--trio { width: min(100%, 560px); justify-self: center; }
+.trio { position: relative; isolation: isolate; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(.7rem, 1.6vw, 1.1rem); align-items: start; }
+.trio::before { content: ""; position: absolute; z-index: -1; right: -5%; bottom: -4%; width: 64%; height: 48%; background: linear-gradient(160deg, var(--lime-hi) 0%, var(--lime) 55%, var(--lime-lo) 100%); box-shadow: inset 0 1px 0 rgb(255 255 255 / 45%), 0 40px 60px -30px rgb(45 70 8 / 50%); }
+.trio figure { margin: 0; }
+.trio__b { margin-top: clamp(1.2rem, 4vw, 2.4rem); }
+.trio__c { grid-column: 1 / -1; }
+.trio .portrait__mat img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+.trio__a img { object-position: 50% 40%; }
+.trio__b img { object-position: 60% 50%; }
+.trio .trio__c img { aspect-ratio: 16 / 9; object-position: 50% 40%; }
+
+@media (max-width: 1020px) {
+  .hero .duo { order: -1; margin-top: 0; margin-bottom: .6rem; } /* da telefono e tablet le foto aprono la pagina, poi il titolo */
+  .sec__head--rev .reviews__score { justify-self: start; }
+  .rv { flex-wrap: nowrap; align-items: center; gap: 1rem; margin-inline: -1.25rem; padding: .5rem 1.25rem 1.5rem; scroll-padding-inline: 1.25rem; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .rv::-webkit-scrollbar { display: none; }
+  .rv > .rv__item { flex: 0 0 auto; scroll-snap-align: start; }
+  .rv__open img { width: auto; max-width: none; height: min(27rem, 66svh); }
+  .rv__open:hover { transform: none; }
+}
+@media (max-width: 600px) {
+  .sec__head--rev .reviews__score { width: 100%; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "n s" "n c"; justify-items: start; align-items: center; column-gap: 1.2rem; row-gap: .1rem; padding: 1rem 1.3rem; text-align: left; }
+  .sec__head--rev .reviews__num { grid-area: n; }
+  .sec__head--rev .stars { grid-area: s; }
+  .sec__head--rev .reviews__count { grid-area: c; max-width: none; }
+}
+@media (max-width: 700px) {
+  .rvbox:target { padding: 4.2rem .6rem 5.4rem; }
+  .rvbox__nav { top: auto; bottom: max(1rem, env(safe-area-inset-bottom, 0px)); translate: none; }
+  .rvbox__nav--prev { left: 1rem; }
+  .rvbox__nav--next { right: 1rem; }
 }
