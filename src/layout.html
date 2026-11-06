@@ -14,13 +14,14 @@
 <meta property="og:title" content="{{ogTitle}}">
 <meta property="og:description" content="{{description}}">
 <meta property="og:image" content="{{ogImage}}">
-<meta property="og:image:alt" content="Dott.ssa Naomi Acciaro, biologa nutrizionista a Roma e online">
+<meta property="og:image:alt" content="Naomi Acciaro, biologa nutrizionista a Roma e online">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
 <link rel="icon" href="/img/favicon-48.png" type="image/png" sizes="48x48">
 <link rel="icon" href="/img/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
-<link rel="preload" href="/fonts/nunito-var.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="/fonts/cormorant-garamond-var.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="/fonts/dm-sans-var.woff" as="font" type="font/woff" crossorigin>
 {{{preload}}}
 <link rel="stylesheet" href="/style.css">
 {{{jsonld}}}
@@ -32,13 +33,13 @@
 <header class="top">
   <div class="wrap top__bar">
     <a class="brand" href="/" aria-label="Naomi Acciaro, biologa nutrizionista: vai alla home">
-      <img class="brand__logo" src="/img/logo-naomi.webp" width="46" height="46" alt="" decoding="async">
-      <span class="brand__text"><span class="brand__name">Dott.ssa Naomi Acciaro</span><span class="brand__role">Biologa nutrizionista</span></span>
+      <span class="brand__name">Naomi Acciaro</span>
+      <span class="brand__role">Biologa nutrizionista</span>
     </a>
     <nav class="nav" aria-label="Pagine del sito">
 {{{navlinks}}}
     </nav>
-    <a class="btn btn--small top__cta" href="{{booking}}" target="_blank" rel="noopener">Prenota</a>
+    <a class="btn btn--small top__cta" href="{{booking}}" target="_blank" rel="noopener">Prenota una consulenza</a>
     <details class="menu">
       <summary><span class="menu__label">Menu</span><span class="menu__bars" aria-hidden="true"></span></summary>
       <nav class="menu__panel" aria-label="Menu">
@@ -55,27 +56,26 @@
 <footer class="foot">
   <div class="wrap foot__grid">
     <div class="foot__id">
-      <img class="foot__logo" src="/img/logo-naomi.webp" width="72" height="72" alt="Dott.ssa Naomi Acciaro" loading="lazy" decoding="async">
-      <p class="foot__name">Dott.ssa Naomi Acciaro</p>
-      <p class="foot__role">Biologa nutrizionista · Roma | Online</p>
-      <p class="foot__tag">Con scienza e coscienza.</p>
+      <p class="foot__name">Naomi Acciaro</p>
+      <p class="foot__role">Biologa nutrizionista</p>
+      <p class="foot__tag">{{tagline}}</p>
     </div>
     <nav class="foot__nav" aria-label="Pagine">
-      <a href="/">Home</a>
 {{{footlinks}}}
     </nav>
     <div class="foot__book">
-      <a class="btn" href="{{booking}}" target="_blank" rel="noopener">Prenota su MioDottore</a>
+      <a class="btn" href="{{booking}}" target="_blank" rel="noopener">Prenota una consulenza</a>
       <p>Roma | Online</p>
     </div>
   </div>
   <div class="wrap foot__legal">
     <p>I contenuti di questo sito hanno scopo informativo e non sostituiscono il parere del medico. Il sito non usa cookie né strumenti di tracciamento: la prenotazione avviene su MioDottore, che tratta i dati secondo la propria informativa.</p>
     <!-- DA COMPLETARE prima del go-live (obblighi per i siti dei professionisti sanitari): numero e sezione di iscrizione all'albo dei biologi (ONB), partita IVA, indirizzo dello studio. -->
+    <p class="foot__links">{{{legallinks}}}</p>
   </div>
 </footer>
 
-<div class="mbar"><a class="btn btn--big" href="{{booking}}" target="_blank" rel="noopener">Prenota la prima visita</a></div>
+<div class="mbar"><a class="btn btn--big" href="{{booking}}" target="_blank" rel="noopener">Prenota una consulenza</a></div>
 
 </body>
 </html>

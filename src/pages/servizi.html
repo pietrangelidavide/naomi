@@ -1,214 +1,151 @@
 <!--
 {
   "file": "servizi", "path": "/servizi", "nav": "servizi", "crumbs": "Servizi",
-  "title": "Servizi di nutrizione clinica e sportiva a Roma | Naomi Acciaro",
-  "ogTitle": "Servizi | Dott.ssa Naomi Acciaro, biologa nutrizionista",
-  "description": "Nutrizione clinica, valutazione antropometrica ISAK e nutrizione sportiva con la Dott.ssa Naomi Acciaro, a Roma e online. Cosa include ogni percorso.",
+  "title": "Servizi di nutrizione a Roma e online | Naomi Acciaro",
+  "ogTitle": "Servizi | Naomi Acciaro, biologa nutrizionista",
+  "description": "Consulenza nutrizionale, percorsi alimentari personalizzati, educazione alimentare e controlli con Naomi Acciaro, a Roma e online. Cosa include ogni servizio.",
   "preload": [],
   "services": [
-    { "name": "Nutrizione clinica", "type": "Consulenza nutrizionale", "description": "Piano alimentare personalizzato costruito su abitudini, esami e obiettivi della persona, con controlli periodici. A Roma e online." },
-    { "name": "Valutazione antropometrica ISAK", "type": "Valutazione antropometrica", "description": "Misure del corpo (pliche, circonferenze, diametri) con protocollo ISAK, da ripetere nel tempo per seguire i cambiamenti. In studio a Roma." },
-    { "name": "Nutrizione sportiva", "type": "Consulenza nutrizionale per lo sport", "description": "Alimentazione per chi si allena, in base a sport, orari e calendario di allenamenti e gare. A Roma e online." }
+    { "name": "Consulenza nutrizionale", "type": "Consulenza nutrizionale", "description": "Colloquio su abitudini, orari, gusti, esami e obiettivi, con valutazione antropometrica ISAK quando serve. A Roma e online." },
+    { "name": "Percorsi alimentari personalizzati", "type": "Piano alimentare personalizzato", "description": "Piano alimentare scritto sulla persona, con alternative, anche per chi si allena (nutrizione sportiva). A Roma e online." },
+    { "name": "Educazione alimentare", "type": "Educazione alimentare", "description": "Spiegazioni semplici e strumenti pratici per capire che cosa si mangia e perché, e scegliere con consapevolezza. A Roma e online." },
+    { "name": "Controlli e monitoraggio", "type": "Monitoraggio nutrizionale", "description": "Controlli periodici e misure antropometriche ISAK ripetibili, per seguire come cambia il corpo nel tempo. Le misure ISAK si fanno in studio a Roma." }
   ],
   "faq": [
-    { "q": "Cosa include la prima visita?", "a": "Un colloquio su abitudini, orari, gusti, obiettivi ed eventuali esami. Se serve, la valutazione antropometrica ISAK. Poi ricevi un piano alimentare scritto per te, con indicazioni chiare." },
-    { "q": "Il piano alimentare è uguale per tutti?", "a": "No. Ogni piano viene scritto sulla persona: sulle sue giornate, sui suoi gusti e sul suo obiettivo. Per questo la prima visita parte dall'ascolto." },
+    { "q": "Cosa include la prima consulenza?", "a": "Un colloquio su abitudini, orari, gusti, obiettivi ed eventuali esami. Se serve, la valutazione antropometrica ISAK. Poi ricevi un piano alimentare scritto per te, con indicazioni chiare." },
+    { "q": "Il piano alimentare è uguale per tutti?", "a": "No. Ogni piano viene scritto sulla persona: sulle sue giornate, sui suoi gusti e sul suo obiettivo. Per questo la prima consulenza parte dall'ascolto." },
     { "q": "Che cos'è la valutazione antropometrica ISAK?", "a": "Sono misure del corpo (pliche cutanee, circonferenze, diametri) prese con un protocollo internazionale. Ripetute nel tempo con lo stesso metodo, permettono di vedere come cambia il corpo, cosa che la sola bilancia non mostra." },
-    { "q": "Quanti incontri servono?", "a": "Dipende dal tuo obiettivo. Dopo la prima visita decidiamo insieme ogni quanto ci rivediamo per controllare come stai e aggiustare il percorso." },
+    { "q": "Quanti incontri servono?", "a": "Dipende dal tuo obiettivo. Dopo la prima consulenza decidiamo insieme ogni quanto ci rivediamo per controllare come stai e aggiustare il percorso." },
     { "q": "Seguo già una terapia o ho delle patologie: posso rivolgermi a te?", "a": "Sì. Nella nutrizione clinica si parte dai tuoi esami e si lavora in accordo con il tuo medico. Il piano alimentare non sostituisce le cure e non cambia le terapie." },
     { "q": "Posso fare tutto online?", "a": "Colloquio, piano alimentare e controlli sì. La valutazione antropometrica ISAK richiede le misure in presenza, quindi si fa in studio a Roma." }
   ]
 }
 -->
 <section class="phero" aria-labelledby="page-title">
-  <div class="hero__light" aria-hidden="true"></div>
   <div class="wrap">
     {{crumbs}}
-    <div class="phero__grid phero__grid--wide">
-      <div class="phero__text">
-        <h1 class="hero__title hero__title--page" id="page-title"><span class="hero__kicker">Servizi di nutrizione a Roma e online</span><span class="hero__main">Tre percorsi. Un solo metodo: il tuo.</span></h1>
-        <p class="hero__lead">Ogni percorso parte dalla prima visita. Qui vedi a chi serve, cosa include e che cosa ottieni.</p>
-        <div class="hero__cta">
-          {{cta:Prenota la prima visita|Scegli giorno e orario su MioDottore}}
-        </div>
+    <div class="phero__grid">
+      <h1 class="phero__title" id="page-title">Servizi di nutrizione, costruiti su di te.</h1>
+      <div class="phero__side">
+        <p class="phero__lead">Ogni percorso parte dalla prima consulenza. Qui vedi a chi serve, cosa include e che cosa ottieni.</p>
+        <div class="cta"><a class="btn btn--big" href="{{book}}" target="_blank" rel="noopener">Prenota una consulenza</a></div>
       </div>
-      <nav class="jump" aria-label="Vai al percorso">
-        <a class="jump__item" href="#clinica">{{ico:plate|ico--lg}}<span><b>Nutrizione clinica</b><i>Mangiare meglio, con un piano su misura</i></span></a>
-        <a class="jump__item" href="#antropometria">{{ico:ruler|ico--lg}}<span><b>Valutazione ISAK</b><i>Misure per vedere come cambia il corpo</i></span></a>
-        <a class="jump__item" href="#sportiva">{{ico:dumbbell|ico--lg}}<span><b>Nutrizione sportiva</b><i>Energia e recupero per chi si allena</i></span></a>
-      </nav>
-      {{swipe}}
     </div>
   </div>
 </section>
 
-<section class="sec svcx" id="clinica" aria-labelledby="clinica-title">
+<section class="sec sx" id="consulenza" aria-labelledby="consulenza-title">
   <div class="wrap">
-    <div class="svcx__grid">
-      <header class="svcx__head">
+    <div class="sx__grid">
+      <header class="sx__head">
         {{ico:plate|ico--xl}}
-        <h2 class="h2" id="clinica-title">Nutrizione clinica</h2>
-        <p class="svcx__tag">Mangiare meglio, con un piano che ti somiglia.</p>
-        {{gfx:piatto|Esempio semplificato di piatto. Nel tuo piano le proporzioni cambiano con obiettivi, esami e abitudini.}}
+        <h2 class="h2" id="consulenza-title">Consulenza nutrizionale</h2>
+        <p class="sx__tag">Il primo incontro è un ascolto.</p>
       </header>
-      <div class="svcx__body">
-        <div class="svcx__cards">
-        <div class="svcx__card">
-          <h3>Per chi è</h3>
-          <p>Per chi vuole mangiare meglio e non sa da dove cominciare. Per chi ha esami da leggere insieme al proprio medico. Per chi ha già provato schemi uguali per tutti e non si è trovato bene.</p>
-        </div>
-        <div class="svcx__card">
+      <div class="sx__body">
+        <div class="sx__block"><h3>Per chi è</h3><p>Per chi vuole mangiare meglio e non sa da dove cominciare. Per chi ha esami da leggere insieme al proprio medico. Per chi ha già provato schemi uguali per tutti e non si è trovato bene.</p></div>
+        <div class="sx__block">
           <h3>Cosa include</h3>
           <ul class="checks">
             <li>{{ico:check}}Colloquio su abitudini, orari, gusti e obiettivi</li>
             <li>{{ico:check}}Lettura degli esami che porti, in accordo con il tuo medico</li>
-            <li>{{ico:check}}Piano alimentare scritto per te, con alternative</li>
-            <li>{{ico:check}}Controlli periodici per aggiustare il percorso</li>
+            <li>{{ico:check}}Valutazione antropometrica ISAK, quando serve</li>
+            <li>{{ico:check}}Indicazioni chiare su come proseguire</li>
           </ul>
         </div>
-        <div class="svcx__card svcx__card--gain">
-          <h3>Cosa ottieni</h3>
-          <p>Capisci che cosa mangi e perché. Hai un piano che entra nella tua giornata, anche quando pranzi fuori o hai poco tempo.</p>
-        </div>
-        <div class="svcx__card">
-          <h3>Un esempio dal piatto</h3>
-          <div class="mini">
-            <figure class="dish"><img src="/img/piatti/spaghetti.webp" width="900" height="1125" loading="lazy" alt="Piatto di spaghetti con gamberi e pomodoro"><figcaption>Spaghetti con gamberi e pomodoro</figcaption></figure>
-            <figure class="dish"><img src="/img/piatti/insalata.webp" width="1000" height="750" loading="lazy" alt="Insalata con prosciutto, formaggio fresco, cetrioli e carote, con pane scuro"><figcaption>Insalata con prosciutto e formaggio fresco, con pane scuro</figcaption></figure>
-          </div>
-        </div>
-        </div>
-        {{swipe}}
-        {{cta:Prenota la nutrizione clinica|Prima visita a Roma o online}}
+        <div class="sx__block"><h3>Cosa ottieni</h3><p>Capisci da dove parti e dove vuoi arrivare, con uno sguardo scientifico e senza giudizio.</p></div>
+        <div class="sx__block"><h3>Dove</h3><p>In studio a Roma oppure online, da dove sei.</p></div>
+        <div class="cta"><a class="btn btn--big" href="{{book}}" target="_blank" rel="noopener">Prenota la consulenza</a><p class="cta__micro">Scegli giorno e orario su MioDottore</p></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="sec sec--paper svcx" id="antropometria" aria-labelledby="antropometria-title">
+<section class="sec sec--sand sx" id="percorsi" aria-labelledby="percorsi-title">
   <div class="wrap">
-    <div class="svcx__grid">
-      <header class="svcx__head">
-        {{ico:ruler|ico--xl}}
-        <h2 class="h2" id="antropometria-title">Valutazione antropometrica ISAK</h2>
-        <p class="svcx__tag">Numeri che puoi confrontare nel tempo.</p>
-        {{gfx:misure|Tre tipi di misura, sempre negli stessi punti: pliche, circonferenze e diametri.}}
+    <div class="sx__grid">
+      <header class="sx__head">
+        {{ico:plan|ico--xl}}
+        <h2 class="h2" id="percorsi-title">Percorsi alimentari personalizzati</h2>
+        <p class="sx__tag">Un piano che ti somiglia.</p>
       </header>
-      <div class="svcx__body">
-        <div class="svcx__cards">
-        <div class="svcx__card">
-          <h3>Per chi è</h3>
-          <p>Per chi vuole vedere come cambia il corpo, non solo quanto pesa. Per chi si allena e vuole seguire nel tempo massa grassa e massa magra.</p>
-        </div>
-        <div class="svcx__card">
-          <h3>Cosa misuro</h3>
-          <ul class="measure">
-            <li>{{ico:ruler}}<b>Pliche</b><span>spessori cutanei in punti precisi</span></li>
-            <li>{{ico:ruler}}<b>Circonferenze</b><span>braccia, torace, vita, fianchi, gambe</span></li>
-            <li>{{ico:ruler}}<b>Diametri</b><span>larghezze ossee, per la struttura</span></li>
-          </ul>
-        </div>
-        <div class="svcx__card svcx__card--gain">
-          <h3>Cosa ottieni</h3>
-          <p>Misure ripetibili, con lo stesso protocollo, per vedere cambiamenti che la bilancia non mostra. Obiettivi più realistici e scelte basate sui numeri.</p>
-        </div>
-        <div class="svcx__card"><h3>Dove</h3><p class="svcx__note">{{ico:pin}}Si fa in studio a Roma: richiede le misure in presenza.</p></div>
-        </div>
-        {{swipe}}
-        {{cta:Prenota la valutazione ISAK|Scegli giorno e orario su MioDottore}}
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="sec svcx" id="sportiva" aria-labelledby="sportiva-title">
-  <div class="wrap">
-    <div class="svcx__grid">
-      <header class="svcx__head">
-        {{ico:dumbbell|ico--xl}}
-        <h2 class="h2" id="sportiva-title">Nutrizione sportiva</h2>
-        <p class="svcx__tag">Arrivare all'allenamento con energia.</p>
-        {{gfx:giornata|Esempio di giornata di allenamento: cosa e quando mangiare cambia attorno alla seduta.}}
-      </header>
-      <div class="svcx__body">
-        <div class="svcx__cards">
-        <div class="svcx__card">
-          <h3>Per chi è</h3>
-          <p>Per chi si allena con regolarità (corsa, palestra, sport di squadra) e vuole più energia, un recupero migliore e una composizione corporea in linea con l'obiettivo.</p>
-        </div>
-        <div class="svcx__card">
+      <div class="sx__body">
+        <div class="sx__block"><h3>Per chi è</h3><p>Per chi vuole un piano alimentare scritto su di sé: sulle sue giornate, sui suoi gusti, sul suo obiettivo. Anche per chi si allena (corsa, palestra, sport di squadra): la nutrizione sportiva segue sport, orari e calendario di allenamenti e gare.</p></div>
+        <div class="sx__block">
           <h3>Cosa include</h3>
           <ul class="checks">
-            <li>{{ico:check}}Piano che segue il tuo calendario di allenamenti e gare</li>
-            <li>{{ico:check}}Cosa mangiare prima, dopo e nei giorni di scarico</li>
+            <li>{{ico:check}}Piano alimentare scritto per te, con alternative</li>
+            <li>{{ico:check}}Indicazioni per i pranzi fuori casa e le giornate piene</li>
+            <li>{{ico:check}}Per chi si allena: cosa mangiare prima, dopo e nei giorni di scarico</li>
             <li>{{ico:check}}Idratazione e orari dei pasti</li>
-            <li>{{ico:check}}Valutazione ISAK per seguire i cambiamenti, se serve</li>
           </ul>
         </div>
-        <div class="svcx__card svcx__card--gain">
-          <h3>Cosa ottieni</h3>
-          <p>Un'alimentazione costruita attorno al tuo sport: sai cosa mangiare e quando, senza improvvisare il giorno della gara.</p>
-        </div>
-        <div class="svcx__card">
-          <h3>Un esempio dal piatto</h3>
-          <div class="mini">
-            <figure class="dish"><img src="/img/piatti/toast.webp" width="900" height="1125" loading="lazy" alt="Due toast farciti e un bicchiere di caffellatte con la schiuma"><figcaption>Prima di una corsa leggera: toast e caffellatte</figcaption></figure>
-            <figure class="dish"><img src="/img/piatti/colazione.webp" width="900" height="1123" loading="lazy" alt="Due toast al prosciutto e un bicchiere di caffellatte sul piatto"><figcaption>Toast al prosciutto e caffellatte</figcaption></figure>
-          </div>
-        </div>
-        </div>
-        {{swipe}}
-        {{cta:Prenota la nutrizione sportiva|Roma o online, scegli tu}}
+        <div class="sx__block"><h3>Cosa ottieni</h3><p>Un piano che entra nella tua giornata, anche quando hai poco tempo, e che puoi seguire davvero. Chi si allena sa cosa mangiare e quando, senza improvvisare il giorno della gara.</p></div>
+        <div class="cta"><a class="btn btn--big" href="{{book}}" target="_blank" rel="noopener">Prenota il tuo percorso</a><p class="cta__micro">Roma o online, scegli tu</p></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="sec sec--paper" id="confronto" aria-labelledby="confronto-title">
+<section class="sec sx" id="educazione" aria-labelledby="educazione-title">
   <div class="wrap">
-    <div class="sec__head">
-      <h2 class="h2" id="confronto-title">Quale percorso fa per te?</h2>
-      <p class="sec__lead">In dubbio? Alla prima visita lo decidiamo insieme. Intanto, una guida rapida.</p>
+    <div class="sx__grid">
+      <header class="sx__head">
+        {{ico:chat|ico--xl}}
+        <h2 class="h2" id="educazione-title">Educazione alimentare</h2>
+        <p class="sx__tag">Capire, per scegliere.</p>
+      </header>
+      <div class="sx__body">
+        <div class="sx__block"><h3>Per chi è</h3><p>Per chi vuole smettere di dipendere da regole rigide e imparare a leggere porzioni, etichette e abitudini. Per chi vuole sapere il perché di ogni indicazione.</p></div>
+        <div class="sx__block">
+          <h3>Cosa include</h3>
+          <ul class="checks">
+            <li>{{ico:check}}Spiegazioni semplici, con una ragione dietro ogni indicazione</li>
+            <li>{{ico:check}}Strumenti pratici per organizzare spesa e pasti</li>
+            <li>{{ico:check}}Esempi di piatti semplici, da preparare a casa</li>
+            <li>{{ico:check}}Uno spazio per le tue domande, senza giudizio</li>
+          </ul>
+        </div>
+        <div class="sx__block"><h3>Cosa ottieni</h3><p>Sai cosa fare anche quando non ci sono io: scelte consapevoli, non rinunce.</p></div>
+        <div class="cta"><a class="btn btn--big" href="{{book}}" target="_blank" rel="noopener">Prenota una consulenza</a><p class="cta__micro">Si parte dalla prima visita</p></div>
+      </div>
     </div>
-    <div class="tablewrap" tabindex="0" role="region" aria-label="Confronto dei percorsi">
-      <table class="compare">
-        <thead><tr><th scope="col"><span class="sr">Voce</span></th><th scope="col">Nutrizione clinica</th><th scope="col">Valutazione ISAK</th><th scope="col">Nutrizione sportiva</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">Ti serve se</th><td>Vuoi mangiare meglio o hai esami da tradurre a tavola</td><td>Vuoi vedere come cambia il corpo nel tempo</td><td>Ti alleni e vuoi più energia e recupero</td></tr>
-          <tr><th scope="row">Si parte da</th><td>Abitudini, esami e obiettivi</td><td>Misure standardizzate</td><td>Sport, orari e calendario</td></tr>
-          <tr><th scope="row">Ricevi</th><td>Piano alimentare scritto per te</td><td>Dati confrontabili nel tempo</td><td>Piano legato ad allenamenti e gare</td></tr>
-          <tr><th scope="row">Dove</th><td>Roma e online</td><td>In studio a Roma</td><td>Roma e online</td></tr>
-        </tbody>
-      </table>
-    </div>
-    {{cta:Scegliamo insieme il tuo percorso|Prima visita su MioDottore}}
   </div>
 </section>
 
-<section class="sec" id="visita" aria-labelledby="visita-title">
+<section class="sec sec--sand sx" id="controlli" aria-labelledby="controlli-title">
   <div class="wrap">
-    <div class="sec__head">
-      <h2 class="h2" id="visita-title">La prima visita, in quattro passi.</h2>
-      <p class="sec__lead">Sai già cosa succede prima di entrare. Tempi e numero di incontri dipendono dal tuo obiettivo.</p>
+    <div class="sx__grid">
+      <header class="sx__head">
+        {{ico:ruler|ico--xl}}
+        <h2 class="h2" id="controlli-title">Controlli e monitoraggio</h2>
+        <p class="sx__tag">Numeri che puoi confrontare nel tempo.</p>
+      </header>
+      <div class="sx__body">
+        <div class="sx__block"><h3>Per chi è</h3><p>Per chi vuole vedere come cambia il corpo, non solo quanto pesa. Per chi si allena e vuole seguire nel tempo massa grassa e massa magra.</p></div>
+        <div class="sx__block">
+          <h3>Cosa misuro, con il protocollo ISAK</h3>
+          <ul class="measure">
+            <li><b>Pliche</b><span>spessori cutanei in punti precisi</span></li>
+            <li><b>Circonferenze</b><span>braccia, torace, vita, fianchi, gambe</span></li>
+            <li><b>Diametri</b><span>larghezze ossee, per la struttura</span></li>
+          </ul>
+        </div>
+        <div class="sx__block"><h3>Cosa ottieni</h3><p>Misure ripetibili, con lo stesso protocollo, per vedere cambiamenti che la bilancia non mostra. Ogni controllo è l'occasione per aggiustare il percorso.</p></div>
+        <div class="sx__block"><h3>Dove</h3><p>La valutazione ISAK richiede le misure in presenza: si fa in studio a Roma. I controlli del piano alimentare si fanno anche online.</p></div>
+        <div class="cta"><a class="btn btn--big" href="{{book}}" target="_blank" rel="noopener">Prenota i controlli</a><p class="cta__micro">Scegli giorno e orario su MioDottore</p></div>
+      </div>
     </div>
-    <ol class="steps">
-      <li class="step"><span class="step__n" aria-hidden="true">1</span>{{ico:calendar|ico--lg}}<h3 class="step__title">Prenoti</h3><p class="step__text">Scegli giorno e orario su MioDottore, a Roma o online.</p></li>
-      <li class="step"><span class="step__n" aria-hidden="true">2</span>{{ico:chat|ico--lg}}<h3 class="step__title">Ci conosciamo</h3><p class="step__text">Parliamo di abitudini, obiettivi ed esami. Se serve, misuro il corpo con il protocollo ISAK.</p></li>
-      <li class="step"><span class="step__n" aria-hidden="true">3</span>{{ico:plan|ico--lg}}<h3 class="step__title">Ricevi il tuo piano</h3><p class="step__text">Un piano alimentare scritto per te, con indicazioni chiare per metterlo in pratica.</p></li>
-      <li class="step"><span class="step__n" aria-hidden="true">4</span>{{ico:ecg|ico--lg}}<h3 class="step__title">Ci rivediamo</h3><p class="step__text">Controlli periodici per vedere come stai e aggiustare il percorso.</p></li>
-    </ol>
-    {{swipe}}
-    {{cta:Inizia dal primo passo|Prenota in pochi clic su MioDottore}}
   </div>
 </section>
 
-<section class="sec tavola" id="esempi" aria-labelledby="esempi-title">
+<section class="sec" id="esempi" aria-labelledby="esempi-title">
   <div class="wrap">
     <div class="sec__head">
       <h2 class="h2" id="esempi-title">Cosa c'è nel piatto: otto esempi.</h2>
       <p class="sec__lead">Piatti semplici, da preparare a casa. Non sono un piano alimentare: il tuo sarà costruito su di te.</p>
     </div>
-    <div class="gallery gallery--4 gallery--8">
+    <div class="gallery gallery--8">
       <figure class="dish"><img src="/img/piatti/colazione.webp" width="900" height="1123" loading="lazy" alt="Due toast al prosciutto e un bicchiere di caffellatte sul piatto"><figcaption>Toast al prosciutto e caffellatte</figcaption></figure>
       <figure class="dish"><img src="/img/piatti/gnocchetti.webp" width="900" height="900" loading="lazy" alt="Gnocchetti con zucchine e gamberetti in una ciotola"><figcaption>Gnocchetti con zucchine e gamberetti</figcaption></figure>
       <figure class="dish"><img src="/img/piatti/spaghetti.webp" width="900" height="1125" loading="lazy" alt="Piatto di spaghetti con gamberi e pomodoro"><figcaption>Spaghetti con gamberi e pomodoro</figcaption></figure>
@@ -218,24 +155,15 @@
       <figure class="dish"><img src="/img/piatti/mezze.webp" width="900" height="1123" loading="lazy" alt="Mezze maniche con crema di zucca e macinato"><figcaption>Mezze maniche con crema di zucca e macinato</figcaption></figure>
       <figure class="dish"><img src="/img/piatti/insalata.webp" width="1000" height="750" loading="lazy" alt="Insalata con prosciutto, formaggio fresco, cetrioli e carote, con pane scuro"><figcaption>Insalata con prosciutto e formaggio fresco, con pane scuro</figcaption></figure>
     </div>
-    {{swipe}}
-    <div class="split split--video">
-      <div class="split__media split__media--sm">{{video:c}}</div>
-      <div class="split__text">
-        <h3 class="h3">Mangiare bene non è complicato.</h3>
-        <p class="prose-p">Colazioni, pranzi e spuntini che si preparano in poco tempo. Alla prima visita guardiamo cosa mangi oggi e partiamo da lì.</p>
-        {{cta:Prenota la prima visita|Roma | Online}}
-      </div>
-    </div>
   </div>
 </section>
 
-<section class="sec" id="domande" aria-labelledby="domande-title">
+<section class="sec sec--sand" id="domande" aria-labelledby="domande-title">
   <div class="wrap wrap--narrow">
     <h2 class="h2" id="domande-title">Domande frequenti.</h2>
     {{faq}}
-    {{cta:Hai altre domande? Chiedile in visita|Prenota la prima visita su MioDottore}}
+    <div class="cta"><a class="btn btn--big" href="{{book}}" target="_blank" rel="noopener">Hai altre domande? Chiedile in visita</a><p class="cta__micro">Prenota la prima consulenza su MioDottore</p></div>
   </div>
 </section>
 
-{{final:Scegli il percorso, al resto pensiamo insieme.|Prenota la prima visita: scegli giorno e orario su MioDottore, a Roma o online.|Roma | Online · si prenota in pochi clic}}
+{{final:Scegli il percorso, al resto pensiamo insieme.|Ogni percorso inizia da una scelta. Inizia dal prenderti cura di te.|Roma | Online · scegli giorno e orario su MioDottore}}

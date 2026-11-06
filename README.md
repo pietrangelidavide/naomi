@@ -1,72 +1,94 @@
 # Naomi Acciaro · sito vetrina
 
-Sito di 5 pagine per la Dott.ssa Naomi Acciaro, biologa nutrizionista (Roma | Online): **Home, Chi siamo, Servizi, Dove, Contatti** (+ pagina 404). HTML e CSS statici, nessun framework, nessun JavaScript sul sito, nessun cookie. La prenotazione rimanda al profilo MioDottore.
+Sito di 5 pagine per Naomi Acciaro, biologa nutrizionista (Roma | Online): **Home, Chi sono, Servizi, Metodo, Contatti**, più Privacy policy, Cookie policy e 404. HTML e CSS statici, nessun framework, **nessun JavaScript e nessun cookie sul sito**. La prenotazione rimanda al profilo MioDottore; il modulo di contatto passa da un piccolo Worker (vedi sotto).
 
-## Identità
+## Identità (brief «Science meets wellness»)
 
-Palette **«Lime energia»**, scelta dalla cliente: **Lime** `#c6f135`, **Base** `#f5f3ec`, **Verde profondo** `#1d2b22`, **Salvia** `#8fa68e`, con poche tinte derivate per sfondi e superfici. **Il logo è il ritratto tondo di Naomi** (mezzaluna lime, fondo salvia sfumato): in testata accanto al nome, nel piede, nelle icone (favicon dal ritaglio sul viso, icona dell'app a tutto campo). Slogan: *Con scienza e coscienza.*
+Concept **Science meets wellness**, payoff *«Il tuo benessere, il tuo equilibrio, il tuo percorso.»* Stile minimal luxury, editoriale, femminile contemporaneo, organic modernism.
 
-- Scheda completa (colori con contrasti, logo, carattere, icone, grafica, voce dei testi): `brand/linee-guida.html` (si apre nel browser; rigenerabile con `python3 scripts/build-brand-guide.py`).
-- Derivate: verde del marchio `#2f4b3a` (icone, titoli di accento, riquadri), verde chiaro `#3f6049`, card `#fbfaf6`, fasce `#e9eddd` e `#dce6d6`, salvia chiara `#b9c8b5`, salvia scura `#5b7561`, testo secondario `#4b5c50`. Contrasti calcolati: testo ≥ 5,5:1 su tutti gli sfondi chiari. **Il lime non si usa mai come testo su fondo chiaro** (1,2:1): sui chiari è fondo dei bottoni (testo verde profondo, 11,3:1), evidenziatore delle etichette, filetto delle schede; sui riquadri scuri è anche colore di icone, stelle e link (≥ 5,4:1). Salvia e salvia chiara solo per tratti e grafica.
-- Logo: `public/img/logo-naomi.webp` (320 px, tondo, trasparente) e `logo-naomi.png` (512 px, usato nei dati strutturati); `favicon.ico`, `favicon-32.png`, `favicon-48.png`, `apple-touch-icon.png` (180), `icon-512.png`. Il tondo è già ritagliato nell'immagine: nessun `border-radius` nel CSS.
-- Carattere: **Nunito** (tondo, leggibile), un solo file variabile 400–900, OFL, self-hosted in `public/fonts/` (WOFF subsettato, 44 KB).
-- Icone: set proprio in `public/img/icons.svg` (griglia 24, tratto 1,5, angoli vivi).
-- Grafica: spigoli vivi (nessun `border-radius`, anche con il carattere tondo: se si preferiscono angoli arrotondati basta introdurre un raggio nel `*` di `style.css`), luce a strisce da tapparella, foto come stampe con passe-partout e lastra lime, ombre a più strati verdi. Entrata della luce e leggero scorrimento solo con `prefers-reduced-motion: no-preference`.
-- Liste da sfogliare: sotto i 1020 px le liste di schede diventano carosello orizzontale (solo CSS, `scroll-snap`, schede successiva accennata, barra di avanzamento e «Scorri →»); da desktop restano in griglia. Macro `{{swipe}}` dopo ogni lista.
-- Grafiche esplicative: cinque SVG in linea in `src/gfx/` (`venn`, `squadra`, `piatto`, `misure`, `giornata`), richiamati con `{{gfx:nome|didascalia}}`. Sono decorativi (`aria-hidden`), la didascalia porta il significato; sono esempi illustrativi, non indicazioni cliniche. Le classi `g-tab`, `g-sab`, `g-tor`, `g-sal` hanno nomi storici: oggi puntano a verde del marchio, fascia chiara, salvia chiara e salvia.
+- **Logo: solo nome e cognome**, testo puro, senza ritratto né «Dott.ssa»: **NAOMI ACCIARO** in Cormorant Garamond maiuscolo spaziato, con sotto «BIOLOGA NUTRIZIONISTA» in DM Sans piccolo (`.brand` in `style.css`, markup in `src/layout.html`). Nelle icone piccole (favicon, icona di iOS) non ci starebbe: lì ci sono le iniziali «NA»; `icon-512.png` (usata nei dati strutturati) riporta il nome per esteso. Si rigenerano con `python3 scripts/build-icons.py`.
+- **Palette, solo queste cinque** (variabili in cima a `public/style.css`): Ivory `#F6F3EE` (fondo), Sand `#DED5CA` (sezioni alternate), Taupe `#B8A99A` (filetti e dettagli), Sage `#788373` (secondario; per il testo si usa la versione scurita `--sage-d`, per il contrasto), Charcoal `#333831` (testo e bottoni). Le tinte intermedie sono miscele di queste cinque con `color-mix()`. Niente colori vivaci, gradienti o forti contrasti.
+- **Caratteri**, self-hosted in `public/fonts/` (OFL, WOFF subsettato, circa 130 KB in tutto): **Cormorant Garamond** per titoli (variabile, tondo e corsivo), **DM Sans** per testo, menu e bottoni. Il corsivo serif è per i piccoli dettagli editoriali. Si rigenerano con `python3 scripts/fonts.py CARTELLA/google-fonts/ofl` (serve `fonttools`).
+- **Movimento**, leggero e solo con `prefers-reduced-motion: no-preference`: dissolvenze allo scorrimento (CSS `animation-timeline: view()`, dove il browser lo supporta; altrove il contenuto è semplicemente visibile), apertura morbida del menu, hover dei bottoni, scoperta delle foto della home. Nessuna libreria.
+- Niente grafica ospedaliera (caduceo, croci), niente foto stock di frutta e verdura: le foto sono quelle vere di Naomi e dei suoi piatti.
+- Icone: set proprio in `public/img/icons.svg` (griglia 24, tratto sottile).
+- Liste di schede (servizi, fasi, valori): sotto i 1020 px diventano carosello orizzontale, solo CSS (`scroll-snap`), con la scheda successiva accennata e la barra «Scorri →». Macro `{{swipe}}` dopo ogni lista.
+- Menu da telefono: `<details>` senza JavaScript. La barra «Prenota» in basso su iPhone compare dopo l'apertura della pagina e non c'è nella pagina Contatti.
 
 ## Come è fatto
 
 ```
-src/site.json        dati comuni (nome, link prenotazione, menu, video)
-src/layout.html      intestazione, piede, meta tag (uguali per tutte le pagine)
-src/pages/*.html     una pagina ciascuna: blocco JSON iniziale (title, description, FAQ, servizi) + contenuto
-src/reviews.json     le schermate delle recensioni (file, misure, data, testo alternativo) mostrate in home dalla macro {{reviews}}
+src/site.json        dati comuni (nome, link prenotazione, menu, link legali)
+src/layout.html      intestazione sticky, piede, meta tag (uguali per tutte le pagine)
+src/pages/*.html     una pagina ciascuna: blocco JSON iniziale (title, description, FAQ) + contenuto
+src/reviews.json     le schermate delle recensioni (file, misure, data, testo alternativo) della macro {{reviews}}
 scripts/build.mjs    genera public/*.html (+ dati strutturati, sitemap, robots)
-scripts/photos.py    ritaglia e ritocca le foto di novembre 2026 (recensioni, scrivania, trittico di Chi siamo)
-scripts/enhance.py   il ritocco (riduzione del rumore, livelli, nitidezza) e la rimozione delle scritte sulle foto
+scripts/fonts.py     ricava i font in public/fonts da Google Fonts
+scripts/build-icons.py, build-og.py   favicon, icona 512 e anteprima social (1200×630)
+scripts/photos.py, enhance.py         ritagli e ritocco delle foto (recensioni, scrivania, trittico)
+worker/index.js      Worker del modulo di contatto (POST /api/contatti); worker/test.mjs lo prova senza rete
 public/              il sito pubblicato (file generati e committati: su Cloudflare non serve alcuna build)
+public/_redirects    /chi-siamo → /chi-sono e /dove → /contatti (gli indirizzi della vecchia versione)
 ```
 
-Macro nelle pagine: `{{ico:nome}}` icona, `{{cta:Etichetta|Microcopy}}` bottone + frase sotto, `{{link:Etichetta|/pagina|Microcopy}}`, `{{video:a|b|c}}`, `{{faq}}`, `{{crumbs}}`, `{{final:Titolo|Testo|Microcopy}}` (chiusura in verde profondo con voto), `{{gfx:nome|didascalia}}` (grafica esplicativa), `{{swipe}}` (barra e indicazione «Scorri» sotto una lista a carosello), `{{reviews}}` (le schermate delle recensioni di `src/reviews.json`: da desktop righe di tessere affiancate, da telefono carosello; toccandone una si apre ingrandita, senza JavaScript, con frecce avanti e indietro), `{{book}}` (link di prenotazione).
+Pagine: `/` · `/chi-sono` · `/servizi` · `/metodo` · `/contatti` (qui c'è anche cosa succede in studio e online, la vecchia pagina «Dove») · `/privacy` · `/cookie`.
 
-Le macro non si possono annidare (niente `{{ }}` dentro un'altra macro): per un bottone con il link di prenotazione dentro un `{{link:…}}` si scrive l'HTML a mano, come in fondo alla sezione recensioni della home.
+Macro nelle pagine: `{{ico:nome}}` icona, `{{cta:Etichetta|Microcopy}}` bottone + frase, `{{link:Etichetta|/pagina|Microcopy}}`, `{{faq}}`, `{{crumbs}}`, `{{final:Titolo|Testo|Microcopy}}` (chiusura in carbone con voto), `{{swipe}}` e `{{swipe:rv}}` (indicazione «Scorri» sotto un carosello), `{{reviews}}` (le schermate di `src/reviews.json`: da desktop tessere affiancate, da telefono carosello; toccandone una si apre ingrandita, senza JavaScript), `{{stars}}`, `{{book}}` (link di prenotazione). Le macro non si annidano (niente `{{ }}` dentro un'altra macro).
 
 Comandi (Node 20+):
 
 | Comando | Cosa fa |
 |---|---|
-| `npm run build` | rigenera `public/*.html` (versione di sviluppo: `noindex`) |
+| `npm run build` | rigenera `public/*.html` (versione di sviluppo: `noindex`); scrive anche quanti segnaposto restano |
 | `npm run dev` | build + server locale su http://localhost:8788 (URL senza estensione e 404 come su Cloudflare) |
-| `npm run preview:build` | crea `.tmp/preview/sito.html`: anteprima a file unico con tutte le pagine |
+| `node worker/test.mjs` | prova il modulo di contatto con una rete finta (invio, bot, dati errati, errori di Resend) |
 | `node scripts/build.mjs --site-url https://dominio.it` | **versione di go-live**: indicizzabile, `canonical`, `og:url`, URL assoluti nei dati strutturati, `sitemap.xml`, `robots.txt` |
-| `python3 scripts/build-video.py [a\|b\|c]` | rigenera i 3 video e le copertine (Playwright + ffmpeg) |
-| `python3 scripts/photos.py CARTELLA [nome ...]` | rifà dalle foto originali (la cartella con i file consegnati) i ritagli in `public/img`: recensioni `r1`–`r7`, `scrivania-1`, `scrivania-2`, `naomi-stacco`, `naomi-casa`, `naomi-tesi`; riquadri di ritaglio e di cancellazione delle scritte sono nelle tabelle in cima al file (serve `opencv-contrib-python`) |
-| `python3 scripts/build-og.py` | rigenera `public/img/og.jpg` (anteprima social 1200×630) |
-| `python3 scripts/build-brand-guide.py` | rigenera `brand/linee-guida.html` |
+| `python3 scripts/build-icons.py` / `build-og.py` | favicon e icona 512 / anteprima social |
+| `python3 scripts/photos.py CARTELLA [nome ...]` | rifà dalle foto originali i ritagli in `public/img` (serve `opencv-contrib-python`) |
+| `npm run preview:build` | anteprima a file unico in `.tmp/preview/sito.html` |
+
+## Segnaposto da completare
+
+Dove manca un'informazione vera compare un riquadro tratteggiato (classe `ph`); non ho inventato titoli, numeri o storie. `npm run build` dice quanti ne restano (oggi 13). Per trovarli: cercare `class="ph"` in `src/pages/`.
+
+- **Contatti** (`contatti.html`): email professionale, telefono/WhatsApp, via e numero civico dello studio.
+- **Chi sono** (`chi-sono.html`): la storia di Naomi (2-3 righe sue), laurea e università, percorso professionale, numero e sezione di iscrizione all'albo ONB.
+- **Privacy e Cookie**: data di aggiornamento, dati completi del titolare (ragione sociale, P. IVA, sede), periodo di conservazione, trasferimenti fuori SEE.
+
+Altri punti: l'indirizzo va anche nei dati strutturati (`scripts/build.mjs`, `address` di `ProfessionalService`) e, quando c'è, nel piede (`src/layout.html`).
+
+## Modulo di contatto
+
+Il modulo in `/contatti` è un `<form method="post" action="/api/contatti">`. Il Worker (`worker/index.js`) controlla i dati (campo trappola anti-bot, email valida, consenso privacy, stessa origine), manda l'email con **Resend** e riporta su `/contatti#inviato` oppure `/contatti#errore` (due avvisi che si mostrano con `:target`, senza JavaScript). Il messaggio arriva a `CONTACT_TO` con «Rispondi» già puntato a chi ha scritto.
+
+Per farlo funzionare servono tre **segreti** nel Worker su Cloudflare (Workers → `naomi-acciaro` → Settings → Variables and Secrets):
+
+| Nome | Valore |
+|---|---|
+| `RESEND_API_KEY` | chiave API di Resend (resend.com → API Keys) |
+| `CONTACT_TO` | l'indirizzo che riceve i messaggi |
+| `CONTACT_FROM` | mittente su un dominio **verificato** in Resend, es. `Sito Naomi Acciaro <sito@dominio.it>` |
+
+Finché mancano, chi invia vede l'avviso «Non siamo riusciti a inviare il messaggio… prenota su MioDottore»: nessun messaggio si perde in silenzio, ma nemmeno arriva. Il recapito reale si prova solo dal sito pubblicato.
 
 ## SEO on-page
 
-Un solo `<h1>` per pagina (formula «tema + promessa»), `title` ≤ 65 e `description` 70–160 caratteri unici, una parola chiave per pagina (nutrizionista Roma, servizi, dove, contatti), breadcrumb, dati strutturati JSON-LD (`Person`, `ProfessionalService`, `Service`, `FAQPage` generata dalle stesse FAQ visibili, `BreadcrumbList`, `VideoObject`), immagini con `alt` e dimensioni, video con copertina e `preload="none"`, font preloadati. `build.mjs` segnala a console eventuali H1 multipli, title/description fuori misura o immagini senza `alt`.
+Un solo `<h1>` per pagina, `title` ≤ 65 e `description` 70–160 caratteri unici, breadcrumb, dati strutturati JSON-LD (`Person`, `ProfessionalService` con i 4 servizi, `FAQPage` generata dalle FAQ visibili di Servizi e Contatti, `BreadcrumbList`, `WebPage`), immagini con `alt` e dimensioni, font preloadati, Open Graph con anteprima 1200×630. `build.mjs` segnala H1 multipli, title/description fuori misura, titoli doppi o immagini senza `alt`, ed esce con errore.
 
 Finché non c'è il dominio definitivo il sito resta `noindex` e `robots.txt` blocca tutto.
 
-## Video
-
-Tre clip brevi, senza audio, 720×900: *Con scienza e coscienza* (10 s), *La prima visita in 4 passi* (12 s), *A tavola* (10 s). Sono animazioni grafiche costruite con le foto vere di Naomi, non riprese. Se Naomi gira i suoi video, basta sostituire gli MP4 in `public/video/` (stessi nomi; consigliato H.264, 720×900 o 9:16, sotto 2 MB) e le copertine in `public/img/video/`.
-
 ## Prima del go-live
 
-- [ ] **Dominio definitivo**, poi `node scripts/build.mjs --site-url https://dominio.it` e pubblicare.
-- [ ] **Dati obbligatori** per i siti dei professionisti sanitari, da inserire nel piede (`src/layout.html`, c'è un commento): numero e sezione di iscrizione all'albo dei biologi (ONB), partita IVA, indirizzo dello studio. L'indirizzo va anche in `scripts/build.mjs` (`address` di `ProfessionalService`) e nella pagina Dove.
-- [ ] **Far rileggere a Naomi tutti i testi**: sono bozze scritte sulla sua bio e sulle sue foto. In particolare: «Con scienza e coscienza» (Chi siamo, c'è un commento dove aggiungere 2-3 righe di storia personale vera), la sezione squadra (quali professionisti collaborano davvero: medico, allenatore, fisioterapista; con nomi e foto se vuole), formazione e titoli, le FAQ.
-- [ ] **Contatti diretti**: telefono, email, Instagram, orari (oggi la prenotazione e i contatti passano solo da MioDottore; i punti da completare sono segnalati nei commenti di `contatti.html`).
-- [ ] **Recensioni**: in home (`#recensioni`) ci sono 7 schermate di recensioni MioDottore e messaggi di ringraziamento, così come le ha consegnate Naomi (`src/reviews.json`, immagini in `public/img/recensioni/`); il dato aggregato (5,0 · 160 su MioDottore) è scritto a mano in 4 punti: `build.mjs` macro `final`, `index.html`, `chi-siamo.html`, `contatti.html`. Da verificare con Naomi prima del go-live: il **consenso dei pazienti** a pubblicare il testo (in 2 schermate si legge un nome o parte di un cognome: «Cecilia C.» in `r5`, un cognome in parte visibile in `r3`; nelle altre i nomi sono già sfocati), la **data di ogni recensione**, e che il messaggio WhatsApp in `r4` sia pubblicabile. Regole sulla pubblicità sanitaria (ONB): niente promesse di risultato, niente prima/dopo. Per togliere una recensione basta eliminarla da `src/reviews.json` e rilanciare la build.
-- [ ] **Foto**: sostituire con gli originali ad alta risoluzione le foto ricavate da Instagram (`naomi-camicia.webp`, `naomi-camicia-quadrata.webp`, `naomi-camice.webp`, `naomi-stacco.webp`, `naomi-casa.webp`, `naomi-tesi.webp`, `scrivania-1.webp`, `scrivania-2.webp`, `piatti/*.webp`, le foto dei piatti senza testo sovrapposto). Le foto del 6 novembre sono fotogrammi di storie e video: il ritocco ha tolto rumore e scritte, ma la risoluzione di partenza non si recupera.
-- [ ] Se si aggiungono moduli, statistiche o cookie: informativa privacy e cookie.
+- [ ] **Dominio definitivo**, poi `node scripts/build.mjs --site-url https://dominio.it`, commit e push.
+- [ ] **Segnaposto** (sopra) e i tre segreti del modulo.
+- [ ] **Privacy e cookie**: sono bozze scritte su come funziona oggi il sito; farle rivedere a un consulente. Se si aggiungono statistiche, mappe, video o altri servizi esterni vanno aggiornate e può servire un banner per il consenso (oggi non serve: nessun cookie).
+- [ ] **Dati obbligatori** per i siti dei professionisti sanitari: numero e sezione di iscrizione all'albo dei biologi (ONB), partita IVA, indirizzo dello studio, da inserire nel piede (`src/layout.html`).
+- [ ] **Far rileggere a Naomi tutti i testi**: sono bozze scritte sul brief e sulla sua bio. Il tono è quello del brief (niente promesse di risultato, niente «prima e dopo»).
+- [ ] **Recensioni**: in home (`#recensioni`) ci sono 7 schermate di recensioni MioDottore e messaggi di ringraziamento, così come le ha consegnate Naomi (`src/reviews.json`, immagini in `public/img/recensioni/`). Il brief ammette solo testimonianze autentiche e autorizzate: verificare con Naomi il **consenso dei pazienti** a pubblicarle (in `r5` si legge «Cecilia C.», in `r3` un cognome in parte visibile; negli altri i nomi sono sfocati), la data di ogni recensione e che il messaggio in `r4` sia pubblicabile. Per toglierne una basta eliminarla da `src/reviews.json` e rilanciare la build. Il dato aggregato «5,0 · 160 recensioni» è scritto a mano in `index.html`, `chi-sono.html`, `contatti.html` e nella macro `final` di `build.mjs`.
+- [ ] **Foto**: sostituire con gli originali ad alta risoluzione quelle ricavate da Instagram (`naomi-*.webp`, `scrivania-*.webp`, `piatti/*.webp`). Il ritocco ha tolto rumore e scritte, ma la risoluzione di partenza non si recupera.
 
 ## Pubblicazione su Cloudflare
 
-Workers & Pages → collegare il repository → **Build command**: vuoto · **Deploy command**: `npx wrangler deploy` (`wrangler.jsonc`: cartella `public/`, `not_found_handling: "404-page"`).
+Workers & Pages → collegare il repository → **Build command**: vuoto · **Deploy command**: `npx wrangler deploy`. `wrangler.jsonc` pubblica la cartella `public/` (con `not_found_handling: "404-page"`) e fa passare dal Worker solo `/api/*`.
 
 Link di prenotazione (senza parametri di tracciamento): https://www.miodottore.it/profilo/naomi-acciaro

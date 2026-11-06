@@ -1,9 +1,14 @@
 {
-  // Sito vetrina statico (cartella public/) su Cloudflare Workers.
+  // Sito vetrina (cartella public/) su Cloudflare Workers.
+  // Il Worker in worker/index.js risponde solo a /api/* (modulo di contatto); il resto lo serve Cloudflare dai file statici.
+  // Segreti da impostare in Cloudflare: RESEND_API_KEY, CONTACT_TO, CONTACT_FROM (vedi README).
   "name": "naomi-acciaro",
+  "main": "worker/index.js",
   "compatibility_date": "2026-10-12",
   "assets": {
     "directory": "./public",
-    "not_found_handling": "404-page"
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
   }
 }

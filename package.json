@@ -3,10 +3,11 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Sito vetrina della Dott.ssa Naomi Acciaro, biologa nutrizionista (Roma | Online)",
+  "description": "Sito vetrina di Naomi Acciaro, biologa nutrizionista (Roma | Online)",
   "scripts": {
     "preview:build": "node scripts/build.mjs && node scripts/preview.mjs",
     "build": "node scripts/build.mjs",
-    "dev": "node scripts/build.mjs && node scripts/dev-server.mjs"
+    "dev": "node scripts/build.mjs && node scripts/dev-server.mjs",
+    "test": "node worker/test.mjs"
   }
 }
