@@ -1,6 +1,6 @@
 # Naomi Acciaro · sito vetrina
 
-Sito di 5 pagine per Naomi Acciaro, biologa nutrizionista (Roma | Online): **Home, Chi sono, Servizi, Metodo, Contatti**, più Privacy policy, Cookie policy e 404. HTML e CSS statici, nessun framework, **nessun JavaScript e nessun cookie sul sito**. La prenotazione rimanda al profilo MioDottore; il modulo di contatto passa da un piccolo Worker (vedi sotto).
+Sito di 5 pagine per Naomi Acciaro, biologa nutrizionista (Roma | Online): **Home, Chi sono, Servizi, Metodo, Contatti**, più Privacy policy, Cookie policy e 404. HTML e CSS statici, nessun framework, **nessun cookie sul sito** e JavaScript solo per la scena 3D della home (vedi «Percorso 3D»). La prenotazione rimanda al profilo MioDottore; il modulo di contatto passa da un piccolo Worker (vedi sotto).
 
 ## Identità (brief «Science meets wellness»)
 
@@ -13,6 +13,7 @@ Concept **Science meets wellness**, payoff *«Il tuo benessere, il tuo equilibri
 - Niente grafica ospedaliera (caduceo, croci), niente foto stock di frutta e verdura: le foto sono quelle vere di Naomi e dei suoi piatti.
 - Icone: set proprio in `public/img/icons.svg` (griglia 24, tratto sottile).
 - Liste di schede (servizi, fasi, valori): sotto i 1020 px diventano carosello orizzontale, solo CSS (`scroll-snap`), con la scheda successiva accennata e la barra «Scorri →». Macro `{{swipe}}` dopo ogni lista.
+- **Percorso 3D** (home, subito dopo l'apertura): vedi la sezione omonima più sotto. È l'unico JavaScript del sito.
 - Menu da telefono: `<details>` senza JavaScript. La barra «Prenota» in basso su iPhone compare dopo l'apertura della pagina e non c'è nella pagina Contatti.
 
 ## Come è fatto
@@ -21,6 +22,7 @@ Concept **Science meets wellness**, payoff *«Il tuo benessere, il tuo equilibri
 src/site.json        dati comuni (nome, link prenotazione, menu, link legali)
 src/layout.html      intestazione sticky, piede, meta tag (uguali per tutte le pagine)
 src/pages/*.html     una pagina ciascuna: blocco JSON iniziale (title, description, FAQ) + contenuto
+src/story.html       testi e tag della scena 3D della home (macro {{story}})
 src/reviews.json     le schermate delle recensioni (file, misure, data, testo alternativo) della macro {{reviews}}
 src/photos.json      testi alternativi delle foto usate nelle strisce (chiave = percorso in public/img senza .webp)
 scripts/build.mjs    genera public/*.html (+ dati strutturati, sitemap, robots)
@@ -28,6 +30,7 @@ scripts/fonts.py     ricava i font in public/fonts da Google Fonts
 scripts/build-icons.py, build-og.py   favicon, icona 512 e anteprima social (1200×630)
 scripts/photos.py, enhance.py         ritagli e ritocco delle foto (recensioni, scrivania, trittico)
 worker/index.js      Worker del modulo di contatto (POST /api/contatti); worker/test.mjs lo prova senza rete
+public/story/*.js    la scena 3D (gl.js motore, scene.js oggetti e coreografia, main.js scroll e testi)
 public/              il sito pubblicato (file generati e committati: su Cloudflare non serve alcuna build)
 public/_redirects    /chi-siamo → /chi-sono e /dove → /contatti (gli indirizzi della vecchia versione)
 ```
@@ -49,6 +52,18 @@ Comandi (Node 20+):
 | `python3 scripts/build-icons.py` / `build-og.py` | favicon e icona 512 / anteprima social |
 | `python3 scripts/photos.py CARTELLA [nome ...]` | rifà dalle foto originali i ritagli in `public/img` (serve `opencv-contrib-python`) |
 | `npm run preview:build` | anteprima a file unico in `.tmp/preview/sito.html` |
+
+## Percorso 3D (home)
+
+Sezione fissa a schermo che racconta due capitoli mentre si scorre: **Mangiare bene** (frutta, verdura, frutta secca con i loro macro e micronutrienti cadono nel frullatore, si frullano e si versano nello shaker) e **Allenarsi bene** (nello shaker cadono creatina, magnesio, omega-3 e vitamina D, il tappo si chiude e si scuote). Lo scorrimento della pagina è il «tempo» T della scena (0 → 6,2): tornando indietro la sequenza si riavvolge identica.
+
+- **Come è fatto**: WebGL2 scritto a mano, nessuna libreria e nessuna build (moduli ES caricati dal browser). `public/story/gl.js` matematica e geometrie (solidi di rivoluzione, tubi, foglie); `scene.js` oggetti, luci, vetro e liquidi, e tutta la coreografia come funzione di T; `main.js` collega lo scorrimento, i testi, i tag e l'indice. Testi e tag in `src/story.html` (macro `{{story}}` nella home); stile in fondo a `style.css` (blocco «percorso»).
+- **Versione statica di riserva**: la sezione nasce come due capitoli con immagine e testo (`public/img/story-cibo.webp`, `story-sport.webp`). Il JavaScript aggiunge `.is-live` solo se WebGL2 è disponibile e non ci sono «riduci movimento» né risparmio dati; se il contesto grafico si perde torna alla versione statica. Senza JavaScript la pagina è completa.
+- **Colori**: oggetti smorzati (verde salvia, burro, terracotta spenta, carbone) per restare dentro la palette del sito; sfondi solo miscele di Ivory e Sand; spigoli vivi anche nei tag.
+- **Testi sugli integratori**: volutamente non promissori («solo quando servono», «caso per caso», «mai a priori»). Da far rivedere a Naomi prima del go-live.
+- **Modificare la sequenza**: tempi, posizioni e colori sono costanti leggibili in `scene.js` (`BEATS`, `ING`, `SUP`, `camKeys`, funzione `render`). Per vedere un istante preciso, aprire la home con `?storydebug` e da console `__story.setT(3.8)`.
+- **Immagini di riserva**: si rigenerano dalla stessa scena (stesso motore, T=0,8 e T=3,72) su sfondo Ivory e Sand; vanno rifatte se cambiano colori o forme.
+- **Prestazioni**: la risoluzione scende da sola se il dispositivo fatica; fuori schermo la scena non disegna.
 
 ## Segnaposto da completare
 

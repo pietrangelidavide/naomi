@@ -69,6 +69,7 @@ const reviews = () => {
 };
 function expand(html, meta) {
   return html
+    .replace(/\{\{story\}\}/g, () => expand(rd('src/story.html'), meta))
     .replace(/\{\{ico:([a-z-]+)(?:\|([^}]*))?\}\}/g, (_m, n, c) => ico(n, c || ''))
     .replace(/\{\{cta:([^|}]*)\|(.*?)(?:\|(light))?\}\}/g, (_m, l, m, v) => cta(l, m, v))
     .replace(/\{\{link:([^|}]*)\|([^|}]*)(?:\|([^}]*))?\}\}/g, (_m, l, h, m) => link(l, h, m))
