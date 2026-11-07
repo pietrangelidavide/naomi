@@ -2,6 +2,12 @@
 
 Sito di 5 pagine per Naomi Acciaro, biologa nutrizionista (Roma | Online): **Home, Chi sono, Servizi, Metodo, Contatti**, più Privacy policy, Cookie policy e 404. HTML e CSS statici, nessun framework, **nessun cookie sul sito** e JavaScript solo per la scena 3D della home (vedi «Percorso 3D»). La prenotazione rimanda al profilo MioDottore; il modulo di contatto passa da un piccolo Worker (vedi sotto).
 
+## Stato attuale della cartella `public/`
+
+Dal 2026-11-07 `public/` contiene il **sito 3D «Il percorso»** (home a scorrimento in 5 fasi: `index.html`, `css/`, `js/`, `img/p1-p5`, `img/d-*`), non più le pagine generate da `src/`. Restano `privacy.html`, `cookie.html` e `404.html` del sito precedente (con `style.css`), e `_redirects` manda le vecchie pagine in home.
+
+Il sito precedente completo è nel tag `sito-precedente`. **Non lanciare `npm run build` senza prima decidere cosa tenere**: lo script riscrive le pagine di `public/` a partire da `src/` e farebbe riapparire il sito vecchio accanto a quello nuovo.
+
 ## Identità (brief «Science meets wellness»)
 
 Concept **Science meets wellness**, payoff *«Il tuo benessere, il tuo equilibrio, il tuo percorso.»* Stile minimal luxury, editoriale, femminile contemporaneo, organic modernism.

@@ -4,16 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Biologa nutrizionista a Roma e online | Naomi Acciaro</title>
-<meta name="description" content="Naomi Acciaro, biologa nutrizionista e antropometrista ISAK a Roma e online: un percorso alimentare scientifico e personalizzato. Prenota una consulenza.">
-<meta name="theme-color" content="#f6f3ee">
+<meta name="description" content="Il benessere non è una destinazione. È un percorso. Naomi Acciaro, biologa nutrizionista a Roma e online: alimentazione, cucina, sport e scienza in un unico percorso.">
+<meta name="theme-color" content="#F0E5DB">
 <meta name="color-scheme" content="light">
-<!-- Finché il sito non ha il dominio definitivo resta fuori da Google. Al go-live: node scripts/build.mjs --site-url https://dominio -->
-<meta name="robots" content="noindex, nofollow">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="it_IT">
 <meta property="og:site_name" content="Naomi Acciaro">
 <meta property="og:title" content="Naomi Acciaro | Biologa nutrizionista a Roma e online">
-<meta property="og:description" content="Naomi Acciaro, biologa nutrizionista e antropometrista ISAK a Roma e online: un percorso alimentare scientifico e personalizzato. Prenota una consulenza.">
+<meta property="og:description" content="Il benessere non è una destinazione. È un percorso. Alimentazione, cucina, sport e scienza in un unico percorso.">
 <meta property="og:image" content="/img/og.jpg">
 <meta property="og:image:alt" content="Naomi Acciaro, biologa nutrizionista a Roma e online">
 <meta name="twitter:card" content="summary_large_image">
@@ -21,346 +19,147 @@
 <link rel="icon" href="/img/favicon-48.png" type="image/png" sizes="48x48">
 <link rel="icon" href="/img/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
-<link rel="preload" href="/fonts/cormorant-garamond-var.woff" as="font" type="font/woff" crossorigin>
-<link rel="preload" href="/fonts/dm-sans-var.woff" as="font" type="font/woff" crossorigin>
-<link rel="preload" href="/img/scrivania-1.webp" as="image" type="image/webp">
-<link rel="stylesheet" href="/style.css">
-<script type="application/ld+json">
-{
- "@context": "https://schema.org",
- "@graph": [
-  {
-   "@type": "Person",
-   "@id": "/#naomi",
-   "name": "Naomi Acciaro",
-   "jobTitle": "Biologa nutrizionista",
-   "description": "Biologa nutrizionista e antropometrista ISAK Level 1. Percorsi alimentari personalizzati, nutrizione clinica e sportiva a Roma e online.",
-   "image": "/img/naomi-camicia.webp",
-   "knowsAbout": [
-    "Nutrizione clinica",
-    "Nutrizione sportiva",
-    "Antropometria ISAK",
-    "Piano alimentare personalizzato",
-    "Educazione alimentare"
-   ],
-   "hasCredential": {
-    "@type": "EducationalOccupationalCredential",
-    "credentialCategory": "certification",
-    "name": "Antropometrista ISAK Level 1"
-   },
-   "worksFor": {
-    "@id": "/#studio"
-   }
-  },
-  {
-   "@type": "ProfessionalService",
-   "@id": "/#studio",
-   "name": "Naomi Acciaro, biologa nutrizionista",
-   "logo": "/img/icon-512.png",
-   "description": "Consulenza nutrizionale, percorsi alimentari personalizzati, educazione alimentare e controlli a Roma e online.",
-   "image": "/img/og.jpg",
-   "areaServed": {
-    "@type": "City",
-    "name": "Roma"
-   },
-   "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Roma",
-    "addressCountry": "IT"
-   },
-   "availableLanguage": "it",
-   "employee": {
-    "@id": "/#naomi"
-   },
-   "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "Servizi",
-    "itemListElement": [
-     {
-      "@type": "Offer",
-      "itemOffered": {
-       "@type": "Service",
-       "name": "Consulenza nutrizionale"
-      }
-     },
-     {
-      "@type": "Offer",
-      "itemOffered": {
-       "@type": "Service",
-       "name": "Percorsi alimentari personalizzati"
-      }
-     },
-     {
-      "@type": "Offer",
-      "itemOffered": {
-       "@type": "Service",
-       "name": "Educazione alimentare"
-      }
-     },
-     {
-      "@type": "Offer",
-      "itemOffered": {
-       "@type": "Service",
-       "name": "Controlli e monitoraggio"
-      }
-     }
-    ]
-   }
-  },
-  {
-   "@type": "WebPage",
-   "@id": "/#page",
-   "url": "/",
-   "name": "Biologa nutrizionista a Roma e online | Naomi Acciaro",
-   "description": "Naomi Acciaro, biologa nutrizionista e antropometrista ISAK a Roma e online: un percorso alimentare scientifico e personalizzato. Prenota una consulenza.",
-   "inLanguage": "it",
-   "about": {
-    "@id": "/#naomi"
-   },
-   "isPartOf": {
-    "@id": "/#site"
-   }
-  },
-  {
-   "@type": "WebSite",
-   "@id": "/#site",
-   "url": "/",
-   "name": "Naomi Acciaro",
-   "inLanguage": "it"
-  }
- ]
-}
-</script>
+<!-- Finché il sito non ha il dominio definitivo resta fuori da Google (come da README). -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="preload" href="fonts/cormorant-garamond-italic-var.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="fonts/dm-sans-var.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="css/style.css">
 </head>
-<body class="page-home">
-
-<a class="skip" href="#contenuto">Vai ai contenuti</a>
+<body class="is-loading">
+<a class="skip" href="#naomi">Vai ai contenuti</a>
 
 <header class="top">
-  <div class="wrap top__bar">
-    <a class="brand" href="/" aria-label="Naomi Acciaro, biologa nutrizionista: vai alla home">
-      <span class="brand__name">Naomi Acciaro</span>
-      <span class="brand__role">Biologa nutrizionista</span>
-    </a>
-    <nav class="nav" aria-label="Pagine del sito">
-      <a class="nav__link" href="/" aria-current="page">Home</a>
-      <a class="nav__link" href="/chi-sono">Chi sono</a>
-      <a class="nav__link" href="/servizi">Servizi</a>
-      <a class="nav__link" href="/metodo">Metodo</a>
-      <a class="nav__link" href="/contatti">Contatti</a>
-    </nav>
-    <a class="btn btn--small top__cta" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota una consulenza</a>
-    <details class="menu">
-      <summary><span class="menu__label">Menu</span><span class="menu__bars" aria-hidden="true"></span></summary>
-      <nav class="menu__panel" aria-label="Menu">
-      <a class="nav__link" href="/" aria-current="page">Home</a>
-      <a class="nav__link" href="/chi-sono">Chi sono</a>
-      <a class="nav__link" href="/servizi">Servizi</a>
-      <a class="nav__link" href="/metodo">Metodo</a>
-      <a class="nav__link" href="/contatti">Contatti</a>
-      </nav>
-    </details>
-  </div>
+  <a class="brand" href="#fase-1" aria-label="Naomi Acciaro, biologa nutrizionista, torna all'inizio">
+    <span class="brand__n">NAOMI ACCIARO</span><span class="brand__r">Biologa nutrizionista</span>
+  </a>
+  <a class="btn btn--sm" href="https://www.miodottore.it/profilo/naomi-acciaro" rel="noopener" target="_blank">Prenota</a>
 </header>
 
-<main id="contenuto">
-<section class="hero" id="top" aria-labelledby="hero-title">
-  <div class="wrap hero__grid">
-    <div class="hero__text">
-      <h1 class="hero__title" id="hero-title">Prendersi cura di sé, partendo dall'alimentazione.</h1>
-      <p class="hero__lead">Un approccio scientifico e personalizzato per costruire un rapporto più consapevole e sereno con il cibo.</p>
-      <div class="hero__cta">
-        <a class="btn btn--big" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota una consulenza</a>
-        <a class="textlink" href="/metodo">Scopri il mio approccio</a>
-      </div>
-    </div>
-    <div class="duo">
-      <figure class="duo__a"><img src="/img/scrivania-1.webp" width="900" height="1121" alt="Naomi Acciaro, biologa nutrizionista, al lavoro al computer nel suo studio"></figure>
-      <figure class="duo__b"><img src="/img/scrivania-2.webp" width="900" height="1126" alt="Naomi Acciaro legge con attenzione lo schermo del computer"></figure>
-    </div>
-  </div>
-  <div class="wrap">
-    <div class="strip" role="group" aria-label="Informazioni utili">
-      <div class="strip__cell"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#pin"/></svg><span><span class="strip__k">Dove</span><span class="strip__v">Roma | Online</span></span></div>
-      <div class="strip__cell"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#calendar"/></svg><span><span class="strip__k">Come si prenota</span><span class="strip__v">Su MioDottore</span></span></div>
-      <a class="strip__cell" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener" aria-label="Valutazione 5 su 5, 160 recensioni su MioDottore"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#star"/></svg><span><span class="strip__k">Valutazione</span><span class="strip__v">5,0 · 160 recensioni</span></span></a>
-    </div>
-  </div>
-</section>
+<nav class="rail" aria-label="Fasi del percorso">
+  <ol>
+    <li><a href="#fase-1" data-go="0" aria-current="step"><i></i><span>Personal brand</span></a></li>
+    <li><a href="#fase-2" data-go="1"><i></i><span>Alimentazione</span></a></li>
+    <li><a href="#fase-3" data-go="2"><i></i><span>Cucina</span></a></li>
+    <li><a href="#fase-4" data-go="3"><i></i><span>Performance</span></a></li>
+    <li><a href="#fase-5" data-go="4"><i></i><span>Scienza</span></a></li>
+  </ol>
+</nav>
 
-<section class="story" id="percorso" aria-labelledby="story-t1" data-story>
-  <div class="story__track">
-    <div class="story__stage">
-      <div class="story__bg" aria-hidden="true"></div>
-      <div class="story__bg story__bg--b" aria-hidden="true"></div>
-      <canvas class="story__cv" aria-hidden="true"></canvas>
-      <div class="story__tags" aria-hidden="true">
-        <span class="tag" data-tag="banana" data-side="-1"><i>macro</i><b>Carboidrati</b></span>
-        <span class="tag" data-tag="spinach" data-side="1"><i>micro</i><b>Minerali</b></span>
-        <span class="tag" data-tag="avocado" data-side="-1"><i>macro</i><b>Grassi buoni</b></span>
-        <span class="tag" data-tag="apple" data-side="1"><i>micro</i><b>Fibre</b></span>
-        <span class="tag" data-tag="carrot" data-side="-1"><i>micro</i><b>Vitamine</b></span>
-        <span class="tag" data-tag="almond" data-side="1"><i>macro</i><b>Proteine</b></span>
-        <span class="tag" data-tag="creatina" data-side="1"><i>se serve</i><b>Creatina</b></span>
-        <span class="tag" data-tag="mag" data-side="-1"><i>se serve</i><b>Magnesio</b></span>
-        <span class="tag" data-tag="omega" data-side="1"><i>se serve</i><b>Omega-3</b></span>
-        <span class="tag" data-tag="vitd" data-side="-1"><i>se serve</i><b>Vitamina D</b></span>
-      </div>
-      <div class="story__copy">
-        <article class="chap" aria-labelledby="story-t1">
-          <header class="chap__head"><h2 class="chap__title" id="story-t1">Mangiare bene</h2></header>
-          <figure class="chap__fig"><img src="/img/story-cibo.webp" width="1200" height="1200" loading="lazy" decoding="async" alt="Frutta, verdura e frutta secca che cadono in un frullatore di vetro"></figure>
-          <div class="beat"><h3 class="beat__h">Tutto parte da ciò che porti a tavola.</h3><p class="beat__p">Carboidrati, proteine e grassi buoni, e poi fibre, vitamine e minerali. Arrivano dal cibo di tutti i giorni, in quantità e combinazioni diverse per ciascuno.</p></div>
-          <div class="beat"><h3 class="beat__h">Nessun alimento è la risposta da solo.</h3><p class="beat__p">Contano la varietà, le quantità giuste e il modo in cui tutto si incastra nelle tue giornate. Si mescola, e funziona insieme.</p></div>
-          <div class="beat"><h3 class="beat__h">Poi diventa un piano che è tuo.</h3><p class="beat__p">Ascolto, esami e abitudini si trasformano in un percorso alimentare scritto per te, con alternative per i giorni in cui la vita va diversamente dal previsto.</p></div>
-        </article>
-        <article class="chap" aria-labelledby="story-t2">
-          <header class="chap__head"><h2 class="chap__title" id="story-t2">Allenarsi bene</h2></header>
-          <figure class="chap__fig"><img src="/img/story-sport.webp" width="1200" height="1200" loading="lazy" decoding="async" alt="Uno shaker con un frullato verde e gli integratori che cadono all'interno"></figure>
-          <div class="beat"><h3 class="beat__h">Se ti alleni, il piano si affina.</h3><p class="beat__p">Energia, recupero e idratazione si calibrano sul tuo sport, sui carichi e sugli orari in cui ti alleni.</p></div>
-          <div class="beat"><h3 class="beat__h">Gli integratori? Solo quando servono.</h3><p class="beat__p">Creatina, magnesio, omega-3, vitamina D: li valuto caso per caso, partendo da cosa mangi, dagli esami e dal tuo obiettivo. Mai a priori.</p></div>
-          <div class="beat beat--cta"><h3 class="beat__h">Su misura, con metodo.</h3><p class="beat__p">Misure ISAK, ascolto e dati, per allenarti meglio senza rinunciare a mangiare bene.</p><div class="cta"><a class="btn btn--big" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota una consulenza</a><p class="cta__micro">Roma | Online · scegli giorno e orario su MioDottore</p></div></div>
-        </article>
-      </div>
-      <div class="story__idx" aria-hidden="true"><span><em>Mangiare bene</em><i></i></span><span><em>Allenarsi bene</em><i></i></span></div>
-      <p class="story__cue" aria-hidden="true">Scorri <svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#arrow"/></svg></p>
-    </div>
-  </div>
-  <script type="module" src="/story/main.js"></script>
-</section>
+<main>
+<div class="story" id="percorso">
+  <div class="stage">
+    <canvas id="gl" aria-hidden="true"></canvas>
+    <div class="veil" aria-hidden="true"></div>
 
-
-<section class="sec" id="manifesto" aria-labelledby="manifesto-title">
-  <div class="wrap">
-    <div class="manifesto">
-      <h2 class="manifesto__title" id="manifesto-title">La nutrizione non è una formula uguale per tutti.</h2>
-      <div class="manifesto__side">
-        <p>Ognuno di noi ha una storia, dei ritmi, dei gusti e un corpo che risponde in modo diverso. Per questo un percorso nutrizionale funziona quando nasce dall'ascolto, tiene conto delle esigenze di ciascuno e si appoggia alle evidenze scientifiche: non a mode, né a schemi copiati da qualcun altro.</p>
-        <p class="manifesto__note">Science meets wellness.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="sec sec--sand" id="chi-sono" aria-labelledby="chi-sono-title">
-  <div class="wrap">
-    <div class="about">
-      <div class="about__media">
-        <figure><img src="/img/naomi-camicia.webp" width="1100" height="1338" loading="lazy" decoding="async" alt="Naomi Acciaro, biologa nutrizionista, in camicia azzurra"></figure>
-      </div>
-      <div class="about__text">
-        <h2 class="h2" id="chi-sono-title">Piacere, sono Naomi Acciaro.</h2>
-        <div class="prose">
-          <p>Sono biologa nutrizionista e antropometrista ISAK Level 1. Lavoro con persone che vogliono mangiare meglio, allenarsi meglio o semplicemente capire che cosa funziona per loro.</p>
-          <p>Misuro, ascolto e costruisco un piano alimentare che entra nella vita di tutti i giorni: con scienza e coscienza, senza promesse e senza schemi uguali per tutti.</p>
+    <article class="phase phase--1 is-left" id="fase-1" data-i="0" aria-labelledby="h-1">
+      <figure class="fig"><img src="img/p1.webp" width="650" height="1283" alt="Naomi Acciaro in camicia azzurra, con gli occhiali, in posa rilassata" loading="eager"></figure>
+      <div class="copy">
+        <p class="kicker">Biologa nutrizionista · Roma | Online</p>
+        <h1 id="h-1">Il benessere non è una destinazione. È&nbsp;un&nbsp;percorso.</h1>
+        <p class="lead">Sono Naomi Acciaro. Ti accompagno in cinque passi: conoscenza, equilibrio, energia e consapevolezza.</p>
+        <div class="actions">
+          <a class="btn" href="https://www.miodottore.it/profilo/naomi-acciaro" rel="noopener" target="_blank">Prenota una consulenza</a>
+          <a class="more" href="#fase-2" data-go="1">Inizia il percorso <span aria-hidden="true">↓</span></a>
         </div>
-        <dl class="facts">
+        <ul class="chips" aria-label="In breve">
+          <li>Antropometrista ISAK Level 1</li>
+          <li><span class="star" aria-hidden="true">★</span> 5,0 · 160 recensioni su MioDottore</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="phase phase--2 is-right" id="fase-2" data-i="1" aria-labelledby="h-2">
+      <figure class="fig"><img src="img/p2.webp" width="1039" height="1500" alt="Naomi Acciaro seduta, con le mani tese in avanti come se scegliesse gli ingredienti" loading="lazy"></figure>
+      <div class="copy">
+        <p class="kicker">Fase 2 di 5 · Alimentazione</p>
+        <h2 id="h-2">Imparare a scegliere è il primo passo per nutrirsi meglio.</h2>
+        <p class="lead">Una spesa equilibrata e colorata parte da qui: frutta e verdura di stagione, proteine di qualità, cereali integrali e grassi buoni.</p>
+        <ul class="chips" aria-label="Cosa metti nel carrello">
+          <li>Frutta e verdura</li><li>Proteine di qualità</li><li>Cereali integrali</li><li>Grassi buoni</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="phase phase--3 is-left" id="fase-3" data-i="2" aria-labelledby="h-3">
+      <figure class="fig"><img src="img/p3.webp" width="800" height="1361" alt="Naomi Acciaro con i gomiti sul piano e il mento sulle mani, guarda con attenzione un piatto" loading="lazy"></figure>
+      <div class="copy">
+        <p class="kicker">Fase 3 di 5 · Cucina</p>
+        <h2 id="h-3">Mangiare sano non significa rinunciare al gusto.</h2>
+        <p class="lead">Gli ingredienti diventano piatti semplici, bilanciati e da preparare a casa. I piatti appesi alla parete sono quelli veri di Naomi.</p>
+      </div>
+    </article>
+
+    <article class="phase phase--4 is-right on-dark" id="fase-4" data-i="3" aria-labelledby="h-4">
+      <figure class="fig"><img src="img/p4.webp" width="649" height="1114" alt="Naomi Acciaro durante uno stacco da terra in palestra" loading="lazy"></figure>
+      <div class="copy">
+        <p class="kicker">Fase 4 di 5 · Performance</p>
+        <h2 id="h-4">Nutri il tuo corpo. Sostieni la tua energia. Esprimi il tuo potenziale.</h2>
+        <p class="lead">Per chi si allena: cosa mangiare prima, dopo e nei giorni di scarico, in base allo sport, agli orari e al calendario.</p>
+      </div>
+    </article>
+
+    <article class="phase phase--5 is-left" id="fase-5" data-i="4" aria-labelledby="h-5">
+      <figure class="fig"><img src="img/p5.webp" width="473" height="806" alt="Naomi Acciaro in camice bianco, con le braccia incrociate, sorride" loading="lazy"></figure>
+      <div class="copy">
+        <p class="kicker">Fase 5 di 5 · Scienza e formazione</p>
+        <h2 id="h-5">La professionalità nasce dalla conoscenza e dalla continua formazione.</h2>
+        <p class="lead">Misure ripetibili con il protocollo ISAK, dati e linee guida al posto delle mode del momento.</p>
+        <ul class="chips" aria-label="Formazione">
+          <li>Antropometrista ISAK Level 1</li><li>Nutrizione clinica e sportiva</li>
+        </ul>
+      </div>
+    </article>
+
+    <p class="hint" aria-hidden="true"><span>Scorri</span><i></i></p>
+  </div>
+</div>
+
+<section class="final" id="naomi" aria-labelledby="h-fin">
+  <div class="final__in">
+    <figure class="final__fig">
+      <img src="img/p5.webp" width="473" height="806" alt="Naomi Acciaro, biologa nutrizionista, in camice bianco" loading="lazy">
+    </figure>
+    <div class="final__copy">
+      <p class="kicker">Il primo passo è conoscerci</p>
+      <h2 id="h-fin">Il tuo percorso comincia da una conversazione.</h2>
+      <p class="lead">Nella prima consulenza, a Roma o online, ti ascolto, leggo gli esami che porti e capiamo insieme da dove partire. Niente diete lampo, niente promesse di risultato: misure, ascolto e un piano che puoi seguire.</p>
+      <div class="actions">
+        <a class="btn" href="https://www.miodottore.it/profilo/naomi-acciaro" rel="noopener" target="_blank">Prenota una consulenza</a>
+        <a class="btn btn--ghost" href="https://www.miodottore.it/profilo/naomi-acciaro" rel="noopener" target="_blank">Inizia un percorso</a>
+      </div>
+      <p class="micro">Scegli giorno e orario su MioDottore · Roma | Online</p>
+    </div>
+    <div class="final__cards">
+      <article>
+        <h3>Conosci Naomi</h3>
+        <dl>
           <div><dt>Titolo</dt><dd>Biologa nutrizionista</dd></div>
           <div><dt>Specializzazioni</dt><dd>Nutrizione clinica e sportiva</dd></div>
           <div><dt>Formazione</dt><dd>Antropometrista ISAK Level 1</dd></div>
           <div><dt>Dove</dt><dd>Roma | Online</dd></div>
         </dl>
-        <div class="cta"><a class="btn btn--ghost btn--big" href="/chi-sono">Scopri la mia storia</a></div>
-      </div>
+        <p class="rating"><span class="star" aria-hidden="true">★</span> 5,0 · 160 recensioni su MioDottore</p>
+      </article>
+      <article>
+        <h3>Come lavoriamo</h3>
+        <ol class="steps">
+          <li><b>Ascolto e conoscenza</b> Abitudini, orari, gusti, obiettivi.</li>
+          <li><b>Valutazione</b> Esami e, se serve, misure ISAK.</li>
+          <li><b>Piano su di te</b> Scritto per le tue giornate, con alternative.</li>
+          <li><b>Controlli</b> Si rivede insieme e si aggiusta.</li>
+        </ol>
+      </article>
     </div>
   </div>
+  <footer class="foot">
+    <p class="brand brand--foot"><span class="brand__n">NAOMI ACCIARO</span><span class="brand__r">Biologa nutrizionista · Roma | Online</span></p>
+    <p>I contenuti di questo sito hanno scopo informativo e non sostituiscono il parere del medico. Il sito non usa cookie né strumenti di tracciamento: la prenotazione avviene su MioDottore. I grafici nella fase 5 sono esempi illustrativi.</p>
+    <p class="legal"><a href="/privacy">Privacy</a> · <a href="/cookie">Cookie</a></p>
+  </footer>
 </section>
-
-<section class="sec" id="servizi" aria-labelledby="servizi-title">
-  <div class="wrap">
-    <div class="sec__head">
-      <h2 class="h2" id="servizi-title">Quattro modi per prenderti cura di te.</h2>
-      <p class="sec__lead">Ogni percorso parte dalla prima consulenza e si costruisce su di te. Qui in breve; nella pagina Servizi trovi cosa include ciascuno.</p>
-    </div>
-    <ul class="svc">
-      <li class="svc__item"><svg class="ico ico--lg" aria-hidden="true" focusable="false"><use href="/img/icons.svg#plate"/></svg><h3 class="svc__title">Consulenza nutrizionale</h3><p class="svc__text">Il primo incontro è un ascolto: abitudini, orari, gusti, esami e obiettivi. Da qui parte tutto il resto.</p><a class="textlink" href="/servizi#consulenza">Approfondisci<span class="sr"> la consulenza nutrizionale</span></a></li>
-      <li class="svc__item"><svg class="ico ico--lg" aria-hidden="true" focusable="false"><use href="/img/icons.svg#plan"/></svg><h3 class="svc__title">Percorsi alimentari personalizzati</h3><p class="svc__text">Un piano scritto per te, con alternative, per le giornate di tutti i giorni e per chi si allena.</p><a class="textlink" href="/servizi#percorsi">Approfondisci<span class="sr"> i percorsi alimentari personalizzati</span></a></li>
-      <li class="svc__item"><svg class="ico ico--lg" aria-hidden="true" focusable="false"><use href="/img/icons.svg#chat"/></svg><h3 class="svc__title">Educazione alimentare</h3><p class="svc__text">Capire che cosa mangi e perché, in parole semplici, per scegliere con consapevolezza anche quando sei da solo.</p><a class="textlink" href="/servizi#educazione">Approfondisci<span class="sr"> l'educazione alimentare</span></a></li>
-      <li class="svc__item"><svg class="ico ico--lg" aria-hidden="true" focusable="false"><use href="/img/icons.svg#ruler"/></svg><h3 class="svc__title">Controlli e monitoraggio</h3><p class="svc__text">Controlli periodici e misure ISAK ripetibili, per vedere come cambia il corpo e non solo il peso.</p><a class="textlink" href="/servizi#controlli">Approfondisci<span class="sr"> i controlli e il monitoraggio</span></a></li>
-    </ul>
-    <div class="swipe-ui" aria-hidden="true"><span class="swipe-bar"></span><span class="swipe-hint">Scorri <svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#arrow"/></svg></span></div>
-  </div>
-</section>
-
-<section class="sec sec--sand" id="metodo" aria-labelledby="metodo-title">
-  <div class="wrap">
-    <div class="sec__head">
-      <h2 class="h2" id="metodo-title">Un percorso, costruito insieme.</h2>
-      <p class="sec__lead">Quattro fasi, un unico filo: partire da te. Non da uno schema, non da una dieta trovata altrove.</p>
-    </div>
-    <ol class="phases">
-      <li class="phase"><span class="phase__n" aria-hidden="true">1</span><h3 class="phase__title">Ascolto e conoscenza</h3><p>Partiamo da te: abitudini, orari, gusti, obiettivi, storia clinica. Senza fretta e senza giudizio.</p></li>
-      <li class="phase"><span class="phase__n" aria-hidden="true">2</span><h3 class="phase__title">Valutazione delle esigenze</h3><p>Leggo gli esami che porti e, quando serve, misuro il corpo con il protocollo ISAK. Si parte da dati affidabili.</p></li>
-      <li class="phase"><span class="phase__n" aria-hidden="true">3</span><h3 class="phase__title">Percorso personalizzato</h3><p>Un piano alimentare scritto per te, con indicazioni chiare e alternative, pensato per le tue giornate.</p></li>
-      <li class="phase"><span class="phase__n" aria-hidden="true">4</span><h3 class="phase__title">Monitoraggio e supporto</h3><p>Ci rivediamo per capire come stai e aggiustare il percorso: un piano si affina nel tempo.</p></li>
-    </ol>
-    <div class="swipe-ui" aria-hidden="true"><span class="swipe-bar"></span><span class="swipe-hint">Scorri <svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#arrow"/></svg></span></div>
-    <div class="cta"><a class="btn btn--ghost btn--big" href="/metodo">Scopri il mio metodo</a></div>
-  </div>
-</section>
-
-<section class="sec sec--film" id="filosofia" aria-labelledby="filosofia-title">
-  <div class="wrap">
-    <div class="philo">
-      <h2 class="philo__title" id="filosofia-title">Il benessere non è perfezione. È equilibrio.</h2>
-      <div class="philo__text">
-        <p>Non servono restrizioni inutili, divieti o scorciatoie. Mangiare bene è una competenza che si costruisce: capire che cosa ti fa stare bene, scegliere con consapevolezza anche quando le cose non vanno come previsto, ritrovare serenità a tavola.</p>
-        <p>Il mio lavoro è accompagnarti in questo percorso, senza promesse e senza giudizio.</p>
-        <a class="textlink" href="/chi-sono#filosofia">Leggi la mia filosofia di lavoro</a>
-      </div>
-    </div>
-  </div>
-  <div class="film" role="group" aria-label="Naomi, i suoi piatti e il suo lavoro"><ul class="film__track"><li class="film__item"><img src="/img/naomi-casa.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Naomi Acciaro a casa sua, in salotto, con dei libri in mano"></li><li class="film__item"><img src="/img/piatti/spaghetti.webp" width="900" height="1125" loading="lazy" decoding="async" alt="Piatto di spaghetti con gamberi e pomodoro"></li><li class="film__item"><img src="/img/naomi-stacco.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Naomi Acciaro mentre si allena in palestra, durante uno stacco da terra"></li><li class="film__item"><img src="/img/piatti/gnocchetti.webp" width="900" height="900" loading="lazy" decoding="async" alt="Gnocchetti con zucchine e gamberetti in una ciotola"></li><li class="film__item"><img src="/img/naomi-tesi.webp" width="900" height="506" loading="lazy" decoding="async" alt="Naomi Acciaro, di spalle, durante la discussione della tesi davanti alla sua presentazione"></li><li class="film__item"><img src="/img/piatti/colazione.webp" width="900" height="1123" loading="lazy" decoding="async" alt="Due toast al prosciutto e un bicchiere di caffellatte sul piatto"></li><li class="film__item"><img src="/img/naomi-camice.webp" width="590" height="590" loading="lazy" decoding="async" alt="Naomi Acciaro in camice bianco, con le braccia incrociate"></li><li class="film__item"><img src="/img/piatti/insalata.webp" width="1000" height="750" loading="lazy" decoding="async" alt="Insalata con prosciutto, formaggio fresco, cetrioli e carote, con pane scuro"></li><li class="film__item"><img src="/img/piatti/spatzle.webp" width="900" height="900" loading="lazy" decoding="async" alt="Spätzle verdi con macinato in una ciotola"></li><li class="film__item" aria-hidden="true"><img src="/img/naomi-casa.webp" width="800" height="1000" loading="lazy" decoding="async" alt=""></li><li class="film__item" aria-hidden="true"><img src="/img/piatti/spaghetti.webp" width="900" height="1125" loading="lazy" decoding="async" alt=""></li><li class="film__item" aria-hidden="true"><img src="/img/naomi-stacco.webp" width="800" height="1000" loading="lazy" decoding="async" alt=""></li><li class="film__item" aria-hidden="true"><img src="/img/piatti/gnocchetti.webp" width="900" height="900" loading="lazy" decoding="async" alt=""></li><li class="film__item" aria-hidden="true"><img src="/img/naomi-tesi.webp" width="900" height="506" loading="lazy" decoding="async" alt=""></li><li class="film__item" aria-hidden="true"><img src="/img/piatti/colazione.webp" width="900" height="1123" loading="lazy" decoding="async" alt=""></li><li class="film__item" aria-hidden="true"><img src="/img/naomi-camice.webp" width="590" height="590" loading="lazy" decoding="async" alt=""></li><li class="film__item" aria-hidden="true"><img src="/img/piatti/insalata.webp" width="1000" height="750" loading="lazy" decoding="async" alt=""></li><li class="film__item" aria-hidden="true"><img src="/img/piatti/spatzle.webp" width="900" height="900" loading="lazy" decoding="async" alt=""></li></ul></div>
-</section>
-
-<section class="sec sec--sand" id="recensioni" aria-labelledby="recensioni-title">
-  <div class="wrap">
-    <div class="sec__head sec__head--rev">
-      <div>
-        <h2 class="h2" id="recensioni-title">Le parole di chi ha già cominciato.</h2>
-        <p class="sec__lead sec__lead--solo">Recensioni lasciate su MioDottore dopo la visita, e qualche messaggio di ringraziamento. Aprine una per leggerla più grande.</p>
-      </div>
-      <a class="reviews__score" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener" aria-label="Valutazione 5 su 5, 160 recensioni su MioDottore">
-        <span class="reviews__num">5,0</span><span class="stars" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#star"/></svg><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#star"/></svg><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#star"/></svg><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#star"/></svg><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#star"/></svg></span><span class="reviews__count">160 recensioni su MioDottore</span>
-      </a>
-    </div>
-    <ul class="rv" aria-label="Recensioni dei pazienti"><li class="rv__item" id="t-r1" style="--ar:0.783"><a class="rv__open" href="#rv-r1" aria-label="Apri la recensione: 28 ottobre 2026"><img src="/img/recensioni/r1.webp" width="1100" height="1404" alt="Recensione di una paziente su MioDottore, 28 ottobre 2026, cinque stelle: «Naomi è la mia nutrizionista da qualche mese e ormai posso dire di trovarmi benissimo con lei.»" loading="lazy" decoding="async"></a></li><li class="rv__item" id="t-r2" style="--ar:0.797"><a class="rv__open" href="#rv-r2" aria-label="Apri la recensione: 16 settembre 2026"><img src="/img/recensioni/r2.webp" width="1020" height="1280" alt="Recensione di una paziente su MioDottore, 16 settembre 2026, cinque stelle: «È una professionista impeccabile!! La visita ha una durata importante perché è minuziosa nell'anamnesi ed accogliente nell'ascoltare.»" loading="lazy" decoding="async"></a></li><li class="rv__item" id="t-r3" style="--ar:0.594"><a class="rv__open" href="#rv-r3" aria-label="Apri la recensione: aprile 2026"><img src="/img/recensioni/r3.webp" width="1100" height="1851" alt="Tre recensioni su MioDottore di aprile 2026, tutte con cinque stelle. Una dice: «Ho portato mia figlia di 15 anni! La dottoressa sin da subito ha messo a suo agio mia figlia.»" loading="lazy" decoding="async"></a></li><li class="rv__item" id="t-r4" style="--ar:0.583"><a class="rv__open" href="#rv-r4" aria-label="Apri la recensione: 18 marzo 2026"><img src="/img/recensioni/r4.webp" width="1090" height="1870" alt="Recensione su MioDottore del 18 marzo 2026, cinque stelle: «Seguivo sui social la dottoressa e sono rimasta subito colpita dal suo approccio.» Sotto, un messaggio di ringraziamento ricevuto su WhatsApp." loading="lazy" decoding="async"></a></li><li class="rv__item" id="t-r5" style="--ar:0.872"><a class="rv__open" href="#rv-r5" aria-label="Apri la recensione: 25 febbraio 2026"><img src="/img/recensioni/r5.webp" width="1020" height="1170" alt="Recensione di Cecilia C. su MioDottore, 25 febbraio 2026, consulenza online, cinque stelle: «La mia prima visita è stata un'esperienza estremamente positiva.»" loading="lazy" decoding="async"></a></li><li class="rv__item" id="t-r6" style="--ar:0.803"><a class="rv__open" href="#rv-r6" aria-label="Apri la recensione: 6 maggio 2025"><img src="/img/recensioni/r6.webp" width="1100" height="1370" alt="Recensione su MioDottore del 6 maggio 2025, cinque stelle: «Naomi, oltre ad essere una persona splendida sia dentro che fuori, è una professionista estremamente competente e appassionata del suo lavoro.»" loading="lazy" decoding="async"></a></li><li class="rv__item" id="t-r7" style="--ar:0.709"><a class="rv__open" href="#rv-r7" aria-label="Apri la recensione: 19 marzo 2025"><img src="/img/recensioni/r7.webp" width="1100" height="1552" alt="Recensione su MioDottore del 19 marzo 2025, consulenza online, cinque stelle: «Ho avuto il piacere di seguire un piano alimentare con la Dott.ssa Naomi e non posso che esprimere la mia gratitudine.»" loading="lazy" decoding="async"></a></li></ul><div class="rvbox" id="rv-r1" role="dialog" aria-modal="true" aria-label="Recensione: 28 ottobre 2026 (1 di 7)"><a class="rvbox__bg" href="#t-r1" tabindex="-1" aria-hidden="true"></a><figure class="rvbox__fig"><img src="/img/recensioni/r1.webp" width="1100" height="1404" alt="Recensione di una paziente su MioDottore, 28 ottobre 2026, cinque stelle: «Naomi è la mia nutrizionista da qualche mese e ormai posso dire di trovarmi benissimo con lei.»" loading="lazy" decoding="async"></figure><a class="rvbox__x" href="#t-r1">Chiudi</a><a class="rvbox__nav rvbox__nav--prev" href="#rv-r7" aria-label="Recensione precedente"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#arrow"/></svg></a><a class="rvbox__nav rvbox__nav--next" href="#rv-r2" aria-label="Recensione successiva"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#arrow"/></svg></a></div><div class="rvbox" id="rv-r2" role="dialog" aria-modal="true" aria-label="Recensione: 16 settembre 2026 (2 di 7)"><a class="rvbox__bg" href="#t-r2" tabindex="-1" aria-hidden="true"></a><figure class="rvbox__fig"><img src="/img/recensioni/r2.webp" width="1020" height="1280" alt="Recensione di una paziente su MioDottore, 16 settembre 2026, cinque stelle: «È una professionista impeccabile!! La visita ha una durata importante perché è minuziosa nell'anamnesi ed accogliente nell'ascoltare.»" loading="lazy" decoding="async"></figure><a class="rvbox__x" href="#t-r2">Chiudi</a><a class="rvbox__nav rvbox__nav--prev" href="#rv-r1" aria-label="Recensione precedente"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#arrow"/></svg></a><a class="rvbox__nav rvbox__nav--next" href="#rv-r3" aria-label="Recensione successiva"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#arrow"/></svg></a></div><div class="rvbox" id="rv-r3" role="dialog" aria-modal="true" aria-label="Recensione: aprile 2026 (3 di 7)"><a class="rvbox__bg" href="#t-r3" tabindex="-1" aria-hidden="true"></a><figure class="rvbox__fig"><img src="/img/recensioni/r3.webp" width="1100" height="1851" alt="Tre recensioni su MioDottore di aprile 2026, tutte con cinque stelle. Una dice: «Ho portato mia figlia di 15 anni! La dottoressa sin da subito ha messo a suo agio mia figlia.»" loading="lazy" decoding="async"></figure><a class="rvbox__x" href="#t-r3">Chiudi</a><a class="rvbox__nav rvbox__nav--prev" href="#rv-r2" aria-label="Recensione precedente"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#arrow"/></svg></a><a class="rvbox__nav rvbox__nav--next" href="#rv-r4" aria-label="Recensione successiva"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#arrow"/></svg></a></div><div class="rvbox" id="rv-r4" role="dialog" aria-modal="true" aria-label="Recensione: 18 marzo 2026 (4 di 7)"><a class="rvbox__bg" href="#t-r4" tabindex="-1" aria-hidden="true"></a><figure class="rvbox__fig"><img src="/img/recensioni/r4.webp" width="1090" height="1870" alt="Recensione su MioDottore del 18 marzo 2026, cinque stelle: «Seguivo sui social la dottoressa e sono rimasta subito colpita dal suo approccio.» Sotto, un messaggio di ringraziamento ricevuto su WhatsApp." loading="lazy" decoding="async"></figure><a class="rvbox__x" href="#t-r4">Chiudi</a><a class="rvbox__nav rvbox__nav--prev" href="#rv-r3" aria-label="Recensione precedente"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#arrow"/></svg></a><a class="rvbox__nav rvbox__nav--next" href="#rv-r5" aria-label="Recensione successiva"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#arrow"/></svg></a></div><div class="rvbox" id="rv-r5" role="dialog" aria-modal="true" aria-label="Recensione: 25 febbraio 2026 (5 di 7)"><a class="rvbox__bg" href="#t-r5" tabindex="-1" aria-hidden="true"></a><figure class="rvbox__fig"><img src="/img/recensioni/r5.webp" width="1020" height="1170" alt="Recensione di Cecilia C. su MioDottore, 25 febbraio 2026, consulenza online, cinque stelle: «La mia prima visita è stata un'esperienza estremamente positiva.»" loading="lazy" decoding="async"></figure><a class="rvbox__x" href="#t-r5">Chiudi</a><a class="rvbox__nav rvbox__nav--prev" href="#rv-r4" aria-label="Recensione precedente"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#arrow"/></svg></a><a class="rvbox__nav rvbox__nav--next" href="#rv-r6" aria-label="Recensione successiva"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#arrow"/></svg></a></div><div class="rvbox" id="rv-r6" role="dialog" aria-modal="true" aria-label="Recensione: 6 maggio 2025 (6 di 7)"><a class="rvbox__bg" href="#t-r6" tabindex="-1" aria-hidden="true"></a><figure class="rvbox__fig"><img src="/img/recensioni/r6.webp" width="1100" height="1370" alt="Recensione su MioDottore del 6 maggio 2025, cinque stelle: «Naomi, oltre ad essere una persona splendida sia dentro che fuori, è una professionista estremamente competente e appassionata del suo lavoro.»" loading="lazy" decoding="async"></figure><a class="rvbox__x" href="#t-r6">Chiudi</a><a class="rvbox__nav rvbox__nav--prev" href="#rv-r5" aria-label="Recensione precedente"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#arrow"/></svg></a><a class="rvbox__nav rvbox__nav--next" href="#rv-r7" aria-label="Recensione successiva"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#arrow"/></svg></a></div><div class="rvbox" id="rv-r7" role="dialog" aria-modal="true" aria-label="Recensione: 19 marzo 2025 (7 di 7)"><a class="rvbox__bg" href="#t-r7" tabindex="-1" aria-hidden="true"></a><figure class="rvbox__fig"><img src="/img/recensioni/r7.webp" width="1100" height="1552" alt="Recensione su MioDottore del 19 marzo 2025, consulenza online, cinque stelle: «Ho avuto il piacere di seguire un piano alimentare con la Dott.ssa Naomi e non posso che esprimere la mia gratitudine.»" loading="lazy" decoding="async"></figure><a class="rvbox__x" href="#t-r7">Chiudi</a><a class="rvbox__nav rvbox__nav--prev" href="#rv-r6" aria-label="Recensione precedente"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#arrow"/></svg></a><a class="rvbox__nav rvbox__nav--next" href="#rv-r1" aria-label="Recensione successiva"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#arrow"/></svg></a></div>
-    <div class="swipe-ui swipe-ui--rv" aria-hidden="true"><span class="swipe-bar"></span><span class="swipe-hint">Scorri <svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#arrow"/></svg></span></div>
-    <div class="cta"><a class="btn btn--ghost" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Leggi tutte le recensioni su MioDottore</a><p class="cta__micro">Il profilo pubblico, con il testo di ogni recensione</p></div>
-  </div>
-</section>
-
-<section class="sec final-sec" id="prenota" aria-labelledby="prenota-title"><div class="wrap"><div class="final"><div class="final__text"><h2 class="final__title" id="prenota-title">Il primo passo verso un nuovo equilibrio.</h2><p class="final__lead">Ogni percorso inizia da una scelta. Inizia dal prenderti cura di te.</p><div class="cta cta--light"><a class="btn btn--big btn--light" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota la tua consulenza</a><p class="cta__micro">Roma | Online · scegli giorno e orario su MioDottore</p></div></div><a class="final__rating" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener" aria-label="Valutazione 5 su 5, 160 recensioni su MioDottore"><span class="final__score">5,0</span><span class="stars" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#star"/></svg><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#star"/></svg><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#star"/></svg><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#star"/></svg><svg class="ico" aria-hidden="true" focusable="false"><use href="/img/icons.svg#star"/></svg></span><span class="final__count">160 recensioni su MioDottore</span></a></div></div></section>
-
 </main>
 
-<footer class="foot">
-  <div class="wrap foot__grid">
-    <div class="foot__id">
-      <p class="foot__name">Naomi Acciaro</p>
-      <p class="foot__role">Biologa nutrizionista</p>
-      <p class="foot__tag">Il tuo benessere, il tuo equilibrio, il tuo percorso.</p>
-    </div>
-    <nav class="foot__nav" aria-label="Pagine">
-      <a href="/">Home</a>
-      <a href="/chi-sono">Chi sono</a>
-      <a href="/servizi">Servizi</a>
-      <a href="/metodo">Metodo</a>
-      <a href="/contatti">Contatti</a>
-    </nav>
-    <div class="foot__book">
-      <a class="btn" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota una consulenza</a>
-      <p>Roma | Online</p>
-    </div>
-  </div>
-  <div class="wrap foot__legal">
-    <p>I contenuti di questo sito hanno scopo informativo e non sostituiscono il parere del medico. Il sito non usa cookie né strumenti di tracciamento: la prenotazione avviene su MioDottore, che tratta i dati secondo la propria informativa.</p>
-    <!-- DA COMPLETARE prima del go-live (obblighi per i siti dei professionisti sanitari): numero e sezione di iscrizione all'albo dei biologi (ONB), partita IVA, indirizzo dello studio. -->
-    <p class="foot__links"><a href="/privacy">Privacy policy</a><a href="/cookie">Cookie policy</a></p>
-  </div>
-</footer>
-
-<div class="mbar"><a class="btn btn--big" href="https://www.miodottore.it/profilo/naomi-acciaro" target="_blank" rel="noopener">Prenota una consulenza</a></div>
-
+<div class="loader" aria-hidden="true"><span>Naomi Acciaro</span></div>
+<script type="module" src="js/main.js"></script>
 </body>
 </html>

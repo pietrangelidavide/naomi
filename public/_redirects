@@ -1,3 +1,7 @@
-# Indirizzi della vecchia versione del sito
-/chi-siamo   /chi-sono   301
-/dove        /contatti   301
+# Indirizzi delle pagine del sito precedente: ora il percorso sta tutto in home
+/chi-siamo  /  302
+/chi-sono   /  302
+/dove       /  302
+/contatti   /  302
+/servizi    /  302
+/metodo     /  302
