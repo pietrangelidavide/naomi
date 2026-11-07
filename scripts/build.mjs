@@ -4,7 +4,7 @@
 //   node scripts/build.mjs --site-url https://www.dominio.it
 //                                          → versione di go-live: indicizzabile, canonical, og:url, URL assoluti
 //                                            nei dati strutturati, sitemap.xml e robots.txt
-import { readFileSync, writeFileSync, readdirSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -30,6 +30,30 @@ const link = (label, href, micro = '') =>
 const final = (title, lead, micro) =>
   `<section class="sec final-sec" id="prenota" aria-labelledby="prenota-title"><div class="wrap"><div class="final"><div class="final__text"><h2 class="final__title" id="prenota-title">${title}</h2><p class="final__lead">${lead}</p><div class="cta cta--light"><a class="btn btn--big btn--light" href="${site.booking}" target="_blank" rel="noopener">Prenota la tua consulenza</a>${micro ? `<p class="cta__micro">${micro}</p>` : ''}</div></div><a class="final__rating" href="${site.booking}" target="_blank" rel="noopener" aria-label="Valutazione 5 su 5, 160 recensioni su MioDottore"><span class="final__score">5,0</span>${stars}<span class="final__count">160 recensioni su MioDottore</span></a></div></div></section>`;
 const swipe = (v = '') => `<div class="swipe-ui${v ? ' swipe-ui--' + v : ''}" aria-hidden="true"><span class="swipe-bar"></span><span class="swipe-hint">Scorri ${ico('arrow')}</span></div>`;
+// striscia di foto che scorre piano in orizzontale: {{film:Etichetta|foto,foto,...}} (foto di public/img senza .webp, testi alternativi in src/photos.json).
+// Da telefono e da desktop si vedono più foto insieme, piccole: così la bassa risoluzione di quelle ricavate da Instagram non si nota.
+// Senza «riduci movimento» la sequenza è scritta due volte (la copia è aria-hidden) per un giro senza stacchi; con «riduci movimento» resta una riga da scorrere a mano.
+const photosAlt = JSON.parse(rd('src/photos.json'));
+const webpSize = (buf) => {
+  if (buf.toString('ascii', 0, 4) !== 'RIFF' || buf.toString('ascii', 8, 12) !== 'WEBP') throw new Error('non è un WebP');
+  const kind = buf.toString('ascii', 12, 16);
+  if (kind === 'VP8 ') return [buf.readUInt16LE(26) & 0x3fff, buf.readUInt16LE(28) & 0x3fff];
+  if (kind === 'VP8L') { const b = buf.readUInt32LE(21); return [(b & 0x3fff) + 1, ((b >> 14) & 0x3fff) + 1]; }
+  if (kind === 'VP8X') return [buf.readUIntLE(24, 3) + 1, buf.readUIntLE(27, 3) + 1];
+  throw new Error('formato WebP sconosciuto');
+};
+const film = (label, list) => {
+  const names = list.split(',').map((f) => f.trim()).filter(Boolean);
+  const item = (n, copy) => {
+    const alt = photosAlt[n];
+    if (alt === undefined) throw new Error(`src/photos.json: manca la foto ${n}`);
+    const file = join(root, 'public', 'img', `${n}.webp`);
+    if (!existsSync(file)) throw new Error(`film: immagine mancante img/${n}.webp`);
+    const [w, h] = webpSize(readFileSync(file));
+    return `<li class="film__item"${copy ? ' aria-hidden="true"' : ''}><img src="/img/${n}.webp" width="${w}" height="${h}" loading="lazy" decoding="async" alt="${copy ? '' : esc(alt)}"></li>`;
+  };
+  return `<div class="film" role="group" aria-label="${esc(label)}"><ul class="film__track">${[...names.map((n) => item(n, false)), ...names.map((n) => item(n, true))].join('')}</ul></div>`;
+};
 // recensioni: schermate dei pazienti (src/reviews.json, immagini in public/img/recensioni). Ogni riquadro apre la sua versione
 // grande con :target (nessun JavaScript): prev/next passano alla recensione accanto, «Chiudi» riporta sul riquadro.
 const reviewsData = JSON.parse(rd('src/reviews.json'));
@@ -50,6 +74,7 @@ function expand(html, meta) {
     .replace(/\{\{link:([^|}]*)\|([^|}]*)(?:\|([^}]*))?\}\}/g, (_m, l, h, m) => link(l, h, m))
     .replace(/\{\{final:([^|}]*)\|([^|}]*)\|([^}]*)\}\}/g, (_m, t, l, m) => final(t, l, m))
     .replace(/\{\{swipe(?::([a-z]+))?\}\}/g, (_m, v) => swipe(v))
+    .replace(/\{\{film:([^|}]+)\|([^}]+)\}\}/g, (_m, l, list) => film(l.trim(), list))
     .replace(/\{\{reviews\}\}/g, () => reviews())
     .replace(/\{\{stars\}\}/g, stars)
     .replace(/\{\{book\}\}/g, site.booking)

@@ -22,6 +22,7 @@ src/site.json        dati comuni (nome, link prenotazione, menu, link legali)
 src/layout.html      intestazione sticky, piede, meta tag (uguali per tutte le pagine)
 src/pages/*.html     una pagina ciascuna: blocco JSON iniziale (title, description, FAQ) + contenuto
 src/reviews.json     le schermate delle recensioni (file, misure, data, testo alternativo) della macro {{reviews}}
+src/photos.json      testi alternativi delle foto usate nelle strisce (chiave = percorso in public/img senza .webp)
 scripts/build.mjs    genera public/*.html (+ dati strutturati, sitemap, robots)
 scripts/fonts.py     ricava i font in public/fonts da Google Fonts
 scripts/build-icons.py, build-og.py   favicon, icona 512 e anteprima social (1200×630)
@@ -33,7 +34,9 @@ public/_redirects    /chi-siamo → /chi-sono e /dove → /contatti (gli indiriz
 
 Pagine: `/` · `/chi-sono` · `/servizi` · `/metodo` · `/contatti` (qui c'è anche cosa succede in studio e online, la vecchia pagina «Dove») · `/privacy` · `/cookie`.
 
-Macro nelle pagine: `{{ico:nome}}` icona, `{{cta:Etichetta|Microcopy}}` bottone + frase, `{{link:Etichetta|/pagina|Microcopy}}`, `{{faq}}`, `{{crumbs}}`, `{{final:Titolo|Testo|Microcopy}}` (chiusura in carbone con voto), `{{swipe}}` e `{{swipe:rv}}` (indicazione «Scorri» sotto un carosello), `{{reviews}}` (le schermate di `src/reviews.json`: da desktop tessere affiancate, da telefono carosello; toccandone una si apre ingrandita, senza JavaScript), `{{stars}}`, `{{book}}` (link di prenotazione). Le macro non si annidano (niente `{{ }}` dentro un'altra macro).
+Macro nelle pagine: `{{ico:nome}}` icona, `{{cta:Etichetta|Microcopy}}` bottone + frase, `{{link:Etichetta|/pagina|Microcopy}}`, `{{faq}}`, `{{crumbs}}`, `{{final:Titolo|Testo|Microcopy}}` (chiusura in carbone con voto), `{{swipe}}` e `{{swipe:rv}}` (indicazione «Scorri» sotto un carosello), `{{reviews}}` (le schermate di `src/reviews.json`: da desktop tessere affiancate, da telefono carosello; toccandone una si apre ingrandita, senza JavaScript), `{{stars}}`, `{{book}}` (link di prenotazione), `{{film:Etichetta|foto1,foto2,…}}` (striscia di foto, vedi sotto). Le macro non si annidano (niente `{{ }}` dentro un'altra macro).
+
+Strisce di foto (`{{film:…}}`): dove prima c'era una sola foto (a bassa risoluzione, ricavata da Instagram) ora scorre una fascia orizzontale con più foto affiancate, così la qualità del singolo scatto non si nota. Si usa in home (`#filosofia`) e nell'intestazione di Chi sono. I nomi sono i file di `public/img` senza `.webp` (es. `piatti/spaghetti`); le misure si leggono dal file e il testo alternativo da `src/photos.json` (la build si ferma se una foto manca). Solo CSS: di norma scorre da sola in loop (90 s a giro), con pausa al passaggio del mouse o alla tastiera; se l'utente ha impostato «riduci movimento» diventa una fascia da sfogliare col dito (le copie del ciclo sono nascoste e `aria-hidden`). Per cambiare le foto basta cambiare l'elenco nella pagina e rilanciare `npm run build`.
 
 Comandi (Node 20+):
 

@@ -158,14 +158,31 @@ a.strip__cell:hover .strip__v { color: var(--sage-d); }
 .phero__side { display: grid; gap: 1.6rem; justify-items: start; }
 .phero__lead { max-width: 30rem; font-size: 1.12rem; line-height: 1.65; color: var(--ink-2); }
 .phero .cta { margin-top: 0; }
-.phero__grid > div > .phero__title + .phero__side { margin-top: clamp(1.4rem, 3vw, 2.2rem); }
 .h2 + .prose { margin-top: 1.6rem; }
 .h3 + .channels { margin-top: 1.4rem; }
 .note .textlink { justify-self: start; }
-.phero__photo { justify-self: end; width: min(100%, 440px); position: relative; isolation: isolate; }
-.phero__photo::before { content: ""; position: absolute; z-index: -1; left: -7%; bottom: -6%; width: 62%; height: 58%; background: var(--sand); }
-.phero__photo img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; object-position: 50% 28%; }
 .notfound { min-height: 56vh; display: grid; align-items: center; }
+
+/* ---------- striscia di foto ---------- */
+/* più foto insieme, piccole e in lento movimento: la bassa risoluzione di quelle ricavate da Instagram non si nota.
+   Di base è una riga da scorrere a mano (una sola sequenza); con il movimento ammesso scorre da sola, senza stacchi, e si ferma col mouse. */
+.film { height: clamp(13rem, 28vw, 26rem); overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; }
+.film::-webkit-scrollbar { display: none; }
+.film__track { display: flex; gap: clamp(.7rem, 1.6vw, 1.1rem); width: max-content; height: 100%; padding-inline: max(1.25rem, calc((100% - 1200px) / 2)); }
+.film__item { flex: none; height: 100%; overflow: hidden; scroll-snap-align: start; }
+.film__item img { height: 100%; width: auto; max-width: none; }
+.film__item[aria-hidden="true"] { display: none; }
+.sec.sec--film { padding-bottom: clamp(2.6rem, 6vw, 4.4rem); }
+.sec--film .film { margin-top: clamp(2.6rem, 6vw, 4.4rem); }
+.phero__film { margin-top: clamp(2.2rem, 5vw, 3.6rem); }
+@media (prefers-reduced-motion: no-preference) {
+  .film { overflow: hidden; }
+  .film__track { gap: 0; padding-inline: 0; animation: film 90s linear infinite; }
+  .film__item { margin-right: clamp(.7rem, 1.6vw, 1.1rem); }
+  .film__item[aria-hidden="true"] { display: block; }
+  .film:hover .film__track, .film:focus-within .film__track { animation-play-state: paused; }
+  @keyframes film { to { transform: translateX(-50%); } }
+}
 
 /* ---------- sezioni ---------- */
 .sec { padding-block: clamp(4rem, 9vw, 8rem); overflow-x: clip; }
@@ -221,12 +238,7 @@ a.strip__cell:hover .strip__v { color: var(--sage-d); }
 .phase p { color: var(--ink-2); font-size: 1rem; line-height: 1.65; }
 
 /* filosofia */
-.philo { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(2.4rem, 7vw, 7rem); align-items: center; }
-.philo__media { position: relative; isolation: isolate; width: min(100%, 500px); justify-self: center; }
-.philo__media::before { content: ""; position: absolute; z-index: -1; left: -8%; top: -5%; width: 62%; height: 58%; background: var(--sand); }
-.philo__media figure { overflow: hidden; }
-.philo__media img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 55% 40%; transition: transform 1.6s var(--ease); }
-.philo__media:hover img { transform: scale(1.03); }
+.philo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .85fr); gap: clamp(1.6rem, 5vw, 5rem); align-items: end; }
 .philo__text { display: grid; gap: 1.6rem; justify-items: start; }
 .philo__title { font: 300 clamp(2.5rem, 5vw, 4.6rem)/1.02 var(--serif); letter-spacing: -.02em; }
 .philo__text p { max-width: 33rem; color: var(--ink-2); }
@@ -425,12 +437,11 @@ html:has(.rvbox:target) { overflow: hidden; }
   .hero__grid, .phero__grid, .split, .split--even, .about, .philo, .contact, .sx__grid, .manifesto { grid-template-columns: minmax(0, 1fr); }
   .manifesto__title, .manifesto__side { grid-column: 1 / -1; }
   .hero .duo { order: -1; justify-self: center; width: min(100%, 460px); margin-bottom: 1rem; } /* da telefono e tablet le foto aprono la pagina, poi il titolo */
-  .phero__photo { justify-self: center; }
-  .sec__head { grid-template-columns: minmax(0, 1fr); }
+    .sec__head { grid-template-columns: minmax(0, 1fr); }
   .final { grid-template-columns: minmax(0, 1fr); }
   .final__rating { justify-self: start; padding-left: 0; border-left: 0; padding-top: 1.4rem; border-top: 1px solid color-mix(in srgb, var(--ivory) 30%, transparent); }
   .sx__head { position: relative; top: 0; }
-  .split__media, .about__media, .philo__media { justify-self: start; }
+  .split__media, .about__media { justify-self: start; }
   .strip { grid-template-columns: minmax(0, 1fr); }
   .strip__cell, .strip__cell + .strip__cell { padding: 1rem 0; border-left: 0; }
   .strip__cell + .strip__cell { border-top: 1px solid var(--line); }
