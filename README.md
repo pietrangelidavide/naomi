@@ -70,6 +70,7 @@ Sezione fissa a schermo che racconta due capitoli mentre si scorre: **Mangiare b
 - **Modificare la sequenza**: tempi, posizioni e colori sono costanti leggibili in `scene.js` (`BEATS`, `ING`, `SUP`, `camKeys`, funzione `render`). Per vedere un istante preciso, aprire la home con `?storydebug` e da console `__story.setT(3.8)`.
 - **Immagini di riserva**: si rigenerano dalla stessa scena (stesso motore, T=0,8 e T=3,72) su sfondo Ivory e Sand; vanno rifatte se cambiano colori o forme.
 - **Prestazioni**: la risoluzione scende da sola se il dispositivo fatica; fuori schermo la scena non disegna.
+- **Personaggio 3D di Naomi** (`public/js/avatar.js`): una Naomi stilizzata, non un ritratto, al posto delle foto ritagliate. Corpo a segmenti, braccia e gambe con cinematica inversa, viso con occhiali e capelli lunghi; le mani impugnano gli oggetti di scena (borsa, coltello, frusta, bilanciere, shaker). Pose e oggetti dipendono solo da `pos` (0 → 4) e dal tempo. Le foto restano nella versione statica (`?static`, senza WebGL, «riduci movimento»).
 
 ## Segnaposto da completare
 

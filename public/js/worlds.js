@@ -14,11 +14,20 @@ export function addWorlds(X) {
     a = a.map((v) => v / al); const c = y[1], s = al, t = 1 - c, [x, yy, z] = a;
     return new Float32Array([t * x * x + c, t * x * yy + s * z, t * x * z - s * yy, 0, t * x * yy - s * z, t * yy * yy + c, t * yy * z + s * x, 0, t * x * z + s * yy, t * yy * z - s * x, t * z * z + c, 0, 0, 0, 0, 1]);
   }
+  // fronte di mobile: ante e maniglie rosa, così il piano di lavoro non è una lastra vuota
+  const cabinet = (yTop, hgt, zFront, rise, f = 1) => {
+    const seam = mixc(C.tan, C.mocha, 0.45);
+    for (let i = -4; i <= 4; i++) {
+      mesh(G.box, Mx(i * 1.7, yTop - hgt / 2 - rise, zFront + 0.005, 0.035, (hgt - 0.16) * f, 0.012), seam, matte);
+      if (i < 4) mesh(G.box, Mx(i * 1.7 + 0.2, yTop - 0.42 - rise, zFront + 0.02, 0.04, 0.26, 0.035), C.pink, glossy);
+    }
+  };
   const bond = (a, b, r, col) => { const d = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], len = Math.hypot(...d); const m = M.chain(M.T((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (a[2] + b[2]) / 2), alignY(d), M.S(r, len, r)); return m; };
 
   /* ---------- figure: una sola protagonista, cinque pose ---------- */
   const place = (f, i) => { const m = fig[f.k], s = f.h / m.h; return { s, wq: m.w * s, hq: m.h * s, cx: f.ax - m.headx * s + m.w * s / 2, cy: f.ay + m.heady * s - m.h * s / 2 }; };
   hooks.figures.push((pos, t, R, w, intro) => {
+    if (X.AV && X.AV.on) return;
     FIG.forEach((f, i) => {
       const pIn = i === 0 ? intro : phIn(i, pos), pOut = i === PHASESX - 1 ? 0 : phOut(i, pos);
       if (pIn <= 0.002 || pOut >= 0.998) return;
@@ -69,29 +78,32 @@ export function addWorlds(X) {
     });
     // la perla rosa tra le dita: reagisce allo scorrimento e poi vola via verso la spesa
     const leave = sm(0.12, 0.7, pos), pr = 0.065 * (1 + 0.12 * Math.sin(t * 3)) * appear(0) * (1 - leave);
-    if (pr > 0.002) mesh(G.sphere, Mx((R.Wv > 3.2 ? P1.hand[0] : 0.76) + leave * 0.8, P1.hand[1] + leave * 0.6, P1.hand[2], pr), C.pink, { ...glossy, glow: [0.16, 0.03, 0.09] });
+    if (pr > 0.002) mesh(G.sphere, Mx(X.AV.pearl[0] + leave * 0.8, X.AV.pearl[1] + leave * 0.6, X.AV.pearl[2], pr), C.pink, { ...glossy, glow: [0.16, 0.03, 0.09] });
   });
 
   /* =========================================================================================
      FASE 2 · LA SPESA  +  FASE 3 · LA CUCINA  (gli ingredienti sono gli stessi: passano dalla borsa al piano)
      ========================================================================================= */
-  const BAG = { x: -1.5, y: -1.5, z: 0.75, w: 0.9, h: 1.15 };
-  const KIT = { top: -1.15, z: 1.05 };
+  const BAG = { x: -1.25, y: -1.5, z: 0.55, w: 0.9, h: 1.15 };
+  const KIT = { top: -0.35, z: 1.05 };
+  const SH = { x: -2.4, y: -0.45, z: 1.0 };
+  const LAY = X.LAY = { BAG, KIT, SH, K: { cx: 0.3 }, DESK: { top: -0.75 } };
+  X.bez = bez; X.eio = eio;
   // ingredienti: mesh, scala, colori, partenza, riposo nella borsa (altezza sul bordo), destinazione in cucina e dove "finiscono"
   const mk = (g, s, col, o) => ({ g, s, col, ...o });
   const ING = [
-    mk('wedge', 0.78, C.pink, { spawn: [-3.5, 1.2, 0.6], rest: [0.18, 0.02], kit: [0.5, 0.18, 1.5], rot: [0, 0.2, 0.2], plate: true, rind: true }),
-    mk('apple', 0.3, C.tan, { spawn: [-2.5, 2.0, 0.3], rest: [-0.18, -0.05], kit: [3.5, 0.3, 0.8], rot: [0.2, 0, 0] }),
-    mk('carrot', 0.3, mixc(C.tan, C.pink, 0.2), { spawn: [-3.9, -0.1, 0.2], rest: [0.12, 0.22], kit: [-1.9, 0.08, 1.1], rot: [0, 0, -1.2], chop: true }),
-    mk('broc', 0.34, C.khaki, { spawn: [-1.3, 2.15, -0.6], rest: [0.28, 0.1], kit: [3.0, 0.35, 0.5], rot: [0.1, 0, 0] }),
-    mk('avocado', 0.34, C.khaki, { spawn: [-3.7, 0.75, -0.3], rest: [-0.25, 0.0], kit: [0.4, 0.2, 1.4], rot: [0, 0, 0.4], plate: true }),
-    mk('egg', 0.2, C.sandL, { spawn: [-2.2, -0.1, 0.8], rest: [0.0, -0.1], kit: [1.0, 0.1, 1.2], rot: [0.3, 0, 0.2] }),
-    mk('bread', 0.5, C.tan, { spawn: [0.7, 2.15, -0.4], rest: [-0.3, 0.3], kit: [-3.35, 0.32, 0.4], rot: [0, 0.5, 0.1], stay: true }),
-    mk('wheat', 0.5, mixc(C.tan, C.sandL, 0.4), { spawn: [2.5, 2.0, -0.3], rest: [0.3, 0.35], kit: [1.2, 0.1, 1.0], rot: [0, 0, 0.2] }),
-    mk('leaves', 0.8, C.khaki, { spawn: [-2.6, 0.95, 0.9], rest: [0.0, 0.3], kit: [-1.4, 0.06, 1.2], rot: [0, 0, 0], chop: true }),
-    mk('salmon', 0.64, mixc(C.pink, C.sand, 0.5), { spawn: [3.4, 1.7, 0.2], rest: [0.05, 0.12], kit: [0.7, 0.2, 1.5], rot: [0, 0, 0], plate: true }),
-    mk('bottle', 0.34, mixc(C.khaki, C.sandL, 0.35), { spawn: [-3.9, -1.25, 0.4], rest: [-0.05, 0.25], kit: [-3.0, 0.45, 0.3], rot: [0, 0, 0], stay: true }),
-    mk('almond', 0.1, C.tan, { spawn: [1.9, 2.1, 0.5], rest: [0.0, -0.2], kit: [2.0, 0.1, 1.4], rot: [0, 0, 0], plate: true }),
+    mk('wedge', 0.78, C.pink, { spawn: [-3.5, 1.2, 0.6], rest: [0.18, 0.02], kit: [-1.05, 0.2, 1.0], rot: [0, 0.2, 0.2], plate: true, rind: true }),
+    mk('apple', 0.3, C.tan, { spawn: [-2.5, 2.0, 0.3], rest: [-0.18, -0.05], kit: [3.2, 0.3, 0.8], rot: [0.2, 0, 0] }),
+    mk('carrot', 0.3, mixc(C.tan, C.pink, 0.2), { spawn: [-3.9, -0.1, 0.2], rest: [0.12, 0.22], kit: [-0.72, 0.08, 1.08], rot: [0, 0, -1.2], chop: true }),
+    mk('broc', 0.34, C.khaki, { spawn: [-1.3, 2.15, -0.6], rest: [0.28, 0.1], kit: [2.2, 0.35, 0.5], rot: [0.1, 0, 0] }),
+    mk('avocado', 0.34, C.khaki, { spawn: [-3.7, 0.75, -0.3], rest: [-0.25, 0.0], kit: [-0.3, 0.2, 1.85], rot: [0, 0, 0.4], plate: true }),
+    mk('egg', 0.2, C.sandL, { spawn: [-2.2, -0.1, 0.8], rest: [0.0, -0.1], kit: [0.55, 0.1, 1.95], rot: [0.3, 0, 0.2] }),
+    mk('bread', 0.5, C.tan, { spawn: [0.7, 2.15, -0.4], rest: [-0.3, 0.3], kit: [-3.1, 0.32, 0.4], rot: [0, 0.5, 0.1], stay: true }),
+    mk('wheat', 0.5, mixc(C.tan, C.sandL, 0.4), { spawn: [2.5, 2.0, -0.3], rest: [0.3, 0.35], kit: [1.9, 0.1, 1.0], rot: [0, 0, 0.2] }),
+    mk('leaves', 0.5, C.khaki, { spawn: [-2.6, 0.95, 0.9], rest: [0.0, 0.3], kit: [-0.42, 0.06, 1.2], rot: [0, 0, 0], chop: true }),
+    mk('salmon', 0.64, mixc(C.pink, C.sand, 0.5), { spawn: [3.4, 1.7, 0.2], rest: [0.05, 0.12], kit: [1.0, 0.2, 1.75], rot: [0, 0, 0], plate: true }),
+    mk('bottle', 0.34, mixc(C.khaki, C.sandL, 0.35), { spawn: [-3.9, -1.25, 0.4], rest: [-0.05, 0.25], kit: [-2.6, 0.45, 0.3], rot: [0, 0, 0], stay: true }),
+    mk('almond', 0.1, C.tan, { spawn: [1.9, 2.1, 0.5], rest: [0.0, -0.2], kit: [0.2, 0.1, 1.98], rot: [0, 0, 0], plate: true }),
   ];
   ING.forEach((it, i) => { it.i = i; });
   function drawIng(it, m, R, o = {}) {
@@ -115,11 +127,12 @@ export function addWorlds(X) {
       default: break;
     }
   }
+  X.ingPos = (j, pos, t, R) => ingState(ING[j], pos, t, R).p;
   function ingState(it, pos, t, R) {
     const kx = R.kx, i = it.i;
     const spawn = [it.spawn[0] * kx, it.spawn[1], it.spawn[2]];
     const bagTop = BAG.y + BAG.h / 2, rest = [BAG.x + it.rest[0] * kx * 1.4 * 1, bagTop + it.rest[1] * 1.0, BAG.z + 0.0];
-    const kit = [it.kit[0] * kx, KIT.top + it.kit[1], it.kit[2]];
+    const kit = [LAY.K.cx + it.kit[0] * (Math.abs(it.kit[0]) > 1.5 ? kx : 1), KIT.top + it.kit[1], it.kit[2]];
     const aIn = pop(lin(0.32 + i * 0.035, 0.7 + i * 0.035, pos));
     const tb = eio(lin(0.92 + i * 0.03, 1.38 + i * 0.03, pos));
     const tk = eio(lin(1.55 + i * 0.03, 2.0 + i * 0.03, pos));
@@ -170,34 +183,30 @@ export function addWorlds(X) {
 
     /* ---------- cucina ---------- */
     if (v2 > 0.01) {
-      const k = R.kx, rise = 1 - eo(v2), top = KIT.top;
+      const k = R.kx, rise = 1 - eo(v2), top = KIT.top, cx = LAY.K.cx;
       // piano di lavoro
-      mesh(G.box, Mx(0, top - 1.1 - rise * 2.2, 1.0, 14, 2.2, 2.0), mixc(C.tan, C.mocha, 0.12), matte);
-      mesh(G.box, Mx(0, top - 0.04 - rise * 2.2, 1.0, 14, 0.1, 2.1), C.sandL, { spec: 0.2, shin: 24, rim: 0.6 });
-      const oy = -rise * 2.2;
-      // tagliere + coltello (taglio) + fettine
+      mesh(G.box, Mx(0, top - 1.1 - rise * 3.4, 1.2, 14, 2.2, 2.5), mixc(C.tan, C.mocha, 0.12), matte);
+      mesh(G.box, Mx(0, top - 0.04 - rise * 3.4, 1.25, 14, 0.1, 2.7), C.sandL, { spec: 0.2, shin: 24, rim: 0.6 });
+      const oy = -rise * 3.4;
+      cabinet(top - 0.1, 2.0, 2.45, rise * 3.4);
+      // tagliere + fettine (il coltello è nella mano destra, la frusta nella sinistra: si disegnano più sotto)
       const chopU = lin(2.0, 2.5, pos), cn = Math.floor(chopU * 9);
-      mesh(G.box, Mx(-1.95 * k, top + 0.035 + oy, 1.0, 1.5 * k, 0.07, 0.8), C.tan, matte);
-      const knifeY = top + 0.28 + Math.abs(Math.sin(pos * 28)) * 0.35 * (chopU > 0 && chopU < 1 ? 1 : 0.2), kx2 = -1.6 * k + (chopU * -0.6) * k;
-      mesh(G.box, Mx(kx2, knifeY + oy, 1.12, 0.62, 0.22, 0.02, 0, 0, 0.05), C.sandL, glossy);
-      mesh(G.box, Mx(kx2 + 0.5, knifeY + 0.04 + oy, 1.12, 0.34, 0.07, 0.05), C.mocha, matte);
-      for (let c = 0; c < 9; c++) if (c < cn) mesh(G.cyl, Mx((-1.2 - c * 0.07) * k, top + 0.1 + oy, 1.15, 0.08, 0.03, 0.08, Math.PI / 2, 0, 0), mixc(C.tan, C.pink, 0.2), matte);
-      // ciotola con la frusta (mescolare)
-      const bw = 0.5;
-      mesh(G.bowl, Mx(1.0 * k, top + oy, 1.15, bw, bw, bw), C.sandL, { spec: 0.25, shin: 36, rim: 0.8 });
-      mesh(G.cyl, Mx(1.0 * k, top + 0.19 * bw + oy + 0.02, 1.15, 0.84 * bw, 0.02, 0.84 * bw), mixc(C.sandL, C.tan, 0.4), matte);
-      const wa = pos * 38, wx = 1.0 * k + Math.cos(wa) * 0.07, wz = 1.15 + Math.sin(wa) * 0.07;
-      mesh(G.stem, Mx(wx, top + 0.32 + oy, wz, 0.5, 0.5, 0.5, 0, wa, 0.15), C.mocha, matte);
-      mesh(G.whisk, Mx(wx, top + 0.1 + oy, wz, 0.85, 0.85, 0.85, 0, wa, 0.15), C.sandL, glossy);
+      mesh(G.box, Mx(cx - 0.8, top + 0.035 + oy, 1.05, 1.5, 0.07, 0.85), C.tan, matte);
+      for (let c = 0; c < 9; c++) if (c < cn) mesh(G.cyl, Mx(cx - 0.22 + c * 0.04, top + 0.1 + oy + (c % 2) * 0.01, 1.2 + (c % 3) * 0.03, 0.08, 0.03, 0.08, Math.PI / 2, 0, 0.1 * c), mixc(C.tan, C.pink, 0.2), matte);
+      // ciotola
+      const bw = 0.5, bx = cx + 0.88;
+      mesh(G.bowl, Mx(bx, top + oy, 1.15, bw, bw, bw), C.sandL, { spec: 0.25, shin: 36, rim: 0.8 });
+      mesh(G.cyl, Mx(bx, top + 0.19 * bw + oy + 0.02, 1.15, 0.84 * bw, 0.02, 0.84 * bw), mixc(C.sandL, C.tan, 0.4), matte);
       // pentola con coperchio
-      mesh(G.cyl, Mx(2.9 * k, top + 0.26 + oy, 0.6, 0.5, 0.52, 0.5), C.mocha, { spec: 0.35, shin: 40, rim: 0.8 });
-      mesh(G.sphere, Mx(2.9 * k, top + 0.54 + oy + Math.sin(t * 5) * 0.01 * v2, 0.6, 0.52, 0.14, 0.52), C.olive, glossy);
-      mesh(G.sphere, Mx(2.9 * k, top + 0.66 + oy, 0.6, 0.07), C.sandL, glossy);
+      const px0 = cx + 3.2 * k;
+      mesh(G.cyl, Mx(px0, top + 0.26 + oy, 0.6, 0.5, 0.52, 0.5), C.mocha, { spec: 0.35, shin: 40, rim: 0.8 });
+      mesh(G.sphere, Mx(px0, top + 0.54 + oy + Math.sin(t * 5) * 0.01 * v2, 0.6, 0.52, 0.14, 0.52), C.olive, glossy);
+      mesh(G.sphere, Mx(px0, top + 0.66 + oy, 0.6, 0.07), C.sandL, glossy);
       // padella
-      mesh(G.cyl, Mx(-3.55 * k, top + 0.06 + oy, 1.35, 0.55, 0.12, 0.55), C.mocha, { spec: 0.3, shin: 40, rim: 0.6 });
-      mesh(G.box, Mx(-3.0 * k, top + 0.09 + oy, 1.35, 0.7, 0.05, 0.09), C.mocha, matte);
+      mesh(G.cyl, Mx(cx - 3.3 * k, top + 0.06 + oy, 1.35, 0.55, 0.12, 0.55), C.mocha, { spec: 0.3, shin: 40, rim: 0.6 });
+      mesh(G.box, Mx(cx - 2.75 * k, top + 0.09 + oy, 1.35, 0.7, 0.05, 0.09), C.mocha, matte);
       // piatto: l'impiattamento
-      const pk = 0.62, py = top + oy, px = 0.45 * k + 0.2, pz = 1.55;
+      const pk = 0.6, py = top + oy, px = cx + 0.05, pz = 1.78;
       mesh(G.plate, Mx(px, py, pz, pk, pk, pk), C.sandL, { spec: 0.3, shin: 40, rim: 0.8 });
       const lay = (a, b) => pop(lin(a, b, pos));
       const L1 = lay(2.12, 2.3), L2 = lay(2.22, 2.4), L3 = lay(2.32, 2.5), L4 = lay(2.42, 2.58), L5 = lay(2.5, 2.65);
@@ -207,7 +216,7 @@ export function addWorlds(X) {
       mesh(G.leafG, Mx(px + 0.28, py + 0.2, pz - 0.05, 0.4 * L4, 0.4 * L4, 0.4 * L4, 0.2, 0.5, 0.5), C.khaki, matte);
       [[-0.25, 0.28, -0.05], [0.12, 0.32, 0.0], [0.05, 0.27, 0.15]].forEach(([dx, dy, dz]) => mesh(G.box, Mx(px + dx, py + dy, pz + dz, 0.07 * L5, 0.07 * L5, 0.07 * L5, 0.4, 0.5, 0.2), C.pink, { ...glossy, glow: [0.06, 0.01, 0.03] })); // cubetti rosa
       // mensola con barattoli
-      [[-3.3 * k, 1.25], [-2.7 * k, 1.25], [3.2 * k, 1.55], [3.8 * k, 1.55]].forEach(([x, y], j) => {
+      [[-3.3 * k, 1.25], [-2.7 * k, 1.25], [3.2 * k, 1.55], [3.8 * k, 1.55]].forEach(([x, y], j) => { // mensole fisse al centro scena
         const f = pop(lin(0, 1, v2 * 1.3 - j * 0.1)); mesh(G.box, Mx(x, y - 0.02, -2.4, 1.3, 0.05, 0.4), C.tan, matte);
         mesh(G.jar, Mx(x - 0.28, y + 0.27 * f, -2.4, 0.22 * f, 0.25 * f, 0.22 * f), mixc(C.sandL, C.sand, 0.5), glossy);
         mesh(G.lid, Mx(x - 0.28, y + 0.27 * f + 0.25 * f * 0.86, -2.4, 0.22 * f, 0.22 * f, 0.22 * f), C.mocha, matte);
@@ -215,10 +224,29 @@ export function addWorlds(X) {
       });
     }
   });
+
+  // coltello nella mano destra e frusta nella sinistra: seguono le mani del personaggio
+  hooks.opaque.push((pos, t, R) => {
+    const v2 = phv(2, pos); if (v2 < 0.02 || !X.AV.on) return;
+    const AV = X.AV, cx = LAY.K.cx, top = KIT.top, rise = 1 - eo(v2), oy = -rise * 3.4;
+    const ad = sm(2.42, 2.62, pos), f = pop(lin(0, 1, v2 * 1.4));
+    // coltello: lama verso sinistra (verso il cibo), manico nel pugno
+    const gR = AV.grip.R, board = [cx - 0.8, top + 0.1 + oy, 1.05];
+    const kp = [gR[0] * (1 - ad) + (cx - 0.55) * ad, gR[1] * (1 - ad) + board[1] * ad, gR[2] * (1 - ad) + 1.15 * ad];
+    const kt = 0.05 * (1 - ad);
+    mesh(G.box, Mx(kp[0] - 0.3, kp[1] - 0.07, kp[2], 0.6 * f, 0.13 * f, 0.022 * f, 0, 0, kt), C.sandL, { spec: 0.7, shin: 80, rim: 0.9 });
+    mesh(G.box, Mx(kp[0] - 0.02, kp[1] - 0.01, kp[2], 0.3 * f, 0.065 * f, 0.065 * f, 0, 0, kt), C.mocha, matte);
+    // frusta: manico in mano, la testa dentro la ciotola
+    const gL = AV.grip.L, bx = cx + 0.88, wa = t * 6;
+    const wp = [gL[0] * (1 - ad) + bx * ad, gL[1] * (1 - ad) + (top + 0.75 + oy) * ad, gL[2] * (1 - ad) + 1.15 * ad];
+    mesh(G.stem, Mx(wp[0], wp[1] - 0.2, wp[2], 0.55 * f, 0.55 * f, 0.55 * f, 0, wa, 0), C.mocha, matte);
+    mesh(G.whisk, Mx(wp[0], wp[1] - 0.2 - 0.43, wp[2], 0.7 * f, 0.7 * f, 0.7 * f, 0, wa, 0), C.sandL, glossy);
+  });
   hooks.backdrops.push((pos, t, R) => {
     const v = phv(2, pos); if (v < 0.01) return;
     quadFX(1, 0, 0.6, -3.2, 18, 8, C.sandD, 0.9 * v, { a: 6.5, b: 1.0, col2: C.tan });
-    quadFX(6, 0.5 * R.kx + 0.2, KIT.top + 0.02, 1.5, 2.0, 0.9, C.mocha, 0.3 * v, { a: 1.2 });
+    quadFX(6, LAY.K.cx + 0.05, KIT.top + 0.02, 1.78, 1.5, 0.9, C.mocha, 0.3 * v, { a: 1.2 });
+    quadFX(6, LAY.K.cx - 0.8, KIT.top + 0.02, 1.05, 1.9, 0.8, C.mocha, 0.22 * v, { a: 1.2 });
   });
   // i piatti veri di Naomi appesi alla parete
   hooks.mid.push((pos, t, R) => {
@@ -233,12 +261,10 @@ export function addWorlds(X) {
   /* =========================================================================================
      FASE 4 · ENERGIA E SPORT
      ========================================================================================= */
-  const SH = { x: -2.4, y: -0.45, z: 1.0 };
   hooks.backdrops.push((pos, t, R) => {
     const v = phv(3, pos); if (v < 0.01) return;
     quadFX(3, 0.8, 0.6, -3.6, 12, 9, C.pink, 0.05 * v, { a: 0.55, b: 0.7 });
     quadFX(0, 0.6, 0.2, -3.2, 8, 8, mixc(C.pink, C.mocha, 0.6), 0.25 * v, { a: 1.5 });
-    quadFX(6, 0.5, -1.8, 0.3, 6.4, 1.6, C.mocha, 0.5 * v, { a: 1.1 });
   });
   hooks.opaque.push((pos, t, R) => {
     const v = phv(3, pos); if (v < 0.01) return;
@@ -251,40 +277,42 @@ export function addWorlds(X) {
       mesh(G.cyl, Mx(x, y, z + 0.14, s * 0.22 * f, 0.3, s * 0.22 * f, Math.PI / 2), C.sandL, glossy);
     });
     mesh(G.cyl, Mx(0, 1.15, -2.9, 0.05, 11, 0.05, 0, 0, Math.PI / 2), C.sandD, glossy);
-    // bilanciere davanti alle mani, con dischi ai lati
-    const bf = ap(2);
-    mesh(G.cyl, Mx(0.0, -1.62, 0.5, 0.05 * bf, 7 * bf, 0.05 * bf, 0, 0, Math.PI / 2), C.sandL, { spec: 0.7, shin: 80, rim: 1 });
-    [[-3.3 * k, 1], [3.3 * k, -1]].forEach(([x, sg]) => {
-      mesh(G.cyl, Mx(x, -1.62, 0.5, 0.95 * bf, 0.16 * bf, 0.95 * bf, 0, 0, Math.PI / 2), C.mocha, { spec: 0.25, shin: 24, rim: 0.7 });
-      mesh(G.cyl, Mx(x - sg * 0.14, -1.62, 0.5, 0.8 * bf, 0.08 * bf, 0.8 * bf, 0, 0, Math.PI / 2), C.olive, matte);
-    });
+    // cassone da palestra: il supporto su cui aspetta lo shaker
+    const bxs = SH.x * k, bh = SH.y - 0.47 + 2.0, bf2 = ap(2);
+    mesh(G.box, Mx(bxs, -2.0 + bh / 2, SH.z, 0.86 * bf2, bh * bf2, 0.86 * bf2), C.tan, matte);
+    mesh(G.box, Mx(bxs, -2.0 + bh - 0.03, SH.z, 0.9 * bf2, 0.06 * bf2, 0.9 * bf2), C.sandL, { spec: 0.2, shin: 24, rim: 0.6 });
+    mesh(G.box, Mx(bxs, -2.0 + bh * 0.5, SH.z + 0.436, 0.88 * bf2, 0.14 * bf2, 0.01), C.pink, glossy);
     // shaker: gli ingredienti entrano, il tappo si chiude, si agita
     const sv = pop(lin(0, 1, v * 1.3 - 0.3));
-    const close = eio(lin(2.95, 3.12, pos)), shk = lin(3.1, 3.5, pos) * (1 - lin(3.5, 3.75, pos));
-    const sh = (Math.sin(pos * 90) * 0.12 + Math.sin(pos * 53) * 0.08) * shk, sx = SH.x * k + sh, sy = SH.y + Math.abs(Math.sin(pos * 70)) * 0.12 * shk;
-    const tilt = Math.sin(pos * 90) * 0.28 * shk;
+    const close = eio(lin(2.95, 3.1, pos)), shk = X.AV.shaker.shake;
+    const AVs = X.AV.shaker, sx = AVs.x, sy = AVs.y, szz = AVs.z, tilt = AVs.tilt;
     if (sv > 0.01) {
       const ss = 0.46 * sv;
-      mesh(G.shaker, Mx(sx, sy, SH.z, ss, ss, ss, 0, 0, tilt), C.sandL, { spec: 0.4, shin: 50, rim: 0.9 });
-      mesh(G.cyl, Mx(sx, sy - 0.0, SH.z, 0.72 * ss * 1.01, 0.3 * ss, 0.72 * ss * 1.01, 0, 0, tilt), C.pink, { ...glossy, glow: [0.03, 0.005, 0.015] }); // fascia rosa
+      mesh(G.shaker, Mx(sx, sy, szz, ss, ss, ss, 0, 0, tilt), C.sandL, { spec: 0.4, shin: 50, rim: 0.9 });
+      mesh(G.cyl, Mx(sx, sy - 0.0, szz, 0.72 * ss * 1.01, 0.3 * ss, 0.72 * ss * 1.01, 0, 0, tilt), C.pink, { ...glossy, glow: [0.03, 0.005, 0.015] }); // fascia rosa
       const cy = sy + ss * (0.56 + (1 - close) * 1.1 + 0.0);
-      mesh(G.shakerTop, Mx(sx + (1 - close) * 0.3 * k, cy, SH.z, ss, ss, ss, 0, 0, tilt + (1 - close) * -0.6), C.mocha, { spec: 0.3, shin: 40, rim: 0.8 });
+      mesh(G.shakerTop, Mx(sx + (1 - close) * 0.3 * k, cy, szz, ss, ss, ss, 0, 0, tilt + (1 - close) * -0.6), C.mocha, { spec: 0.3, shin: 40, rim: 0.8 });
       // ingredienti che cadono dentro: capsule, gocce, sfere
       [[0, 'capsule', C.sandL, 0.16], [1, 'drop', C.pink, 0.15], [2, 'sphere', C.tan, 0.14], [3, 'capsule', C.khaki, 0.16], [4, 'sphere', C.pink, 0.1]].forEach(([i, g, col, s]) => {
         const u = lin(2.55 + i * 0.07, 2.9 + i * 0.07, pos); if (u <= 0 || u >= 1) return;
-        const sp = [sx + (i - 2) * 0.55, 1.9 + i * 0.12, 0.5], en = [sx + 0.05 * (i - 2), sy + ss * 1.35, SH.z];
+        const sp = [sx + (i - 2) * 0.55, 1.9 + i * 0.12, 0.5], en = [sx + 0.05 * (i - 2), sy + ss * 1.35, szz];
         const p = bez(sp, [lerp(sp[0], en[0], 0.5), sp[1] + 0.9, 0.9], en, eio(u));
         mesh(G[g], Mx(p[0], p[1], p[2], s * (1 - 0.3 * u), s * (1 - 0.3 * u), s * (1 - 0.3 * u), u * 6, u * 4, u * 3), col, g === 'sphere' || g === 'drop' ? { ...glossy, glow: col === C.pink ? [0.1, 0.02, 0.05] : [0, 0, 0] } : glossy);
       });
       // gocce che schizzano durante la scossa
-      if (shk > 0.02) for (let d = 0; d < 7; d++) { const a = d * 0.9 + Math.floor(pos * 12) * 0.7, rr = 0.5 + (Math.sin(pos * 60 + d) * 0.5 + 0.5) * 0.6; mesh(G.sphere, Mx(sx + Math.cos(a) * rr * 0.9, sy + 0.4 + Math.sin(a) * rr, SH.z + 0.1, 0.045), d % 2 ? C.pink : C.sandL, glossy); }
-      // anello d'energia
-      const pulse = (pos * 8) % 1; if (shk > 0.02) mesh(G.ring, Mx(sx, sy + 0.2, SH.z - 0.1, 0.7 + pulse * 1.3, 0.7 + pulse * 1.3, 0.7 + pulse * 1.3, 0, 0, 0), C.pink, { alpha: (1 - pulse) * 0.9 * shk, glow: [0.2, 0.05, 0.1] });
+      if (shk > 0.02) for (let d = 0; d < 7; d++) { const a = d * 0.9 + Math.floor(pos * 12) * 0.7, rr = 0.5 + (Math.sin(pos * 60 + d) * 0.5 + 0.5) * 0.6; mesh(G.sphere, Mx(sx + Math.cos(a) * rr * 0.9, sy + 0.4 + Math.sin(a) * rr, szz + 0.1, 0.045), d % 2 ? C.pink : C.sandL, glossy); }
     }
     // frutta e simboli (elementi astratti)
     [[-1.5 * k, 2.0, 0.4, 'apple', 0.28, C.pinkD], [1.4 * k, 2.1, -0.8, 'sphere', 0.13, C.pink], [-3.6 * k, 1.9, 0.2, 'drop', 0.22, C.sandL]].forEach(([x, y, z, g, s, col], i) => {
       const f = ap(i + 3); mesh(G[g], Mx(x, y + Math.sin(t * 0.9 + i) * 0.12, z, s * f, s * f, s * f, t * 0.3, t * 0.4, 0), col, glossy);
     });
+  });
+
+  // onda d'energia dietro di lei mentre scuote lo shaker
+  hooks.backdrops.push((pos, t, R) => {
+    const v = phv(3, pos), shk = X.AV.shaker.shake; if (v < 0.05 || shk < 0.02) return;
+    const A = X.AV.shaker;
+    for (let q = 0; q < 2; q++) { const pulse = (t * 1.3 + q * 0.5) % 1; quadFX(7, A.x, A.y + 0.2, A.z - 0.6, 6, 6, C.pink, (1 - pulse) * 0.85 * shk * v, { a: 0.18 + pulse * 0.7, b: 0.025 }); }
   });
 
   /* =========================================================================================
@@ -294,15 +322,16 @@ export function addWorlds(X) {
     const v = phv(4, pos); if (v < 0.01) return;
     quadFX(2, 0, 0.3, -3.8, 16, 9, C.mocha, 0.16 * v, { a: 8 });
     quadFX(0, 0.1, 0.4, -3.2, 8, 8, [1, 1, 1], 0.6 * v, { a: 1.7 });
-    quadFX(6, 0, -1.72, 0.9, 7.5, 1.1, C.mocha, 0.28 * v, { a: 1.2 });
+    quadFX(6, 0, LAY.DESK.top + 0.01, 0.95, 6.0, 1.1, C.mocha, 0.22 * v, { a: 1.2 });
   });
   hooks.opaque.push((pos, t, R) => {
     const v = phv(4, pos); if (v < 0.01) return;
     const k = R.kx, ap = (i) => pop(lin(0, 1, v * 1.25 - i * 0.09)), rise = 1 - eo(v);
-    // scrivania
-    mesh(G.box, Mx(0, -2.25 - rise * 2, 0.9, 14, 1.0, 1.9), mixc(C.tan, C.mocha, 0.25), matte);
-    mesh(G.box, Mx(0, -1.74 - rise * 2, 0.9, 14, 0.07, 2.0), C.sandL, { spec: 0.2, shin: 24, rim: 0.6 });
-    const top = -1.7 - rise * 2;
+    // scrivania: il piano arriva ai fianchi, lei sta dietro
+    const DT = LAY.DESK.top, top = DT - rise * 3.4;
+    mesh(G.box, Mx(0, DT - 0.65 - rise * 3.4, 0.9, 14, 1.3, 1.9), mixc(C.tan, C.mocha, 0.25), matte);
+    mesh(G.box, Mx(0, DT - 0.04 - rise * 3.4, 0.9, 14, 0.07, 2.0), C.sandL, { spec: 0.2, shin: 24, rim: 0.6 });
+    cabinet(DT - 0.08, 1.15, 1.855, rise * 3.4);
     // pila di libri
     [[-2.2 * k, 1.25, 0.1, C.mocha], [-2.2 * k, 0.9, -0.05, C.khaki], [-2.2 * k, 0.65, 0.05, C.tan], [-2.2 * k, 0.42, 0.0, C.olive]].forEach(([x, , dz, col], i) => {
       const f = ap(i); const y = top + 0.12 + i * 0.24; const w = 1.35 - i * 0.07;

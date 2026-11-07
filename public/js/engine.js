@@ -150,6 +150,8 @@ void main(){
     a = ring*(1.-smoothstep(.8,1.,r));
   } else if(uKind < 6.5){ // ombra a terra
     float r = length(p*vec2(1.,1.6))*2.; a = pow(max(1.-r,0.),uA);
+  } else if(uKind < 7.5){ // onda: un solo anello che si espande (uA raggio, uB spessore)
+    float r = length(p)*2.; a = 1.-smoothstep(0.,uB,abs(r-uA));
   } else { a = 1.; }
   o = vec4(c*a*uAlpha, a*uAlpha);
 }`;

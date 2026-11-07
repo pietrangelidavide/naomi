@@ -24,7 +24,7 @@ const FIG = [
   { k: 'p5', h: 3.2, ax: 0.0, ay: 1.45 },
 ];
 const NEEDW = [1.55, 2.3, 2.2, 2.2, 1.7]; // metà larghezza minima in mondo (su telefono)
-const NEEDH = [3.75, 3.6, 3.5, 3.3, 3.1]; // metà altezza visibile: la figura sta nella parte alta, il testo sotto
+const NEEDH = [3.75, 3.6, 3.55, 3.3, 3.2]; // metà altezza visibile: la figura sta nella parte alta, il testo sotto
 
 export async function createScene(canvas, { base = '' } = {}) {
   const C = createGL(canvas); if (!C) return null;
@@ -185,7 +185,7 @@ export async function createScene(canvas, { base = '' } = {}) {
     vp.set(M.mul(proj, view));
     // unità per i layout: su telefono i lati si stringono
     const kx = S.mobile ? Math.min(1, Wv / 4.2) * 0.9 : 1;
-    const R = { Wv, Hv, kx, ty, dist };
+    const R = { Wv, Hv, kx, ty, dist, intro };
 
     gl.viewport(0, 0, S.w, S.h);
     gl.disable(gl.DEPTH_TEST); gl.disable(gl.BLEND); gl.depthMask(true);
@@ -260,6 +260,8 @@ export async function createScene(canvas, { base = '' } = {}) {
   const ctxObj = { gl, P, G, T, PAL, mesh, quadFX, quadTex, TXM, M, cl, lin, sm, lerp, eo, pop, phv, phIn, phOut, FIG, fig, hooks, S, css, mixc, rnd, get time() { return time; } };
   const { addWorlds } = await import('./worlds.js');
   addWorlds(ctxObj);
+  const { addAvatar } = await import('./avatar.js');
+  addAvatar(ctxObj);
 
   function resize(w, h, dpr) {
     S.dpr = dpr; canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
