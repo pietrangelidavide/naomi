@@ -47,6 +47,9 @@ function blend(poses, w) {
   return out;
 }
 
+// Viso: di base liscio e neutro (segnaposto in attesa del modello vero di Naomi). Con ?viso=cartoon torna quello disegnato.
+const FACE = new URLSearchParams(location.search).get('viso') === 'cartoon' ? 'cartoon' : 'neutro';
+
 export function addAvatar(X) {
   const { gl, G, PAL, M, mesh, cl, lin, sm, lerp, eo, pop, hooks, mixc } = X;
   const up = (g) => upload(gl, g);
@@ -182,6 +185,9 @@ export function addAvatar(X) {
     const neck = M.pt(torsoM, [0, 1.27, 0]);
     const headM = M.chain(torsoM, M.T(0, 1.27, 0), M.Ry(P.head[0]), M.Rx(P.head[1]), M.Rz(P.head[2]), M.T(0, 0.37, 0), M.S(1.12));
     const hc = M.pt(headM, [0, 0, 0]);
+    // se c'è il modello .glb, il corpo procedurale non si disegna: servono solo i bersagli per muovere lo scheletro
+    const glbOn = !!(X.GLB && X.GLB.ready), bm = glbOn ? () => {} : mesh;
+    const J = { pelvisM, torsoM, headM, hip, legs: [], arms: [] };
     // capelli: seguono la testa con un po' di ritardo
     if (!hairSt.p) hairSt.p = hc.slice();
     const dt = Math.min(0.1, Math.max(0.001, t - (hairSt.t || t))); hairSt.t = t;
@@ -204,51 +210,52 @@ export function addAvatar(X) {
       const hp = M.pt(pelvisM, [f.sd * 0.13, -0.02, 0]);
       const ankle = v.add(f.p, [0, 0.12, 0]);
       const { E, H } = ik2(hp, ankle, 0.98, 0.92, v.add(fwd, [f.sd * 0.15, 0, 0]));
-      mesh(AG.limb, boneM(hp, E, 0.135), legCol, soft);
-      mesh(AG.limb, boneM(E, H, 0.098), legCol, soft);
-      mesh(G.sphere, M.chain(M.T(hp[0], hp[1], hp[2]), M.S(0.145)), legCol, soft);
-      mesh(G.sphere, M.chain(M.T(E[0], E[1], E[2]), M.S(0.102)), legCol, soft);
+      J.legs.push({ sd: f.sd, floorY: f.p[1], foot: f.p, yaw: f.y, pole: v.add(fwd, [f.sd * 0.15, 0, 0]) });
+      bm(AG.limb, boneM(hp, E, 0.135), legCol, soft);
+      bm(AG.limb, boneM(E, H, 0.098), legCol, soft);
+      bm(G.sphere, M.chain(M.T(hp[0], hp[1], hp[2]), M.S(0.145)), legCol, soft);
+      bm(G.sphere, M.chain(M.T(E[0], E[1], E[2]), M.S(0.102)), legCol, soft);
       // scarpa
       const fm = M.chain(M.T(f.p[0], f.p[1] + 0.085, f.p[2]), M.Ry(f.y), M.T(0, 0, 0.075));
-      mesh(G.sphere, M.mul(fm, M.S(0.125, 0.09, 0.27)), shoesC, gloss);
-      mesh(G.sphere, M.mul(fm, M.chain(M.T(0, -0.045, 0.01), M.S(0.13, 0.04, 0.275))), PAL.sandL, soft);
-      mesh(G.sphere, M.mul(fm, M.chain(M.T(0, 0.02, -0.2), M.S(0.034))), PINK, gloss);
+      bm(G.sphere, M.mul(fm, M.S(0.125, 0.09, 0.27)), shoesC, gloss);
+      bm(G.sphere, M.mul(fm, M.chain(M.T(0, -0.045, 0.01), M.S(0.13, 0.04, 0.275))), PAL.sandL, soft);
+      bm(G.sphere, M.mul(fm, M.chain(M.T(0, 0.02, -0.2), M.S(0.034))), PINK, gloss);
     });
     // ---- tronco e vestiti
-    mesh(G.sphere, M.mul(pelvisM, M.chain(M.T(0, 0.02, 0), M.S(0.33, 0.24, 0.25))), legCol, soft);
+    bm(G.sphere, M.mul(pelvisM, M.chain(M.T(0, 0.02, 0), M.S(0.33, 0.24, 0.25))), legCol, soft);
     const torsoCol = vis.sport > 0.5 ? sportC : shirtC;
-    mesh(AG.torso, M.mul(torsoM, M.S(1, br, 0.68)), vis.sport > 0.5 ? sportC : skin, soft);
-    if (vis.sport > 0.01) mesh(AG.torso, M.mul(torsoM, M.chain(M.T(0, 0.0, 0), M.S(1.035, br * 0.8, 0.71))), sportC, soft);
-    if (vis.shirt > 0.02) mesh(AG.shirt, M.mul(torsoM, M.chain(M.S(pop(vis.shirt)), M.S(1, br, 0.72))), shirtC, soft);
+    bm(AG.torso, M.mul(torsoM, M.S(1, br, 0.68)), vis.sport > 0.5 ? sportC : skin, soft);
+    if (vis.sport > 0.01) bm(AG.torso, M.mul(torsoM, M.chain(M.T(0, 0.0, 0), M.S(1.035, br * 0.8, 0.71))), sportC, soft);
+    if (vis.shirt > 0.02) bm(AG.shirt, M.mul(torsoM, M.chain(M.S(pop(vis.shirt)), M.S(1, br, 0.72))), shirtC, soft);
     if (vis.coat > 0.02) {
-      mesh(AG.coat, M.mul(torsoM, M.chain(M.S(pop(vis.coat)), M.S(1, br, 0.78))), coatC, { spec: 0.08, shin: 14, rim: 0.7 });
-      mesh(G.box, M.mul(torsoM, M.chain(M.T(0, 0.78, 0.4 * 0.78 + 0.07), M.S(0.12 * pop(vis.coat), 0.62 * pop(vis.coat), 0.012))), innerC, soft); // scollo: la maglia sotto
+      bm(AG.coat, M.mul(torsoM, M.chain(M.S(pop(vis.coat)), M.S(1, br, 0.78))), coatC, { spec: 0.08, shin: 14, rim: 0.7 });
+      bm(G.box, M.mul(torsoM, M.chain(M.T(0, 0.78, 0.4 * 0.78 + 0.07), M.S(0.12 * pop(vis.coat), 0.62 * pop(vis.coat), 0.012))), innerC, soft); // scollo: la maglia sotto
     }
     if (vis.apron > 0.02) {
       const a = pop(vis.apron);
-      mesh(G.box, M.mul(torsoM, M.chain(M.T(0, 0.55, 0.325), M.S(0.56 * a, 0.95 * a, 0.03 * a))), apronC, soft);
-      mesh(G.box, M.mul(torsoM, M.chain(M.T(-0.17, 1.12, 0.27), M.Rx(-0.3), M.S(0.035 * a, 0.3 * a, 0.02 * a))), apronC, soft);
-      mesh(G.box, M.mul(torsoM, M.chain(M.T(0.17, 1.12, 0.27), M.Rx(-0.3), M.S(0.035 * a, 0.3 * a, 0.02 * a))), apronC, soft);
+      bm(G.box, M.mul(torsoM, M.chain(M.T(0, 0.55, 0.325), M.S(0.56 * a, 0.95 * a, 0.03 * a))), apronC, soft);
+      bm(G.box, M.mul(torsoM, M.chain(M.T(-0.17, 1.12, 0.27), M.Rx(-0.3), M.S(0.035 * a, 0.3 * a, 0.02 * a))), apronC, soft);
+      bm(G.box, M.mul(torsoM, M.chain(M.T(0.17, 1.12, 0.27), M.Rx(-0.3), M.S(0.035 * a, 0.3 * a, 0.02 * a))), apronC, soft);
     }
     // ---- collo e testa
-    mesh(AG.tube, boneM(M.pt(torsoM, [0, 1.15, 0]), v.add(M.pt(headM, [0, -0.2, 0]), [0, 0, 0]), 0.075), skin, soft);
-    mesh(AG.head, M.mul(headM, M.S(1, 1, 1.06)), skin, sk());
+    bm(AG.tube, boneM(M.pt(torsoM, [0, 1.15, 0]), v.add(M.pt(headM, [0, -0.2, 0]), [0, 0, 0]), 0.075), skin, soft);
+    bm(AG.head, M.mul(headM, M.S(1, 1, 1.06)), skin, sk());
     // capelli: calotta, frangia, massa dietro, ciocche ai lati o coda
     const pony = vis.pony, longH = 1 - pony, hs = { spec: 0.2, shin: 22, rim: 0.7 };
-    mesh(G.sphere, M.mul(headM, M.chain(M.T(0, 0.1, -0.06), M.S(0.345, 0.375, 0.375))), hair, hs);
-    mesh(G.sphere, M.mul(headM, M.chain(M.T(0, 0.275, 0.15), M.Rx(-0.5), M.S(0.285, 0.1, 0.17))), hair, hs);               // frangia
-    mesh(G.sphere, M.mul(headM, M.chain(M.T(-0.14, 0.265, 0.17), M.Rz(0.55), M.Rx(-0.4), M.S(0.19, 0.075, 0.12))), hair, hs); // ciuffo di lato
+    bm(G.sphere, M.mul(headM, M.chain(M.T(0, 0.1, -0.06), M.S(0.345, 0.375, 0.375))), hair, hs);
+    bm(G.sphere, M.mul(headM, M.chain(M.T(0, 0.275, 0.15), M.Rx(-0.5), M.S(0.285, 0.1, 0.17))), hair, hs);               // frangia
+    bm(G.sphere, M.mul(headM, M.chain(M.T(-0.14, 0.265, 0.17), M.Rz(0.55), M.Rx(-0.4), M.S(0.19, 0.075, 0.12))), hair, hs); // ciuffo di lato
     if (longH > 0.02) {
       const hm = M.chain(headM, M.T(0, 0.1, -0.08), M.Rx(swayX), M.Rz(swayZ), M.T(0, -0.62 * longH, -0.03));
-      mesh(G.sphere, M.mul(hm, M.S(0.4 * longH, 0.76 * longH, 0.28 * longH)), hair, hs);
-      mesh(G.sphere, M.mul(hm, M.chain(M.T(0, -0.55 * longH, 0.02), M.S(0.34 * longH, 0.34 * longH, 0.22 * longH))), hairHi, soft);
+      bm(G.sphere, M.mul(hm, M.S(0.4 * longH, 0.76 * longH, 0.28 * longH)), hair, hs);
+      bm(G.sphere, M.mul(hm, M.chain(M.T(0, -0.55 * longH, 0.02), M.S(0.34 * longH, 0.34 * longH, 0.22 * longH))), hairHi, soft);
       const side = v.nrm(v.sub(M.pt(torsoM, [1, 0, 0]), M.pt(torsoM, [0, 0, 0])));
       [-1, 1].forEach((sd) => { // ciocche piatte ai lati del viso, che scendono sulle spalle
         const A = M.pt(headM, [sd * 0.3, 0.14, 0.04]);
         const tp = M.pt(torsoM, [sd * 0.4, 0.9, 0.1]), gr = [A[0] + sd * 0.03, A[1] - 0.95, A[2] + 0.1];
         const B = v.mix(tp, gr, sm(0.35, 0.9, Math.abs(P.pitch + P.lean)));
-        mesh(AG.lock, boneF(A, B, 0.1 * longH, 0.055 * longH, side), hair, hs);
-        mesh(G.sphere, M.chain(M.T(A[0], A[1], A[2]), M.S(0.1 * longH, 0.12 * longH, 0.08 * longH)), hair, soft);
+        bm(AG.lock, boneF(A, B, 0.1 * longH, 0.055 * longH, side), hair, hs);
+        bm(G.sphere, M.chain(M.T(A[0], A[1], A[2]), M.S(0.1 * longH, 0.12 * longH, 0.08 * longH)), hair, soft);
       });
     }
     if (pony > 0.02) { // coda di cavallo con fiocco rosa
@@ -256,29 +263,31 @@ export function addAvatar(X) {
       const s1 = swayX * 1.6 + 0.35, s2 = swayX * 2.2 + 0.2;
       const p1 = v.add(a0, [Math.sin(swayZ) * 0.2, -0.42 * pony, -0.28 * pony - Math.sin(s1) * 0.1]);
       const p2 = v.add(p1, [Math.sin(swayZ * 1.4) * 0.2, -0.46 * pony, -0.12 * pony - Math.sin(s2) * 0.14]);
-      mesh(AG.limb, boneM(a0, p1, 0.1 * pony), hair, { spec: 0.2, shin: 22, rim: 0.7 });
-      mesh(AG.limb, boneM(p1, p2, 0.085 * pony), hairHi, { spec: 0.2, shin: 22, rim: 0.7 });
-      mesh(G.sphere, M.chain(M.T(a0[0], a0[1], a0[2]), M.S(0.07 * pony)), PINK, gloss);
+      bm(AG.limb, boneM(a0, p1, 0.1 * pony), hair, { spec: 0.2, shin: 22, rim: 0.7 });
+      bm(AG.limb, boneM(p1, p2, 0.085 * pony), hairHi, { spec: 0.2, shin: 22, rim: 0.7 });
+      bm(G.sphere, M.chain(M.T(a0[0], a0[1], a0[2]), M.S(0.07 * pony)), PINK, gloss);
     }
-    // viso, posato sulla superficie della testa: occhi, sopracciglia, naso, bocca, guance, occhiali
-    const blink = (Math.sin(t * 0.9) > 0.985 || (t % 4.3) < 0.1) ? 0.15 : 1;
-    [-1, 1].forEach((sd) => {
-      const ex = sd * 0.115, ey = 0.045;
-      mesh(G.sphere, M.mul(headM, M.chain(M.T(ex, ey, sz(ex, ey) - 0.004), M.S(0.034, 0.04 * blink, 0.02))), glassC, gloss);
-      mesh(G.sphere, M.mul(headM, M.chain(M.T(ex + 0.012, ey + 0.016, sz(ex + 0.012, ey + 0.016) + 0.012), M.S(0.009))), PAL.sandL, soft);
-      mesh(AG.tube, M.mul(headM, M.chain(M.T(sd * 0.075, 0.155, sz(sd * 0.075, 0.155) + 0.004), M.Rz(sd * 1.42), M.S(0.016, 0.075, 0.016))), brow, soft);
-      mesh(G.sphere, M.mul(headM, M.chain(M.T(sd * 0.19, -0.1, sz(sd * 0.19, -0.1) - 0.006), M.Ry(sd * 0.55), M.S(0.04, 0.024, 0.014))), blush, soft);
-      // montatura (occhio di gatto) e asta fino all'orecchio
-      const gz = sz(sd * 0.118, 0.045) + 0.035;
-      mesh(AG.rim, M.mul(headM, M.chain(M.T(sd * 0.118, 0.045, gz), M.Rz(sd * 0.16), M.Rx(Math.PI / 2), M.S(0.112, 0.03, 0.088))), glassC, gloss);
-      mesh(AG.tube, boneM(M.pt(headM, [sd * 0.228, 0.065, sz(sd * 0.228, 0.065) + 0.03]), M.pt(headM, [sd * 0.325, 0.06, 0.08]), 0.012), glassC, gloss);
-    });
-    mesh(AG.tube, boneM(M.pt(headM, [-0.02, 0.05, (sz(0, 0.05) + 0.035)]), M.pt(headM, [0.02, 0.05, (sz(0, 0.05) + 0.035)]), 0.011), glassC, gloss);
-    mesh(G.sphere, M.mul(headM, M.chain(M.T(0, -0.05, sz(0, -0.05) + 0.004), M.S(0.026, 0.03, 0.028))), skinD, soft);
-    { // bocca: tre segmenti che disegnano un sorriso
-      const s = P.smile, w = 0.075, y0 = -0.185, lift = 0.02 + 0.03 * s;
-      const pts = [[-w, y0 + lift], [-w * 0.5, y0 - 0.008], [w * 0.5, y0 - 0.008], [w, y0 + lift]].map(([x, y]) => [x, y, sz(x, y) + 0.008]);
-      for (let q = 0; q < 3; q++) mesh(AG.tube, boneM(M.pt(headM, pts[q]), M.pt(headM, pts[q + 1]), 0.0085), PAL.pinkD, gloss);
+    if (FACE === 'cartoon') {
+      // viso, posato sulla superficie della testa: occhi, sopracciglia, naso, bocca, guance, occhiali
+      const blink = (Math.sin(t * 0.9) > 0.985 || (t % 4.3) < 0.1) ? 0.15 : 1;
+      [-1, 1].forEach((sd) => {
+        const ex = sd * 0.115, ey = 0.045;
+        bm(G.sphere, M.mul(headM, M.chain(M.T(ex, ey, sz(ex, ey) - 0.004), M.S(0.034, 0.04 * blink, 0.02))), glassC, gloss);
+        bm(G.sphere, M.mul(headM, M.chain(M.T(ex + 0.012, ey + 0.016, sz(ex + 0.012, ey + 0.016) + 0.012), M.S(0.009))), PAL.sandL, soft);
+        bm(AG.tube, M.mul(headM, M.chain(M.T(sd * 0.075, 0.155, sz(sd * 0.075, 0.155) + 0.004), M.Rz(sd * 1.42), M.S(0.016, 0.075, 0.016))), brow, soft);
+        bm(G.sphere, M.mul(headM, M.chain(M.T(sd * 0.19, -0.1, sz(sd * 0.19, -0.1) - 0.006), M.Ry(sd * 0.55), M.S(0.04, 0.024, 0.014))), blush, soft);
+        // montatura (occhio di gatto) e asta fino all'orecchio
+        const gz = sz(sd * 0.118, 0.045) + 0.035;
+        bm(AG.rim, M.mul(headM, M.chain(M.T(sd * 0.118, 0.045, gz), M.Rz(sd * 0.16), M.Rx(Math.PI / 2), M.S(0.112, 0.03, 0.088))), glassC, gloss);
+        bm(AG.tube, boneM(M.pt(headM, [sd * 0.228, 0.065, sz(sd * 0.228, 0.065) + 0.03]), M.pt(headM, [sd * 0.325, 0.06, 0.08]), 0.012), glassC, gloss);
+      });
+      bm(AG.tube, boneM(M.pt(headM, [-0.02, 0.05, (sz(0, 0.05) + 0.035)]), M.pt(headM, [0.02, 0.05, (sz(0, 0.05) + 0.035)]), 0.011), glassC, gloss);
+      bm(G.sphere, M.mul(headM, M.chain(M.T(0, -0.05, sz(0, -0.05) + 0.004), M.S(0.026, 0.03, 0.028))), skinD, soft);
+      { // bocca: tre segmenti che disegnano un sorriso
+        const s = P.smile, w = 0.075, y0 = -0.185, lift = 0.02 + 0.03 * s;
+        const pts = [[-w, y0 + lift], [-w * 0.5, y0 - 0.008], [w * 0.5, y0 - 0.008], [w, y0 + lift]].map(([x, y]) => [x, y, sz(x, y) + 0.008]);
+        for (let q = 0; q < 3; q++) bm(AG.tube, boneM(M.pt(headM, pts[q]), M.pt(headM, pts[q + 1]), 0.0085), PAL.pinkD, gloss);
+      }
     }
     // ---- braccia
     const hands = [
@@ -289,25 +298,26 @@ export function addAvatar(X) {
     hands.forEach((h) => {
       const A = sh[h.key], { E, H } = ik2(A, h.t, 0.66, 0.62, h.pole);
       AV.hand[h.key] = H;
+      J.arms.push({ key: h.key, sd: h.sd, H, pole: h.pole, n: h.n });
       const sleeve = vis.sleeve, coatS = vis.coat;
-      mesh(G.sphere, M.chain(M.T(A[0], A[1], A[2]), M.S(0.125)), vis.sport > 0.5 ? skin : armCol, soft);
-      mesh(AG.limb, boneM(A, E, 0.105), skin, sk());
-      mesh(AG.limb, boneM(E, H, 0.088), skin, sk());
-      mesh(G.sphere, M.chain(M.T(E[0], E[1], E[2]), M.S(0.095)), skin, sk());
+      bm(G.sphere, M.chain(M.T(A[0], A[1], A[2]), M.S(0.125)), vis.sport > 0.5 ? skin : armCol, soft);
+      bm(AG.limb, boneM(A, E, 0.105), skin, sk());
+      bm(AG.limb, boneM(E, H, 0.088), skin, sk());
+      bm(G.sphere, M.chain(M.T(E[0], E[1], E[2]), M.S(0.095)), skin, sk());
       if (sleeve > 0.02) { // maniche
         const r1 = coatS > 0.5 ? 0.17 : 0.135, r2 = coatS > 0.5 ? 0.15 : 0.115;
         const mid = v.mix(E, H, coatS > 0.5 ? 0.86 : 0.62);
-        mesh(AG.limb, boneM(A, E, r1 * sleeve), armCol, soft);
-        mesh(AG.limb, boneM(E, mid, r2 * sleeve), armCol, soft);
-        mesh(G.sphere, M.chain(M.T(E[0], E[1], E[2]), M.S(r1 * 0.98 * sleeve)), armCol, soft);
-        mesh(G.sphere, M.chain(M.T(A[0], A[1], A[2]), M.S(0.15 * sleeve)), armCol, soft);
+        bm(AG.limb, boneM(A, E, r1 * sleeve), armCol, soft);
+        bm(AG.limb, boneM(E, mid, r2 * sleeve), armCol, soft);
+        bm(G.sphere, M.chain(M.T(E[0], E[1], E[2]), M.S(r1 * 0.98 * sleeve)), armCol, soft);
+        bm(G.sphere, M.chain(M.T(A[0], A[1], A[2]), M.S(0.15 * sleeve)), armCol, soft);
       }
       // mano
       const fd = v.nrm(v.sub(H, E)); AV.grip[h.key] = v.add(H, v.mul(fd, 0.2));
       let zz = v.sub(h.n, v.mul(fd, v.dot(h.n, fd))); if (v.len(zz) < 1e-3) zz = [0, 0, 1]; zz = v.nrm(zz);
       const hm = basis(H, v.cross(fd, zz), fd, zz);
-      const bn = (a, b, r) => mesh(AG.tube, boneM(M.pt(hm, a), M.pt(hm, b), r), skin, sk());
-      mesh(G.sphere, M.mul(hm, M.chain(M.T(0, 0.085, 0), M.S(0.07, 0.1, 0.038))), skin, sk());
+      const bn = (a, b, r) => bm(AG.tube, boneM(M.pt(hm, a), M.pt(hm, b), r), skin, sk());
+      bm(G.sphere, M.mul(hm, M.chain(M.T(0, 0.085, 0), M.S(0.07, 0.1, 0.038))), skin, sk());
       const fing = (x, l1, l2, cv, r) => {
         const a1 = cv * 1.0, a2 = cv * 1.25;
         const p0 = [x, 0.17, 0], p1 = [x, 0.17 + Math.cos(a1) * l1, Math.sin(a1) * l1], p2 = [x, p1[1] + Math.cos(a1 + a2) * l2, p1[2] + Math.sin(a1 + a2) * l2];
@@ -320,6 +330,7 @@ export function addAvatar(X) {
       const t0 = [h.sd * 0.062, 0.05, 0.005], t1 = [h.sd * (0.1 - th * 0.05), 0.1 + th * 0.04, 0.03 + th * 0.06], t2 = [h.sd * (0.1 - th * 0.09), 0.15 + th * 0.03, 0.04 + th * 0.12];
       bn(t0, t1, 0.024); bn(t1, t2, 0.021);
     });
+    if (glbOn) X.GLB.draw(J, t);
     return { pelvisM, torsoM, headM };
   }
 

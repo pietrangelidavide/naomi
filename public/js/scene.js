@@ -206,8 +206,10 @@ export async function createScene(canvas, { base = '' } = {}) {
     gl.enable(gl.DEPTH_TEST); gl.depthFunc(gl.LEQUAL);
     gl.useProgram(P.mesh.p); const mu = P.mesh.u;
     gl.uniformMatrix4fv(mu.uVP, false, vp); gl.uniform3fv(mu.uEye, eye);
-    gl.uniform3fv(mu.uShadow, mixc([0.66, 0.6, 0.52], [0.5, 0.44, 0.4], dark)); gl.uniform3fv(mu.uLight, mixc([1.06, 1.02, 0.97], [1.1, 1.0, 0.92], dark));
+    const SHD = mixc([0.66, 0.6, 0.52], [0.5, 0.44, 0.4], dark), LIT = mixc([1.06, 1.02, 0.97], [1.1, 1.0, 0.92], dark);
+    gl.uniform3fv(mu.uShadow, SHD); gl.uniform3fv(mu.uLight, LIT);
     gl.uniform3fv(mu.uFogC, FOGM); gl.uniform2f(mu.uFog, dist * 0.9, dist * 2.2);
+    ctxObj.U = { vp, eye, shadow: SHD, light: LIT, fogC: FOGM, fog: [dist * 0.9, dist * 2.2] }; // luce e nebbia, per il modello .glb
     world.opaque(pos, t, R, w);
 
     // ---- passaggio traslucido (da lontano a vicino)
@@ -262,6 +264,16 @@ export async function createScene(canvas, { base = '' } = {}) {
   addWorlds(ctxObj);
   const { addAvatar } = await import('./avatar.js');
   addAvatar(ctxObj);
+  // slot per il modello 3D vero di Naomi (vedi public/models/README.md): se non è indicato, resta il personaggio procedurale
+  {
+    const qs = new URLSearchParams(location.search);
+    const url = qs.get('glb') || (await import('./modello.js')).MODELLO_GLB;
+    if (url) {
+      import('./glb.js').then((m) => m.loadModel(ctxObj, url, { scala: parseFloat(qs.get('glbscala')) || 1, y: parseFloat(qs.get('glby')) || 0 }))
+        .then((g) => console.info('[modello 3D] caricato', g.info))
+        .catch((e) => console.warn('[modello 3D] non caricato, resta il personaggio procedurale:', e.message));
+    }
+  }
 
   function resize(w, h, dpr) {
     S.dpr = dpr; canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
