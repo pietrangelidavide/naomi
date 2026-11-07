@@ -1,0 +1,353 @@
+// Gli oggetti dei cinque ambienti e la loro coreografia. Ogni funzione dipende solo da pos (0 → 4) e dal tempo.
+export function addWorlds(X) {
+  const { G, T, PAL, mesh, quadFX, quadTex, TXM, M, cl, lin, sm, lerp, eo, pop, phv, phIn, phOut, FIG, fig, hooks, mixc } = X;
+  const Mx = (x, y, z, sx = 1, sy = sx, sz = sx, rx = 0, ry = 0, rz = 0) => M.chain(M.T(x, y, z), M.Ry(ry), M.Rx(rx), M.Rz(rz), M.S(sx, sy, sz));
+  const eio = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  const bez = (a, b, c, t) => [0, 1, 2].map((i) => (1 - t) * (1 - t) * a[i] + 2 * (1 - t) * t * b[i] + t * t * c[i]);
+  const C = PAL; const LEAF = mixc(PAL.khaki, PAL.sand, 0.3), LEAF2 = mixc(PAL.olive, PAL.sand, 0.25);
+  const glossy = { spec: 0.5, shin: 60, rim: 0.9 }, matte = { spec: 0.05, shin: 12, rim: 0.5 };
+  // matrice che porta l'asse y lungo la direzione d (per i legami delle molecole)
+  function alignY(d) {
+    const l = Math.hypot(...d) || 1, y = [d[0] / l, d[1] / l, d[2] / l];
+    let a = [-y[2], 0, y[0]]; const al = Math.hypot(...a);
+    if (al < 1e-6) return y[1] > 0 ? M.id() : M.Rx(Math.PI);
+    a = a.map((v) => v / al); const c = y[1], s = al, t = 1 - c, [x, yy, z] = a;
+    return new Float32Array([t * x * x + c, t * x * yy + s * z, t * x * z - s * yy, 0, t * x * yy - s * z, t * yy * yy + c, t * yy * z + s * x, 0, t * x * z + s * yy, t * yy * z - s * x, t * z * z + c, 0, 0, 0, 0, 1]);
+  }
+  const bond = (a, b, r, col) => { const d = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], len = Math.hypot(...d); const m = M.chain(M.T((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (a[2] + b[2]) / 2), alignY(d), M.S(r, len, r)); return m; };
+
+  /* ---------- figure: una sola protagonista, cinque pose ---------- */
+  const place = (f, i) => { const m = fig[f.k], s = f.h / m.h; return { s, wq: m.w * s, hq: m.h * s, cx: f.ax - m.headx * s + m.w * s / 2, cy: f.ay + m.heady * s - m.h * s / 2 }; };
+  hooks.figures.push((pos, t, R, w, intro) => {
+    FIG.forEach((f, i) => {
+      const pIn = i === 0 ? intro : phIn(i, pos), pOut = i === PHASESX - 1 ? 0 : phOut(i, pos);
+      if (pIn <= 0.002 || pOut >= 0.998) return;
+      const p = place(f, i), k = R.kx; p.cx += (R.Wv > 3.2 ? [0.55, -0.55, 0.55, -0.45, 0.55][i] : 0);
+      const sway = Math.sin(t * 0.9 + i) * 0.012, breathe = 1 + Math.sin(t * 1.1 + i) * 0.004;
+      const shake = i === 3 ? Math.sin(t * 22) * 0.02 * sm(3.0, 3.1, pos) * (1 - sm(3.4, 3.6, pos)) : 0;
+      quadTex(T[f.k], p.cx + shake, p.cy + sway, 0, p.wq * breathe, p.hq * breathe, { mode: 1, pIn, pOut, bias: 1.6 * (1 - pIn) + 1.6 * pOut, tint: i === 3 ? [0.97, 0.95, 0.9] : [1, 1, 1] });
+    });
+  });
+  const PHASESX = 5;
+
+  /* ---------- titoli giganti ---------- */
+  hooks.titles.push((pos, t, R, w) => {
+    for (let i = 0; i < PHASESX; i++) {
+      const v = phv(i, pos); if (v < 0.01) continue;
+      const dark = i === 3, col = dark ? C.sandL : C.mocha, sc = Math.min(1, R.Wv * 2 / 10.8);
+      const d = pos - i;
+      quadTex(T['t' + i], -d * 2.6, (R.ty || 0) * 0.5 + 0.35, -2.6, 10.4 * sc * 1.0, 3.25 * sc, { ...TXM(col), alpha: v * (dark ? 0.16 : 0.18) });
+    }
+  });
+
+  /* =========================================================================================
+     FASE 1 · PERSONAL BRAND
+     ========================================================================================= */
+  const P1 = { hand: [0.76 + 0.55, 1.12, 0.2] };
+  hooks.backdrops.push((pos, t, R) => {
+    const v = phv(0, pos);
+    quadFX(0, 0, 0.3, -3.2, 8.5, 8.5, C.sandL, 0.75 * v, { a: 1.6 });
+    quadFX(5, 0.05, 0.2, -2.3, 8.2 * Math.min(1, R.Wv / 4), 8.2 * Math.min(1, R.Wv / 4), C.mocha, 0.3 * v, {});
+  });
+  hooks.opaque.push((pos, t, R) => {
+    const v = phv(0, pos); if (v < 0.01) return;
+    const k = R.kx, appear = (i) => pop(lin(0.0, 1, v * 1.25 - i * 0.07));
+    // anelli sospesi (grafica che orbita attorno a lei)
+    [[-2.1 * k, 1.9, -0.4, 0.5, 0.5, 0.3], [2.6 * k, -0.1, -0.8, 0.8, 1.1, -0.2], [-1.5 * k, 2.3, 0.4, 0.3, 0.3, 0.9]].forEach(([x, y, z, s, rx, ry], i) => {
+      const f = appear(i);
+      mesh(G.ring, Mx(x, y + Math.sin(t * 0.7 + i * 2) * 0.12, z, s * f, s * f, s * f, rx + t * 0.25, ry + t * 0.18, 0), C.mocha, { ...matte });
+    });
+    // sfere e sassi
+    [[-1.35 * k, 1.1, 0.7, 0.13, 'pink'], [1.9 * k, 2.0, 0.2, 0.09, 'tan'], [-3.0 * k, 1.5, -0.6, 0.2, 'sandD'], [3.1 * k, 0.5, -0.3, 0.17, 'khaki'], [2.2 * k, -1.0, 0.8, 0.1, 'pink'], [-1.0 * k, 2.2, 0.6, 0.12, 'khaki']].forEach(([x, y, z, s, c], i) => {
+      const f = appear(i + 1);
+      mesh(G.sphere, Mx(x, y + Math.sin(t * 0.8 + i * 1.7) * 0.1, z, s * f), C[c], c === 'pink' ? { ...glossy, glow: [0.1, 0.02, 0.06] } : glossy);
+    });
+    // rametti di foglie
+    [[-2.6 * k, 2.0, -0.4, 0.55, 0.5], [3.0 * k, 1.9, -1.0, 0.6, 2.4]].forEach(([x, y, z, s, r], i) => {
+      const f = appear(i + 3);
+      mesh(G.leafG, Mx(x, y + Math.sin(t * 0.6 + i) * 0.1, z, s * f, s * f, s * f, 0, 0, r + Math.sin(t * 0.5 + i) * 0.1), LEAF, matte);
+    });
+    // la perla rosa tra le dita: reagisce allo scorrimento e poi vola via verso la spesa
+    const leave = sm(0.12, 0.7, pos), pr = 0.065 * (1 + 0.12 * Math.sin(t * 3)) * appear(0) * (1 - leave);
+    if (pr > 0.002) mesh(G.sphere, Mx((R.Wv > 3.2 ? P1.hand[0] : 0.76) + leave * 0.8, P1.hand[1] + leave * 0.6, P1.hand[2], pr), C.pink, { ...glossy, glow: [0.16, 0.03, 0.09] });
+  });
+
+  /* =========================================================================================
+     FASE 2 · LA SPESA  +  FASE 3 · LA CUCINA  (gli ingredienti sono gli stessi: passano dalla borsa al piano)
+     ========================================================================================= */
+  const BAG = { x: -1.5, y: -1.5, z: 0.75, w: 0.9, h: 1.15 };
+  const KIT = { top: -1.15, z: 1.05 };
+  // ingredienti: mesh, scala, colori, partenza, riposo nella borsa (altezza sul bordo), destinazione in cucina e dove "finiscono"
+  const mk = (g, s, col, o) => ({ g, s, col, ...o });
+  const ING = [
+    mk('wedge', 0.78, C.pink, { spawn: [-3.5, 1.2, 0.6], rest: [0.18, 0.02], kit: [0.5, 0.18, 1.5], rot: [0, 0.2, 0.2], plate: true, rind: true }),
+    mk('apple', 0.3, C.tan, { spawn: [-2.5, 2.0, 0.3], rest: [-0.18, -0.05], kit: [3.5, 0.3, 0.8], rot: [0.2, 0, 0] }),
+    mk('carrot', 0.3, mixc(C.tan, C.pink, 0.2), { spawn: [-3.9, -0.1, 0.2], rest: [0.12, 0.22], kit: [-1.9, 0.08, 1.1], rot: [0, 0, -1.2], chop: true }),
+    mk('broc', 0.34, C.khaki, { spawn: [-1.3, 2.15, -0.6], rest: [0.28, 0.1], kit: [3.0, 0.35, 0.5], rot: [0.1, 0, 0] }),
+    mk('avocado', 0.34, C.khaki, { spawn: [-3.7, 0.75, -0.3], rest: [-0.25, 0.0], kit: [0.4, 0.2, 1.4], rot: [0, 0, 0.4], plate: true }),
+    mk('egg', 0.2, C.sandL, { spawn: [-2.2, -0.1, 0.8], rest: [0.0, -0.1], kit: [1.0, 0.1, 1.2], rot: [0.3, 0, 0.2] }),
+    mk('bread', 0.5, C.tan, { spawn: [0.7, 2.15, -0.4], rest: [-0.3, 0.3], kit: [-3.35, 0.32, 0.4], rot: [0, 0.5, 0.1], stay: true }),
+    mk('wheat', 0.5, mixc(C.tan, C.sandL, 0.4), { spawn: [2.5, 2.0, -0.3], rest: [0.3, 0.35], kit: [1.2, 0.1, 1.0], rot: [0, 0, 0.2] }),
+    mk('leaves', 0.8, C.khaki, { spawn: [-2.6, 0.95, 0.9], rest: [0.0, 0.3], kit: [-1.4, 0.06, 1.2], rot: [0, 0, 0], chop: true }),
+    mk('salmon', 0.64, mixc(C.pink, C.sand, 0.5), { spawn: [3.4, 1.7, 0.2], rest: [0.05, 0.12], kit: [0.7, 0.2, 1.5], rot: [0, 0, 0], plate: true }),
+    mk('bottle', 0.34, mixc(C.khaki, C.sandL, 0.35), { spawn: [-3.9, -1.25, 0.4], rest: [-0.05, 0.25], kit: [-3.0, 0.45, 0.3], rot: [0, 0, 0], stay: true }),
+    mk('almond', 0.1, C.tan, { spawn: [1.9, 2.1, 0.5], rest: [0.0, -0.2], kit: [2.0, 0.1, 1.4], rot: [0, 0, 0], plate: true }),
+  ];
+  ING.forEach((it, i) => { it.i = i; });
+  function drawIng(it, m, R, o = {}) {
+    const [rx, ry, rz] = it.rot, k = o.s;
+    const base = (g, col, extra = {}) => mesh(G[g], M.mul(m, extra.m || M.id()), col, extra.o || matte);
+    switch (it.g) {
+      case 'wedge': mesh(G.wedge, M.mul(m, M.chain(M.S(1.1, 1.1, 1.1))), C.olive, matte); mesh(G.wedge, M.mul(m, M.chain(M.T(0, 0.02, 0.04), M.S(0.96, 0.96, 1))), it.col, { spec: 0.35, shin: 40, rim: 0.8 });
+        [[-0.17, 0.2], [0.05, 0.28], [0.2, 0.17], [-0.05, 0.12]].forEach(([x, y]) => mesh(G.sphere, M.mul(m, M.chain(M.T(x, y, 0.1), M.S(0.026, 0.04, 0.02))), C.mocha, matte)); break;
+      case 'apple': mesh(G.apple, m, C.pinkD, { spec: 0.4, shin: 50, rim: 0.8 }); mesh(G.stem, M.mul(m, M.chain(M.T(0, 0.55, 0), M.S(0.5, 0.5, 0.5))), C.mocha, matte); mesh(G.leafG, M.mul(m, M.chain(M.T(0.1, 0.75, 0), M.S(0.3, 0.3, 0.3), M.Rz(0.5))), C.khaki, matte); break;
+      case 'carrot': mesh(G.carrot, m, it.col, matte); [-0.12, 0, 0.12].forEach((x) => mesh(G.leafG, M.mul(m, M.chain(M.T(x, 0.85, 0), M.Rz(x * -4), M.S(0.28, 0.5, 0.28), M.Rz(Math.PI / 2))), C.khaki, matte)); break;
+      case 'broc': mesh(G.cyl, M.mul(m, M.chain(M.T(0, -0.4, 0), M.S(0.2, 0.9, 0.2))), C.khaki, matte);
+        [[0, 0.35, 0, 0.5], [-0.4, 0.15, 0.05, 0.36], [0.4, 0.15, -0.05, 0.36], [0.15, 0.55, 0.2, 0.3], [-0.2, 0.5, -0.15, 0.3]].forEach(([x, y, z, s]) => mesh(G.sphere, M.mul(m, M.chain(M.T(x, y, z), M.S(s))), C.olive, matte)); break;
+      case 'avocado': mesh(G.avocado, m, C.olive, { spec: 0.3, shin: 30, rim: 0.7 }); break;
+      case 'egg': [[-0.5, 0, 0], [0.5, 0.0, 0.1]].forEach(([x, y, z]) => mesh(G.sphere, M.mul(m, M.chain(M.T(x, y, z), M.S(0.62, 0.82, 0.62))), it.col, { spec: 0.35, shin: 40, rim: 0.7 })); break;
+      case 'bread': mesh(G.sphere, M.mul(m, M.chain(M.S(1.5, 0.62, 0.62))), it.col, matte); [-0.7, -0.25, 0.2, 0.65].forEach((x) => mesh(G.cyl, M.mul(m, M.chain(M.T(x, 0.36, 0.05), M.Rx(0.25), M.Rz(0.7), M.S(0.04, 0.4, 0.04))), C.sandD, matte)); break;
+      case 'wheat': [-0.5, 0, 0.5].forEach((x, j) => { mesh(G.wheat, M.mul(m, M.chain(M.T(x * 0.5, -0.9, 0), M.Rz(x * -0.35), M.S(0.9, 0.9, 0.9))), it.col, matte); for (let e = 0; e < 5; e++) mesh(G.sphere, M.mul(m, M.chain(M.T(x * 0.5 + Math.sin(0.12 * 9) * 0.1 - x * 0.26 + (e % 2 ? 0.06 : -0.06), 0.62 + e * 0.15 + 0.0 + j * 0.02 - 0.0, 0), M.S(0.07, 0.14, 0.07))), it.col, matte); }); break;
+      case 'leaves': [[0, 0, 0.5], [0.3, 0.1, -0.4], [-0.3, 0.05, 1.1]].forEach(([x, y, r]) => mesh(G.leafBig, M.mul(m, M.chain(M.T(x, y, 0), M.Rz(r), M.S(0.6))), r > 1 ? LEAF2 : LEAF, matte)); break;
+      case 'salmon': mesh(G.tray, M.mul(m, M.chain(M.T(0, 0.04, 0), M.Rx(Math.PI / 2), M.S(1, 1, 1))), it.col, { spec: 0.3, shin: 40, rim: 0.8 }); [-0.3, 0, 0.3].forEach((x) => mesh(G.tray, M.mul(m, M.chain(M.T(x, 0.09, 0), M.Rx(Math.PI / 2), M.Rz(0.25), M.S(0.14, 0.62, 1))), mixc(it.col, C.sandL, 0.55), matte)); break;
+      case 'bottle': mesh(G.bottle, m, it.col, { spec: 0.6, shin: 70, rim: 0.9 }); mesh(G.cyl, M.mul(m, M.chain(M.T(0, 1.34, 0), M.S(0.24, 0.1, 0.24))), C.mocha, matte); mesh(G.cyl, M.mul(m, M.chain(M.T(0, 0, 0), M.S(0.62, 0.55, 0.62))), mixc(C.sandL, C.khaki, 0.2), matte); break;
+      case 'almond': for (let a = 0; a < 7; a++) mesh(G.sphere, M.mul(m, M.chain(M.T(Math.cos(a * 2.4) * 0.9 * (a / 7), (a % 3) * 0.55, Math.sin(a * 2.4) * 0.9 * (a / 7)), M.S(0.7, 1.0, 0.55), M.Rz(a))), C.tan, matte); break;
+      default: break;
+    }
+  }
+  function ingState(it, pos, t, R) {
+    const kx = R.kx, i = it.i;
+    const spawn = [it.spawn[0] * kx, it.spawn[1], it.spawn[2]];
+    const bagTop = BAG.y + BAG.h / 2, rest = [BAG.x + it.rest[0] * kx * 1.4 * 1, bagTop + it.rest[1] * 1.0, BAG.z + 0.0];
+    const kit = [it.kit[0] * kx, KIT.top + it.kit[1], it.kit[2]];
+    const aIn = pop(lin(0.32 + i * 0.035, 0.7 + i * 0.035, pos));
+    const tb = eio(lin(0.92 + i * 0.03, 1.38 + i * 0.03, pos));
+    const tk = eio(lin(1.55 + i * 0.03, 2.0 + i * 0.03, pos));
+    const ts = lin(2.1 + i * 0.03, 2.55 + i * 0.03, pos);
+    let p;
+    if (pos < 1.5) {
+      const bob = [0, Math.sin(t * 1.1 + i * 1.3) * 0.1 * (1 - tb), 0];
+      p = bez(spawn, [lerp(spawn[0], rest[0], 0.5), Math.max(spawn[1], rest[1]) + 1.2, lerp(spawn[2], rest[2], 0.5) + 0.3], rest, tb); p[1] += bob[1];
+    } else {
+      p = bez(rest, [lerp(rest[0], kit[0], 0.5), Math.max(rest[1], kit[1]) + 1.4, lerp(rest[2], kit[2], 0.5)], kit, tk);
+    }
+    let s = it.s * aIn * lerp(1, 0.78, tk);
+    const used = !it.stay && !it.chop ? ts : (it.chop ? Math.max(0, ts - 0.35) * 1.5 : 0);
+    s *= 1 - sm(0, 1, used);
+    const spin = (1 - (pos > 1.5 ? tk : tb)) * 0.8 + 0.1;
+    return { p, s, rot: [it.rot[0] + t * 0.3 * spin * (it.g === 'carrot' ? 0 : 1), it.rot[1] + t * 0.45 * spin, it.rot[2]], ts, tk };
+  }
+
+  // ---- ambiente della spesa
+  hooks.backdrops.push((pos, t, R) => {
+    const v = phv(1, pos);
+    quadFX(4, -0.3, 0.2, -3.6, 5.6 * Math.min(1, R.Wv / 3.2), 6.8 * Math.min(1, R.Wv / 3.2), C.sandD, 0.55 * v, { a: 0.95 });
+    quadFX(0, 0.4, 0.5, -3.0, 8, 8, C.sandL, 0.5 * v, { a: 1.8 });
+    // pavimento: ombra morbida sotto la borsa
+    quadFX(6, BAG.x, BAG.y - BAG.h / 2 - 0.01, BAG.z, 2.6, 1.0, C.mocha, 0.28 * phv(1, pos) * (1 - sm(1.45, 1.75, pos)), { a: 1.4 });
+  });
+  hooks.opaque.push((pos, t, R) => {
+    const v1 = phv(1, pos), v2 = phv(2, pos);
+    // piante ai lati (verde moka)
+    if (v1 > 0.01) {
+      const k = R.kx; [[-3.9 * k, -1.5, -1.6, 0.55, 0.9], [4.0 * k, -1.2, -1.9, 0.7, 2.4], [-3.6 * k, 1.6, -2.2, 0.5, -0.3]].forEach(([x, y, z, s, r], i) => {
+        const f = pop(lin(0, 1, v1 * 1.2 - i * 0.1));
+        for (let j = 0; j < 3; j++) mesh(G.leafBig, Mx(x + j * 0.18, y + j * 0.12, z, s * f * (1 - j * 0.12), s * f, s * f, 0.2, r + j * 0.5, 0.9 + j * 0.45 + Math.sin(t * 0.5 + j + i) * 0.06), j === 1 ? LEAF2 : LEAF, matte);
+      });
+    }
+    // borsa
+    const bv = pop(lin(0.55, 1.05, pos)) * (1 - sm(1.45, 1.8, pos));
+    if (bv > 0.01) {
+      const b = BAG; const lift = (1 - bv) * 1.2;
+      const sway = Math.sin(t * 0.8) * 0.02;
+      mesh(G.bagBody, Mx(b.x, b.y - lift, b.z, b.w * bv, b.h * bv, 1.1 * bv, 0, sway, 0), C.sandL, { spec: 0.08, shin: 14, rim: 0.7 });
+      mesh(G.handle, Mx(b.x, b.y - lift + b.h * 0.5 * bv, b.z, 0.95 * bv, 0.8 * bv, 1 * bv, 0, 0, 0), C.mocha, matte);
+      // etichetta rosa (piccolo dettaglio d'accento)
+      mesh(G.cyl, Mx(b.x, b.y - lift + 0.0, b.z + 0.36 * bv, 0.13 * bv, 0.02 * bv, 0.13 * bv, Math.PI / 2, 0, 0), C.pink, glossy);
+    }
+    // ingredienti
+    ING.forEach((it) => { const st = ingState(it, pos, t, R); if (st.s < 0.004) return; drawIng(it, Mx(st.p[0], st.p[1], st.p[2], st.s, st.s, st.s, st.rot[0], st.rot[1], st.rot[2]), R); });
+
+    /* ---------- cucina ---------- */
+    if (v2 > 0.01) {
+      const k = R.kx, rise = 1 - eo(v2), top = KIT.top;
+      // piano di lavoro
+      mesh(G.box, Mx(0, top - 1.1 - rise * 2.2, 1.0, 14, 2.2, 2.0), mixc(C.tan, C.mocha, 0.12), matte);
+      mesh(G.box, Mx(0, top - 0.04 - rise * 2.2, 1.0, 14, 0.1, 2.1), C.sandL, { spec: 0.2, shin: 24, rim: 0.6 });
+      const oy = -rise * 2.2;
+      // tagliere + coltello (taglio) + fettine
+      const chopU = lin(2.0, 2.5, pos), cn = Math.floor(chopU * 9);
+      mesh(G.box, Mx(-1.95 * k, top + 0.035 + oy, 1.0, 1.5 * k, 0.07, 0.8), C.tan, matte);
+      const knifeY = top + 0.28 + Math.abs(Math.sin(pos * 28)) * 0.35 * (chopU > 0 && chopU < 1 ? 1 : 0.2), kx2 = -1.6 * k + (chopU * -0.6) * k;
+      mesh(G.box, Mx(kx2, knifeY + oy, 1.12, 0.62, 0.22, 0.02, 0, 0, 0.05), C.sandL, glossy);
+      mesh(G.box, Mx(kx2 + 0.5, knifeY + 0.04 + oy, 1.12, 0.34, 0.07, 0.05), C.mocha, matte);
+      for (let c = 0; c < 9; c++) if (c < cn) mesh(G.cyl, Mx((-1.2 - c * 0.07) * k, top + 0.1 + oy, 1.15, 0.08, 0.03, 0.08, Math.PI / 2, 0, 0), mixc(C.tan, C.pink, 0.2), matte);
+      // ciotola con la frusta (mescolare)
+      const bw = 0.5;
+      mesh(G.bowl, Mx(1.0 * k, top + oy, 1.15, bw, bw, bw), C.sandL, { spec: 0.25, shin: 36, rim: 0.8 });
+      mesh(G.cyl, Mx(1.0 * k, top + 0.19 * bw + oy + 0.02, 1.15, 0.84 * bw, 0.02, 0.84 * bw), mixc(C.sandL, C.tan, 0.4), matte);
+      const wa = pos * 38, wx = 1.0 * k + Math.cos(wa) * 0.07, wz = 1.15 + Math.sin(wa) * 0.07;
+      mesh(G.stem, Mx(wx, top + 0.32 + oy, wz, 0.5, 0.5, 0.5, 0, wa, 0.15), C.mocha, matte);
+      mesh(G.whisk, Mx(wx, top + 0.1 + oy, wz, 0.85, 0.85, 0.85, 0, wa, 0.15), C.sandL, glossy);
+      // pentola con coperchio
+      mesh(G.cyl, Mx(2.9 * k, top + 0.26 + oy, 0.6, 0.5, 0.52, 0.5), C.mocha, { spec: 0.35, shin: 40, rim: 0.8 });
+      mesh(G.sphere, Mx(2.9 * k, top + 0.54 + oy + Math.sin(t * 5) * 0.01 * v2, 0.6, 0.52, 0.14, 0.52), C.olive, glossy);
+      mesh(G.sphere, Mx(2.9 * k, top + 0.66 + oy, 0.6, 0.07), C.sandL, glossy);
+      // padella
+      mesh(G.cyl, Mx(-3.55 * k, top + 0.06 + oy, 1.35, 0.55, 0.12, 0.55), C.mocha, { spec: 0.3, shin: 40, rim: 0.6 });
+      mesh(G.box, Mx(-3.0 * k, top + 0.09 + oy, 1.35, 0.7, 0.05, 0.09), C.mocha, matte);
+      // piatto: l'impiattamento
+      const pk = 0.62, py = top + oy, px = 0.45 * k + 0.2, pz = 1.55;
+      mesh(G.plate, Mx(px, py, pz, pk, pk, pk), C.sandL, { spec: 0.3, shin: 40, rim: 0.8 });
+      const lay = (a, b) => pop(lin(a, b, pos));
+      const L1 = lay(2.12, 2.3), L2 = lay(2.22, 2.4), L3 = lay(2.32, 2.5), L4 = lay(2.42, 2.58), L5 = lay(2.5, 2.65);
+      mesh(G.sphere, Mx(px, py + 0.1, pz, 0.46 * L1, 0.14 * L1, 0.34 * L1), mixc(C.tan, C.sandL, 0.4), matte);               // base di cereali
+      mesh(G.tray, Mx(px - 0.05, py + 0.2, pz + 0.04, 0.46 * L2, 0.46 * L2, 0.46 * L2, Math.PI / 2, 0, 0.1), mixc(C.pink, C.sand, 0.5), { spec: 0.3, shin: 40, rim: 0.8 }); // salmone
+      [-0.2, 0, 0.2].forEach((dx, j) => mesh(G.sphere, Mx(px + dx, py + 0.26, pz + 0.12, 0.13 * L3, 0.06 * L3, 0.11 * L3, 0, 0, 0.3 * j), C.olive, matte));  // avocado
+      mesh(G.leafG, Mx(px + 0.28, py + 0.2, pz - 0.05, 0.4 * L4, 0.4 * L4, 0.4 * L4, 0.2, 0.5, 0.5), C.khaki, matte);
+      [[-0.25, 0.28, -0.05], [0.12, 0.32, 0.0], [0.05, 0.27, 0.15]].forEach(([dx, dy, dz]) => mesh(G.box, Mx(px + dx, py + dy, pz + dz, 0.07 * L5, 0.07 * L5, 0.07 * L5, 0.4, 0.5, 0.2), C.pink, { ...glossy, glow: [0.06, 0.01, 0.03] })); // cubetti rosa
+      // mensola con barattoli
+      [[-3.3 * k, 1.25], [-2.7 * k, 1.25], [3.2 * k, 1.55], [3.8 * k, 1.55]].forEach(([x, y], j) => {
+        const f = pop(lin(0, 1, v2 * 1.3 - j * 0.1)); mesh(G.box, Mx(x, y - 0.02, -2.4, 1.3, 0.05, 0.4), C.tan, matte);
+        mesh(G.jar, Mx(x - 0.28, y + 0.27 * f, -2.4, 0.22 * f, 0.25 * f, 0.22 * f), mixc(C.sandL, C.sand, 0.5), glossy);
+        mesh(G.lid, Mx(x - 0.28, y + 0.27 * f + 0.25 * f * 0.86, -2.4, 0.22 * f, 0.22 * f, 0.22 * f), C.mocha, matte);
+        mesh(G.jar, Mx(x + 0.22, y + 0.2 * f, -2.4, 0.17 * f, 0.19 * f, 0.17 * f), mixc(C.sandL, C.khaki, 0.3), glossy);
+      });
+    }
+  });
+  hooks.backdrops.push((pos, t, R) => {
+    const v = phv(2, pos); if (v < 0.01) return;
+    quadFX(1, 0, 0.6, -3.2, 18, 8, C.sandD, 0.9 * v, { a: 6.5, b: 1.0, col2: C.tan });
+    quadFX(6, 0.5 * R.kx + 0.2, KIT.top + 0.02, 1.5, 2.0, 0.9, C.mocha, 0.3 * v, { a: 1.2 });
+  });
+  // i piatti veri di Naomi appesi alla parete
+  hooks.mid.push((pos, t, R) => {
+    const v = phv(2, pos); if (v < 0.01) return;
+    const k = R.kx;
+    [['gnocchetti', -3.7 * k, 0.45, 1.25], ['spatzle', 3.8 * k, 0.55, 1.1], ['mezze', -2.55 * k, 1.95, 0.9], ['insalata', 2.45 * k, 2.05, 0.95]].forEach(([n, x, y, s], j) => {
+      const f = pop(lin(0, 1, v * 1.3 - j * 0.12));
+      quadTex(T['d-' + n], x, y + Math.sin(t * 0.6 + j * 1.3) * 0.06, -2.2, s * f, s * f, { mode: 2, alpha: Math.min(1, f), rim: C.sandL });
+    });
+  });
+
+  /* =========================================================================================
+     FASE 4 · ENERGIA E SPORT
+     ========================================================================================= */
+  const SH = { x: -2.4, y: -0.45, z: 1.0 };
+  hooks.backdrops.push((pos, t, R) => {
+    const v = phv(3, pos); if (v < 0.01) return;
+    quadFX(3, 0.8, 0.6, -3.6, 12, 9, C.pink, 0.05 * v, { a: 0.55, b: 0.7 });
+    quadFX(0, 0.6, 0.2, -3.2, 8, 8, mixc(C.pink, C.mocha, 0.6), 0.25 * v, { a: 1.5 });
+    quadFX(6, 0.5, -1.8, 0.3, 6.4, 1.6, C.mocha, 0.5 * v, { a: 1.1 });
+  });
+  hooks.opaque.push((pos, t, R) => {
+    const v = phv(3, pos); if (v < 0.01) return;
+    const k = R.kx, ap = (i) => pop(lin(0, 1, v * 1.25 - i * 0.08));
+    // dischi di bilanciere appesi alla parete e rastrelliera
+    [[-3.9 * k, 1.1, -3.0, 1.0], [4.0 * k, 2.0, -3.2, 0.75]].forEach(([x, y, z, s], i) => {
+      const f = ap(i);
+      mesh(G.cyl, Mx(x, y, z, s * f, 0.26, s * f, Math.PI / 2), C.mocha, { spec: 0.2, shin: 20, rim: 0.7 });
+      mesh(G.ringT, Mx(x, y, z + 0.14, s * 0.78 * f, s * 0.78 * f, 0.5, 0, 0, 0), C.sandD, matte);
+      mesh(G.cyl, Mx(x, y, z + 0.14, s * 0.22 * f, 0.3, s * 0.22 * f, Math.PI / 2), C.sandL, glossy);
+    });
+    mesh(G.cyl, Mx(0, 1.15, -2.9, 0.05, 11, 0.05, 0, 0, Math.PI / 2), C.sandD, glossy);
+    // bilanciere davanti alle mani, con dischi ai lati
+    const bf = ap(2);
+    mesh(G.cyl, Mx(0.0, -1.62, 0.5, 0.05 * bf, 7 * bf, 0.05 * bf, 0, 0, Math.PI / 2), C.sandL, { spec: 0.7, shin: 80, rim: 1 });
+    [[-3.3 * k, 1], [3.3 * k, -1]].forEach(([x, sg]) => {
+      mesh(G.cyl, Mx(x, -1.62, 0.5, 0.95 * bf, 0.16 * bf, 0.95 * bf, 0, 0, Math.PI / 2), C.mocha, { spec: 0.25, shin: 24, rim: 0.7 });
+      mesh(G.cyl, Mx(x - sg * 0.14, -1.62, 0.5, 0.8 * bf, 0.08 * bf, 0.8 * bf, 0, 0, Math.PI / 2), C.olive, matte);
+    });
+    // shaker: gli ingredienti entrano, il tappo si chiude, si agita
+    const sv = pop(lin(0, 1, v * 1.3 - 0.3));
+    const close = eio(lin(2.95, 3.12, pos)), shk = lin(3.1, 3.5, pos) * (1 - lin(3.5, 3.75, pos));
+    const sh = (Math.sin(pos * 90) * 0.12 + Math.sin(pos * 53) * 0.08) * shk, sx = SH.x * k + sh, sy = SH.y + Math.abs(Math.sin(pos * 70)) * 0.12 * shk;
+    const tilt = Math.sin(pos * 90) * 0.28 * shk;
+    if (sv > 0.01) {
+      const ss = 0.46 * sv;
+      mesh(G.shaker, Mx(sx, sy, SH.z, ss, ss, ss, 0, 0, tilt), C.sandL, { spec: 0.4, shin: 50, rim: 0.9 });
+      mesh(G.cyl, Mx(sx, sy - 0.0, SH.z, 0.72 * ss * 1.01, 0.3 * ss, 0.72 * ss * 1.01, 0, 0, tilt), C.pink, { ...glossy, glow: [0.03, 0.005, 0.015] }); // fascia rosa
+      const cy = sy + ss * (0.56 + (1 - close) * 1.1 + 0.0);
+      mesh(G.shakerTop, Mx(sx + (1 - close) * 0.3 * k, cy, SH.z, ss, ss, ss, 0, 0, tilt + (1 - close) * -0.6), C.mocha, { spec: 0.3, shin: 40, rim: 0.8 });
+      // ingredienti che cadono dentro: capsule, gocce, sfere
+      [[0, 'capsule', C.sandL, 0.16], [1, 'drop', C.pink, 0.15], [2, 'sphere', C.tan, 0.14], [3, 'capsule', C.khaki, 0.16], [4, 'sphere', C.pink, 0.1]].forEach(([i, g, col, s]) => {
+        const u = lin(2.55 + i * 0.07, 2.9 + i * 0.07, pos); if (u <= 0 || u >= 1) return;
+        const sp = [sx + (i - 2) * 0.55, 1.9 + i * 0.12, 0.5], en = [sx + 0.05 * (i - 2), sy + ss * 1.35, SH.z];
+        const p = bez(sp, [lerp(sp[0], en[0], 0.5), sp[1] + 0.9, 0.9], en, eio(u));
+        mesh(G[g], Mx(p[0], p[1], p[2], s * (1 - 0.3 * u), s * (1 - 0.3 * u), s * (1 - 0.3 * u), u * 6, u * 4, u * 3), col, g === 'sphere' || g === 'drop' ? { ...glossy, glow: col === C.pink ? [0.1, 0.02, 0.05] : [0, 0, 0] } : glossy);
+      });
+      // gocce che schizzano durante la scossa
+      if (shk > 0.02) for (let d = 0; d < 7; d++) { const a = d * 0.9 + Math.floor(pos * 12) * 0.7, rr = 0.5 + (Math.sin(pos * 60 + d) * 0.5 + 0.5) * 0.6; mesh(G.sphere, Mx(sx + Math.cos(a) * rr * 0.9, sy + 0.4 + Math.sin(a) * rr, SH.z + 0.1, 0.045), d % 2 ? C.pink : C.sandL, glossy); }
+      // anello d'energia
+      const pulse = (pos * 8) % 1; if (shk > 0.02) mesh(G.ring, Mx(sx, sy + 0.2, SH.z - 0.1, 0.7 + pulse * 1.3, 0.7 + pulse * 1.3, 0.7 + pulse * 1.3, 0, 0, 0), C.pink, { alpha: (1 - pulse) * 0.9 * shk, glow: [0.2, 0.05, 0.1] });
+    }
+    // frutta e simboli (elementi astratti)
+    [[-1.5 * k, 2.0, 0.4, 'apple', 0.28, C.pinkD], [1.4 * k, 2.1, -0.8, 'sphere', 0.13, C.pink], [-3.6 * k, 1.9, 0.2, 'drop', 0.22, C.sandL]].forEach(([x, y, z, g, s, col], i) => {
+      const f = ap(i + 3); mesh(G[g], Mx(x, y + Math.sin(t * 0.9 + i) * 0.12, z, s * f, s * f, s * f, t * 0.3, t * 0.4, 0), col, glossy);
+    });
+  });
+
+  /* =========================================================================================
+     FASE 5 · SCIENZA E FORMAZIONE
+     ========================================================================================= */
+  hooks.backdrops.push((pos, t, R) => {
+    const v = phv(4, pos); if (v < 0.01) return;
+    quadFX(2, 0, 0.3, -3.8, 16, 9, C.mocha, 0.16 * v, { a: 8 });
+    quadFX(0, 0.1, 0.4, -3.2, 8, 8, [1, 1, 1], 0.6 * v, { a: 1.7 });
+    quadFX(6, 0, -1.72, 0.9, 7.5, 1.1, C.mocha, 0.28 * v, { a: 1.2 });
+  });
+  hooks.opaque.push((pos, t, R) => {
+    const v = phv(4, pos); if (v < 0.01) return;
+    const k = R.kx, ap = (i) => pop(lin(0, 1, v * 1.25 - i * 0.09)), rise = 1 - eo(v);
+    // scrivania
+    mesh(G.box, Mx(0, -2.25 - rise * 2, 0.9, 14, 1.0, 1.9), mixc(C.tan, C.mocha, 0.25), matte);
+    mesh(G.box, Mx(0, -1.74 - rise * 2, 0.9, 14, 0.07, 2.0), C.sandL, { spec: 0.2, shin: 24, rim: 0.6 });
+    const top = -1.7 - rise * 2;
+    // pila di libri
+    [[-2.2 * k, 1.25, 0.1, C.mocha], [-2.2 * k, 0.9, -0.05, C.khaki], [-2.2 * k, 0.65, 0.05, C.tan], [-2.2 * k, 0.42, 0.0, C.olive]].forEach(([x, , dz, col], i) => {
+      const f = ap(i); const y = top + 0.12 + i * 0.24; const w = 1.35 - i * 0.07;
+      mesh(G.box, Mx(x + dz * 0.5, y, 1.0, w * f, 0.2 * f, 0.9 * f, 0, i * 0.08 - 0.1, 0), col, matte);
+      mesh(G.box, Mx(x + dz * 0.5 + 0.03, y, 1.0 + 0.03, (w - 0.08) * f, 0.15 * f, 0.9 * f, 0, i * 0.08 - 0.1, 0), C.sandL, matte);
+    });
+    mesh(G.box, Mx(-2.2 * k + 0.55, top + 0.12 + 0.24 * 3 + 0.12, 1.45, 0.05, 0.02, 0.5 * ap(4), 0, 0, 0), C.pink, glossy); // segnalibro
+    // libro aperto sulla scrivania
+    const ob = ap(5);
+    mesh(G.box, Mx(-0.55 * k, top + 0.05, 1.45, 1.3 * ob, 0.06 * ob, 0.9 * ob, 0, 0.1, 0), C.sandL, matte);
+    mesh(G.box, Mx(-0.55 * k, top + 0.07, 1.45, 0.02 * ob, 0.06 * ob, 0.9 * ob), C.tan, matte);
+    // grafico a barre in 3D
+    const bars = [0.35, 0.6, 0.45, 0.85, 1.1];
+    bars.forEach((h, i) => { const f = pop(lin(0, 1, v * 1.4 - 0.2 - i * 0.06)) * (0.85 + 0.15 * Math.sin(t * 0.8 + i)); const hh = h * f; mesh(G.box, Mx((2.0 + i * 0.28) * k, top + hh / 2 + 0.04, 1.2, 0.2, hh, 0.2), i === 4 ? C.pink : (i % 2 ? C.tan : C.olive), i === 4 ? glossy : matte); });
+    mesh(G.box, Mx((2.56) * k, top + 0.03, 1.2, 1.75, 0.06, 0.45), C.sandD, matte);
+    // petri con colonie
+    const pf = ap(6);
+    mesh(G.cyl, Mx(0.95 * k, top + 0.05, 1.5, 0.42 * pf, 0.08 * pf, 0.42 * pf), C.sandL, glossy);
+    mesh(G.ring, Mx(0.95 * k, top + 0.08, 1.5, 0.42 * pf, 1.5 * pf, 0.42 * pf, Math.PI / 2, 0, 0), C.sandD, matte);
+    [[0.1, 0.05], [-0.12, 0.1], [0.14, -0.1], [-0.08, -0.12]].forEach(([dx, dz], i) => mesh(G.sphere, Mx(0.95 * k + dx, top + 0.1, 1.5 + dz, 0.05 * pf), i === 1 ? C.pink : C.olive, glossy));
+    // molecola che ruota
+    const mf = ap(7), mc = [2.3 * k, 1.5, -0.6], ry = t * 0.4 + pos * 1.2;
+    const atoms = [[0, 0, 0, 0.2, C.mocha], [0.7, 0.35, 0.1, 0.15, C.tan], [-0.65, 0.4, -0.2, 0.15, C.tan], [0.1, -0.75, 0.25, 0.17, C.pink], [1.25, -0.1, -0.3, 0.12, C.khaki], [-1.25, 0.1, 0.25, 0.12, C.khaki]];
+    const bonds = [[0, 1], [0, 2], [0, 3], [1, 4], [2, 5]];
+    const mm = (a) => { const c = Math.cos(ry), s = Math.sin(ry); return [mc[0] + a[0] * c + a[2] * s, mc[1] + a[1] + Math.sin(t * 0.7) * 0.1, mc[2] - a[0] * s + a[2] * c]; };
+    const sc = 0.62 * mf;
+    atoms.forEach(([x, y, z, r, col]) => { const q = mm([x * sc, y * sc, z * sc]); mesh(G.sphere, Mx(q[0], q[1], q[2], r * sc * 1.3), col, col === C.pink ? { ...glossy, glow: [0.08, 0.01, 0.04] } : glossy); });
+    bonds.forEach(([a, b]) => { const qa = mm([atoms[a][0] * sc, atoms[a][1] * sc, atoms[a][2] * sc]), qb = mm([atoms[b][0] * sc, atoms[b][1] * sc, atoms[b][2] * sc]); mesh(G.cyl, bond(qa, qb, 0.04 * sc, 0), C.sandD, matte); });
+    // elica del DNA dietro, a sinistra
+    const hf = ap(8), hc = [-3.4 * k, 0.6, -1.4];
+    const hm = Mx(hc[0], hc[1], hc[2], hf, hf, hf, 0.1, t * 0.35 + pos * 1.5, 0.12);
+    mesh(G.helixA, hm, C.mocha, matte); mesh(G.helixB, hm, C.khaki, matte);
+    for (let r = 0; r < 12; r++) { const tt = r / 11, a = tt * 2.2 * Math.PI * 2, y = (tt - 0.5) * 3.0, p1 = [Math.cos(a) * 0.42, y, Math.sin(a) * 0.42], p2 = [-p1[0], y, -p1[2]]; mesh(G.cyl, M.mul(hm, bond(p1, p2, 0.02, 0)), r % 3 === 0 ? C.pink : C.sandD, matte); }
+  });
+  hooks.mid.push((pos, t, R) => {
+    const v = phv(4, pos); if (v < 0.01) return;
+    const k = R.kx, ap = (i) => pop(lin(0, 1, v * 1.25 - i * 0.1));
+    // pubblicazioni che fluttuano attorno a lei, e la tesi vera
+    [['paper0', -2.35 * k, 1.5, 0.95, 0.12], ['paper1', 2.55 * k, 1.85, 0.85, -0.1], ['paper2', -1.35 * k, -0.15, 0.7, -0.06]].forEach(([n, x, y, s, r], i) => {
+      const f = ap(i); quadTex(T[n], x + Math.sin(t * 0.5 + i) * 0.05, y + Math.sin(t * 0.7 + i * 1.7) * 0.1, -1.1 - i * 0.15, 0.74 * s * f, 0.98 * s * f, { mode: 3, rz: r, alpha: Math.min(1, f) });
+    });
+    const f = ap(3); quadTex(T.tesi, 3.35 * k, 0.15 + Math.sin(t * 0.6) * 0.07, -1.4, 1.7 * f, 0.96 * f, { mode: 3, rz: 0.06, alpha: Math.min(1, f) });
+  });
+  hooks.front.push((pos, t, R) => {
+    const v = phv(4, pos); if (v < 0.01) return;
+    const f = pop(lin(0, 1, v * 1.25 - 0.45)); quadTex(T.chart, 1.45 * R.kx, -0.35 + Math.sin(t * 0.8) * 0.06, 1.25, 1.55 * f, 1.12 * f, { mode: 3, rz: -0.05, alpha: Math.min(1, f) });
+  });
+}
