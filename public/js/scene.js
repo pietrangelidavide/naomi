@@ -4,6 +4,8 @@
 import {
   createGL, texFromBitmap, M, PAL, mixc, sphere, cyl, torus, box, bag, extrude, halfDisc, rrect, helix, lathe, smooth, sweep, leaf, upload,
 } from './engine.js';
+import { createCine } from './cine.js';
+import { setLight, MAT } from './light.js';
 
 const cl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const lin = (a, b, x) => cl((x - a) / (b - a));
@@ -30,6 +32,19 @@ const NEEDH = [3.75, 3.6, 3.55, 3.3, 3.2]; // metà altezza visibile: la figura 
 export async function createScene(canvas, { base = '' } = {}) {
   const C = createGL(canvas); if (!C) return null;
   const { gl, P } = C;
+  const QS = new URLSearchParams(location.search);
+  // resa da cinema (ombre, bagliore, profondità di campo, grana). ?cine=0 la spegne, ?ombre=0 spegne solo le ombre
+  let cine = null;
+  if (QS.get('cine') !== '0') { try { cine = createCine(C); } catch (e) { console.warn('[cinema] non disponibile:', e.message); } }
+  const FX = { tier: 0, shadows: QS.get('ombre') !== '0' };
+  // texture d'ombra segnaposto (i programmi la leggono sempre, anche senza resa da cinema)
+  const dummySM = cine ? null : (() => {
+    const t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.DEPTH_COMPONENT24, 1, 1, 0, gl.DEPTH_COMPONENT, gl.UNSIGNED_INT, null);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_COMPARE_MODE, gl.COMPARE_REF_TO_TEXTURE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_COMPARE_FUNC, gl.LEQUAL);
+    return t;
+  })();
 
   /* ---------- risorse ---------- */
   const load = async (u) => { const r = await fetch(base + u); if (!r.ok) throw new Error(u); return createImageBitmap(await r.blob(), { premultiplyAlpha: 'premultiply' }); };
@@ -93,6 +108,10 @@ export async function createScene(canvas, { base = '' } = {}) {
     stem: up(sweep(Array.from({ length: 8 }, (_, i) => [0, i * 0.12, Math.sin(i * 0.5) * 0.03]), Array(8).fill(0.05), 8)),
     arm: up(sweep(Array.from({ length: 16 }, (_, i) => { const a = -0.3 + i * 0.12; return [Math.cos(a) * 0.9, Math.sin(a) * 0.9, 0]; }), Array(16).fill(0.09), 10)),
     helixA: up(helix(2.2, 0.42, 3.0, 80, 0)), helixB: up(helix(2.2, 0.42, 3.0, 80, Math.PI)),
+    egg: up(lathe(smooth([[0, -1], [0.38, -0.95], [0.72, -0.6], [0.8, -0.1], [0.62, 0.45], [0.3, 0.88], [0, 1]], 5), 28)),
+    lemon: up(lathe(smooth([[0, -1.1], [0.08, -1.04], [0.4, -0.86], [0.78, -0.5], [0.92, 0], [0.78, 0.5], [0.4, 0.86], [0.08, 1.04], [0, 1.1]], 5), 30)),
+    banana: up(sweep(Array.from({ length: 16 }, (_, i) => { const a = -0.85 + i * 0.113; return [Math.sin(a) * 1.2, (Math.cos(a) - 1) * 1.2, 0]; }), Array.from({ length: 16 }, (_, i) => 0.17 * (0.3 + 0.7 * Math.pow(Math.sin(Math.PI * (i + 0.5) / 16), 0.55))), 6)),
+    cherryStem: up(sweep(Array.from({ length: 8 }, (_, i) => [Math.sin(i * 0.28) * 0.12, i * 0.16, 0]), Array(8).fill(0.02), 5)),
     whisk: up(sweep(Array.from({ length: 12 }, (_, i) => { const t = i / 11, a = t * Math.PI; return [Math.sin(a) * 0.32, 0.62 - t * 0.62, 0]; }), Array(12).fill(0.012), 5)),
   };
   const defM = { spec: 0.14, shin: 26, rim: 0.7 };
@@ -111,11 +130,24 @@ export async function createScene(canvas, { base = '' } = {}) {
   function setMesh(m, col, o = {}) {
     const u = P.mesh.u;
     gl.uniformMatrix4fv(u.uM, false, m); gl.uniform3fv(u.uCol, col);
-    gl.uniform4f(u.uP, o.spec ?? defM.spec, o.shin ?? defM.shin, o.rim ?? defM.rim, 0);
+    gl.uniform4f(u.uP, o.spec ?? defM.spec, o.shin ?? defM.shin, o.rim ?? defM.rim, o.mat || 0);
     gl.uniform1f(u.uAlpha, o.alpha ?? 1);
     gl.uniform3fv(u.uGlow, o.glow || [0, 0, 0]);
   }
-  function mesh(g, m, col, o) { setMesh(m, col, o); gl.bindVertexArray(g.vao); gl.drawElements(gl.TRIANGLES, g.n, gl.UNSIGNED_INT, 0); }
+  // Gli oggetti 3D prima si registrano (REC), poi si disegnano due volte: dalla luce (mappa delle ombre) e dalla camera.
+  let REC = null;
+  function drawMesh(g, m, col, o) { setMesh(m, col, o); gl.bindVertexArray(g.vao); gl.drawElements(gl.TRIANGLES, g.n, gl.UNSIGNED_INT, 0); }
+  function mesh(g, m, col, o) { if (REC) REC.push({ g, m, col, o }); else drawMesh(g, m, col, o); }
+  function later(fn) { if (REC) REC.push({ fn }); else fn(); } // disegni con un programma proprio (viso, modello .glb): solo nel passaggio principale
+  function replay(list, shadow) {
+    if (shadow) {
+      const su = P.shadow.u;
+      for (const r of list) {
+        if (r.fn || (r.o && ((r.o.alpha != null && r.o.alpha < 0.5) || r.o.noShadow))) continue;
+        gl.uniformMatrix4fv(su.uM, false, r.m); gl.bindVertexArray(r.g.vao); gl.drawElements(gl.TRIANGLES, r.g.n, gl.UNSIGNED_INT, 0);
+      }
+    } else for (const r of list) { if (r.fn) r.fn(); else drawMesh(r.g, r.m, r.col, r.o); }
+  }
   function quadFX(kind, x, y, z, w, h, col, alpha, o = {}) {
     if (alpha <= 0.002) return;
     const u = P.fx.u;
@@ -153,7 +185,7 @@ export async function createScene(canvas, { base = '' } = {}) {
     { top: mixc(PAL.sand, PAL.sandL, 0.55), bot: PAL.sand, glow: PAL.sandL, glowK: 0.8, vig: PAL.tan, vigK: 0.28, gp: [0.5, 0.62], dark: 0 },
     { top: mixc(PAL.sand, PAL.sandL, 0.35), bot: mixc(PAL.sand, PAL.tan, 0.35), glow: PAL.sandL, glowK: 0.6, vig: PAL.tan, vigK: 0.3, gp: [0.55, 0.6], dark: 0 },
     { top: mixc(PAL.sand, PAL.tan, 0.2), bot: mixc(PAL.sand, PAL.tan, 0.55), glow: PAL.sandL, glowK: 0.55, vig: PAL.khaki, vigK: 0.3, gp: [0.45, 0.62], dark: 0 },
-    { top: mixc(PAL.mocha, PAL.tan, 0.42), bot: mixc(PAL.mocha, PAL.tan, 0.04), glow: mixc(PAL.tan, PAL.pink, 0.1), glowK: 0.5, vig: PAL.mocha, vigK: 0.6, gp: [0.6, 0.5], dark: 1 },
+    { top: mixc(PAL.mocha, PAL.pink, 0.22), bot: mixc(PAL.mocha, [0, 0, 0], 0.3), glow: mixc(PAL.pink, PAL.mocha, 0.45), glowK: 0.55, vig: mixc(PAL.mocha, [0, 0, 0], 0.4), vigK: 0.6, gp: [0.6, 0.5], dark: 1 },
     { top: PAL.sandL, bot: mixc(PAL.sand, PAL.sandL, 0.4), glow: [1, 1, 1], glowK: 0.5, vig: PAL.tan, vigK: 0.22, gp: [0.5, 0.65], dark: 0 },
   ];
 
@@ -166,6 +198,7 @@ export async function createScene(canvas, { base = '' } = {}) {
   const mix3 = (arr, w) => [0, 1, 2].map((c) => arr.reduce((a, v, i) => a + v[c] * w[i], 0));
 
   let ptr = [0, 0], ptrS = [0, 0];
+  const LT0 = { lvp: M.id(), smOn: false, smSize: 2048, bias: 0.0008, nOff: 0.035, keyC: [1, 1, 1], ambT: [0.3, 0.3, 0.3], ambB: [0.2, 0.2, 0.2], rimC: [1, 1, 1], smTex: dummySM }; // senza buffer: luce senza ombre
 
   function render(pos, t, pointer = [0, 0], intro = 1) {
     time = t; pos = cl(pos, 0, PHASES - 1);
@@ -188,30 +221,43 @@ export async function createScene(canvas, { base = '' } = {}) {
     const kx = S.mobile ? Math.min(1, Wv / 4.2) * 0.9 : 1;
     const R = { Wv, Hv, kx, ty, dist, intro };
 
-    gl.viewport(0, 0, S.w, S.h);
+    const env = (k) => mix3(ENV.map((e) => e[k]), w);
+    const envs = (k) => ENV.reduce((a, e, i) => a + e[k] * w[i], 0);
+    const envA = (k, idx) => ENV.reduce((a, e, i) => a + e.gp[idx] * w[i], 0);
+    const dark = envs('dark');
+    const FOGM = mixc(FOGC, mixc(PAL.mocha, PAL.tan, 0.3), dark);
+
+    // ---- luce da set: principale calda con ombre, ambiente freddo dall'alto e rimbalzo dal pavimento, controluce (valori lineari)
+    const lt = cine ? cine.light : LT0;
+    lt.keyC = mixc([0.9, 0.82, 0.7], [1.0, 0.8, 0.62], dark); lt.ambT = mixc([0.25, 0.3, 0.33], [0.1, 0.07, 0.08], dark);
+    lt.ambB = mixc([0.19, 0.2, 0.08], [0.08, 0.04, 0.03], dark); lt.rimC = mixc([0.9, 0.86, 0.72], [0.95, 0.42, 0.3], dark);
+    const SHD = mixc([0.66, 0.6, 0.52], [0.5, 0.44, 0.4], dark), LIT = mixc([1.06, 1.02, 0.97], [1.1, 1.0, 0.92], dark);
+    ctxObj.U = { vp, eye, shadow: SHD, light: LIT, fogC: FOGM, fog: [dist * 0.9, dist * 2.2], light3: lt }; // luce e nebbia, anche per il viso e il modello .glb
+
+    // ---- oggetti 3D: registrati una volta, disegnati per le ombre e per l'immagine
+    REC = []; world.opaque(pos, t, R, w); const list = REC; REC = null;
+    const useC = !!(cine && cine.ok && FX.tier < 2);
+    lt.smOn = false;
+    if (useC && FX.shadows) {
+      cine.shadowBegin([0, 0.2, 0.3], 6.4); replay(list, true); cine.shadowEnd();
+    }
+    if (useC) cine.sceneBegin(); else { gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.viewport(0, 0, S.w, S.h); }
     gl.disable(gl.DEPTH_TEST); gl.disable(gl.BLEND); gl.depthMask(true);
     gl.clearColor(0.94, 0.9, 0.86, 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     // ---- sfondo
-    const env = (k) => mix3(ENV.map((e) => e[k]), w);
-    const envs = (k) => ENV.reduce((a, e, i) => a + e[k] * w[i], 0);
-    const envA = (k, idx) => ENV.reduce((a, e, i) => a + e.gp[idx] * w[i], 0);
     gl.useProgram(P.bg.p); const U = P.bg.u;
     gl.uniform3fv(U.uTop, env('top')); gl.uniform3fv(U.uBot, env('bot')); gl.uniform3fv(U.uGlow, env('glow')); gl.uniform3fv(U.uVig, env('vig'));
     gl.uniform2f(U.uGlowPos, envA('gp', 0), envA('gp', 1)); gl.uniform1f(U.uGlowK, envs('glowK')); gl.uniform1f(U.uAsp, S.asp); gl.uniform1f(U.uTime, t); gl.uniform1f(U.uVigK, envs('vigK'));
     gl.bindVertexArray(C.bv); gl.drawArrays(gl.TRIANGLES, 0, 3);
-    const dark = envs('dark');
-    const FOGM = mixc(FOGC, mixc(PAL.mocha, PAL.tan, 0.3), dark);
 
-    // ---- passaggio opaco: oggetti 3D
+    // ---- passaggio opaco
     gl.enable(gl.DEPTH_TEST); gl.depthFunc(gl.LEQUAL);
     gl.useProgram(P.mesh.p); const mu = P.mesh.u;
     gl.uniformMatrix4fv(mu.uVP, false, vp); gl.uniform3fv(mu.uEye, eye);
-    const SHD = mixc([0.66, 0.6, 0.52], [0.5, 0.44, 0.4], dark), LIT = mixc([1.06, 1.02, 0.97], [1.1, 1.0, 0.92], dark);
-    gl.uniform3fv(mu.uShadow, SHD); gl.uniform3fv(mu.uLight, LIT);
     gl.uniform3fv(mu.uFogC, FOGM); gl.uniform2f(mu.uFog, dist * 0.9, dist * 2.2);
-    ctxObj.U = { vp, eye, shadow: SHD, light: LIT, fogC: FOGM, fog: [dist * 0.9, dist * 2.2] }; // luce e nebbia, per il modello .glb
-    world.opaque(pos, t, R, w);
+    setLight(gl, mu, ctxObj.U);
+    replay(list, false);
 
     // ---- passaggio traslucido (da lontano a vicino)
     gl.depthMask(false); gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
@@ -225,6 +271,17 @@ export async function createScene(canvas, { base = '' } = {}) {
     // particelle
     drawParticles(pos, t, R, w, dark);
     gl.depthMask(true); gl.disable(gl.BLEND);
+
+    // ---- post-produzione: bagliore, profondità di campo, curva filmica, correzione colore, grana
+    if (useC) {
+      const hk = S.h / 1000;
+      cine.sceneEnd({
+        time: t, thr: [1.02, 1.5], bloom: 0.3 + dark * 0.12, streak: FX.tier < 1 ? 0.05 + dark * 0.1 : 0,
+        dof: FX.tier < 1, dofPx: 5.5 * hk, focus: dist - 0.4, near: 0.5, far: 80,
+        sat: 1.06, vig: 0.28 + dark * 0.22, grain: 0.032, ca: 0.008,
+        shT: [-0.012, 0.004, 0.016], hiT: [1.03, 1.0, 0.96], vigT: [0.8, 0.62, 0.62],
+      });
+    }
   }
 
   function drawParticles(pos, t, R, w, dark) {
@@ -237,7 +294,8 @@ export async function createScene(canvas, { base = '' } = {}) {
       const yy = ((p.y + t * speed * p.sp * 0.25 + pos * 0.18 * p.sp) % 1 + 1) % 1;
       const x = (p.x - 0.5) * 2 * spread * 1.05 + Math.sin(t * 0.4 * p.sp + p.ph) * 0.25;
       const y = R.ty + (yy - 0.5) * 2 * R.Hv * 1.1;
-      const z = (p.z - 0.5) * 6 + 0.5;
+      let z = (p.z - 0.5) * 6 + 0.5;
+      if (S.mobile && z > 0.2 && Math.abs(x) < R.Wv * 0.8) z = -z; // sul telefono la figura occupa tutta la larghezza: i puntini passano dietro, non sul viso
       const near = Math.abs(z); if (z > 0.2 && Math.abs(x) < R.Wv * 0.38 && !S.mobile) { pa.set([x, y, -3, 0], i * 4); pb.set([0, 0, 0, 0], i * 4); continue; }
       const size = (0.05 + p.s * 0.1) * sizeK * (1 + near * 0.35);
       const pink = p.k < pinkK;
@@ -260,7 +318,7 @@ export async function createScene(canvas, { base = '' } = {}) {
   const world = { opaque() {}, backdrops() {}, titles() {}, mid() {}, figures() {}, front() {} };
   const hooks = { opaque: [], backdrops: [], titles: [], mid: [], figures: [], front: [] };
   for (const k of Object.keys(hooks)) world[k] = (...a) => hooks[k].forEach((f) => f(...a));
-  const ctxObj = { gl, P, G, T, PAL, mesh, quadFX, quadTex, TXM, M, cl, lin, sm, lerp, eo, pop, phv, phIn, phOut, FIG, fig, hooks, S, css, mixc, rnd, get time() { return time; } };
+  const ctxObj = { gl, P, G, T, PAL, mesh, later, MAT, quadFX, quadTex, TXM, M, cl, lin, sm, lerp, eo, pop, phv, phIn, phOut, FIG, fig, hooks, S, css, mixc, rnd, get time() { return time; } };
   const { addWorlds } = await import('./worlds.js');
   addWorlds(ctxObj);
   const { addAvatar } = await import('./avatar.js');
@@ -279,6 +337,9 @@ export async function createScene(canvas, { base = '' } = {}) {
   function resize(w, h, dpr) {
     S.dpr = dpr; canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
     S.w = canvas.width; S.h = canvas.height; S.asp = w / h; S.mobile = S.asp < 0.9;
+    if (cine) cine.resize(S.w, S.h);
   }
-  return { render, resize, S, destroy() { const e = gl.getExtension('WEBGL_lose_context'); if (e) e.loseContext(); } };
+  // se il dispositivo fatica: prima via sfocatura e striscia, poi via tutta la post-produzione
+  function lower() { if (FX.tier < 2) { FX.tier++; console.info('[cinema] livello', FX.tier); return true; } return false; }
+  return { render, resize, lower, S, FX, get cine() { return cine; }, destroy() { const e = gl.getExtension('WEBGL_lose_context'); if (e) e.loseContext(); } };
 }

@@ -85,7 +85,7 @@ async function start() {
     try { scene.render(cur, (now - t0) / 1000, ptr, forced != null ? 1 : intro); } catch (e) { console.error(e); live = false; fallback('errore di disegno'); return; }
     captions();
     // se il dispositivo fatica, abbasso la risoluzione senza cambiare nulla del resto
-    frames++; if (dt > 0.034) slow++; if (frames === 90) { if (slow > 40 && quality > 0.6) { quality -= 0.2; resize(); } frames = 0; slow = 0; }
+    frames++; if (dt > 0.034) slow++; if (frames === 90) { if (slow > 40) { if (!scene.lower()) { if (quality > 0.6) { quality -= 0.2; resize(); } } } frames = 0; slow = 0; } // prima si spengono gli effetti più pesanti (profondità di campo, strisce), poi scende la risoluzione
     requestAnimationFrame(frame);
   }
 

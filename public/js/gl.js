@@ -25,6 +25,12 @@ export const M = {
     m[0] = t / asp; m[5] = t; m[8] = -sx; m[9] = -sy; m[10] = (f + n) / (n - f); m[11] = -1; m[14] = 2 * f * n / (n - f);
     return m;
   },
+  // proiezione ortogonale (per la mappa delle ombre)
+  ortho(l, r, b, t, n, f) {
+    const m = new Float32Array(16);
+    m[0] = 2 / (r - l); m[5] = 2 / (t - b); m[10] = -2 / (f - n); m[12] = -(r + l) / (r - l); m[13] = -(t + b) / (t - b); m[14] = -(f + n) / (f - n); m[15] = 1;
+    return m;
+  },
   look(e, t, up = [0, 1, 0]) {
     let z = [e[0] - t[0], e[1] - t[1], e[2] - t[2]]; const zl = Math.hypot(...z); z = z.map((v) => v / zl);
     let x = [up[1] * z[2] - up[2] * z[1], up[2] * z[0] - up[0] * z[2], up[0] * z[1] - up[1] * z[0]]; const xl = Math.hypot(...x); x = x.map((v) => v / xl);

@@ -6,9 +6,9 @@
 
 :root {
   color-scheme: light;
-  --sand: #F0E5DB;
-  --mocha: #474329;
-  --pink: #FC75B4;
+  --sand: #CDF73D;
+  --mocha: #250104;
+  --pink: #D71A06;
   --sand-l: color-mix(in srgb, var(--sand) 55%, #fff);
   --sand-d: color-mix(in srgb, var(--sand) 84%, var(--mocha));
   --tan: color-mix(in srgb, var(--sand) 62%, var(--mocha));

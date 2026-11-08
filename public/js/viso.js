@@ -2,25 +2,22 @@
 // È una piccola «pelle» che segue la superficie della testa (stessa luce del resto), con i bordi sfumati sul
 // colore della pelle: sotto i capelli, e girando la testa, il viso si muove con lei.
 import { texFromBitmap } from './engine.js';
+import { LIGHT_GLSL, LIGHT_UNIFORMS, setLight, MAT } from './light.js';
 
 const V3 = '#version 300 es\n';
 const VS = V3 + `layout(location=0) in vec3 aPos; layout(location=1) in vec3 aNor; layout(location=2) in vec2 aUv;
-uniform mat4 uM; uniform mat4 uVP; out vec3 vW; out vec3 vN; out vec2 vUv;
-void main(){ vec4 w = uM*vec4(aPos,1.); vW = w.xyz; vN = mat3(uM)*aNor; vUv = aUv; gl_Position = uVP*w; }`;
+uniform mat4 uM; uniform mat4 uVP; out vec3 vW; out vec3 vN; out vec2 vUv; out vec3 vObj; out mat3 vNM;
+void main(){ vec4 w = uM*vec4(aPos,1.); vW = w.xyz; mat3 nm = transpose(inverse(mat3(uM))); vNM = nm; vN = nm*aNor; vUv = aUv; vObj = aPos; gl_Position = uVP*w; }`;
 const FS = V3 + `precision highp float;
-in vec3 vW; in vec3 vN; in vec2 vUv; uniform vec3 uEye, uShadow, uLight, uFogC; uniform vec2 uFog; uniform vec4 uP; uniform sampler2D uTex;
+in vec3 vW; in vec3 vN; in vec2 vUv; in vec3 vObj; in mat3 vNM; uniform vec3 uEye, uFogC; uniform vec2 uFog; uniform vec4 uP; uniform sampler2D uTex;
+${LIGHT_UNIFORMS}${LIGHT_GLSL}
 out vec4 o;
 void main(){
-  vec3 base = texture(uTex, vUv).rgb;
+  vec4 tx = texture(uTex, vUv);
   vec3 n = normalize(vN); if(!gl_FrontFacing) n = -n;
-  vec3 V = normalize(uEye - vW); vec3 L = normalize(vec3(-.5,.8,.6));
-  float wr = smoothstep(-.4,.9,dot(n,L));
-  vec3 c = base*mix(uShadow, uLight, wr);
-  c *= mix(.9,1.05,n.y*.5+.5);
-  float rim = pow(1.-max(dot(n,V),0.),3.);
-  c += uLight*rim*uP.z*.32;
-  vec3 R = reflect(-V,n);
-  c += uLight*pow(max(dot(R,L),0.),uP.y)*uP.x;
+  vec3 V = normalize(uEye - vW);
+  // la foto ha già la sua luce: la tengo come colore di base e aggiungo ombra, controluce e luce che attraversa la pelle
+  vec3 c = toDsp(shade(tx.rgb, n, V, vW, uP, vObj, vNM));
   float fd = length(uEye - vW); float f = smoothstep(uFog.x,uFog.y,fd);
   c = mix(c,uFogC,f*.8);
   o = vec4(c,1.);
@@ -70,8 +67,9 @@ export async function loadViso(X, url) {
     const F = X.U; if (!F) return;
     gl.useProgram(p);
     gl.uniformMatrix4fv(u.uM, false, headM); gl.uniformMatrix4fv(u.uVP, false, F.vp); gl.uniform3fv(u.uEye, F.eye);
-    gl.uniform3fv(u.uShadow, F.shadow); gl.uniform3fv(u.uLight, F.light); gl.uniform3fv(u.uFogC, F.fogC); gl.uniform2fv(u.uFog, F.fog);
-    gl.uniform4f(u.uP, 0.12, 20, 0.6, 0);
+    gl.uniform3fv(u.uFogC, F.fogC); gl.uniform2fv(u.uFog, F.fog);
+    setLight(gl, u, F);
+    gl.uniform4f(u.uP, 0.16, 36, 0.6, MAT.skin);
     gl.activeTexture(gl.TEXTURE6); gl.bindTexture(gl.TEXTURE_2D, tex); gl.uniform1i(u.uTex, 6); gl.activeTexture(gl.TEXTURE0);
     gl.enable(gl.POLYGON_OFFSET_FILL); gl.polygonOffset(-2, -2);
     gl.bindVertexArray(vao); gl.drawElements(gl.TRIANGLES, idx.length, gl.UNSIGNED_INT, 0); gl.bindVertexArray(null);

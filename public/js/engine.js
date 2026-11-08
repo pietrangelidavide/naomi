@@ -1,12 +1,13 @@
 // Motore: WebGL2 scritto a mano. Geometrie, shader, texture, tavolozza.
-// Tre soli colori: Soft Sand #F0E5DB, Mocha Green #474329, Watermelon Pink #FC75B4. Tutto il resto è una miscela di questi.
+// Tre colori di marca (palette 10): lime #CDF73D, bordeaux #250104, rosso #D71A06. Il resto della scena è una miscela di questi; cibo e attrezzi hanno i loro colori veri.
 import { M, lathe, smooth, sweep, leaf, upload, program } from './gl.js';
+import { LIGHT_GLSL, LIGHT_UNIFORMS } from './light.js';
 export { M, lathe, smooth, sweep, leaf, upload };
 
 /* ---------- tavolozza ---------- */
 export const hx = (h) => [parseInt(h.slice(1, 3), 16) / 255, parseInt(h.slice(3, 5), 16) / 255, parseInt(h.slice(5, 7), 16) / 255];
 export const mixc = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
-export const SAND = hx('#F0E5DB'), MOCHA = hx('#474329'), PINK = hx('#FC75B4');
+export const SAND = hx('#CDF73D'), MOCHA = hx('#250104'), PINK = hx('#D71A06');
 export const PAL = {
   sand: SAND, mocha: MOCHA, pink: PINK,
   sandL: mixc(SAND, [1, 1, 1], 0.55),          // luce sulla sabbia
@@ -79,26 +80,23 @@ export function helix(turns = 2, R = 0.5, h = 3, n = 60, phase = 0) { const pts 
 /* ---------- shader ---------- */
 const V3 = '#version 300 es\n';
 const VS_MESH = V3 + `layout(location=0) in vec3 aPos; layout(location=1) in vec3 aNor;
-uniform mat4 uM; uniform mat4 uVP; out vec3 vW; out vec3 vN;
-void main(){ vec4 w = uM*vec4(aPos,1.); vW = w.xyz; vN = transpose(inverse(mat3(uM)))*aNor; gl_Position = uVP*w; }`;
+uniform mat4 uM; uniform mat4 uVP; out vec3 vW; out vec3 vN; out vec3 vObj; out mat3 vNM;
+void main(){ vec4 w = uM*vec4(aPos,1.); vW = w.xyz; mat3 nm = transpose(inverse(mat3(uM))); vNM = nm; vN = nm*aNor; vObj = aPos; gl_Position = uVP*w; }`;
 const FS_MESH = V3 + `precision highp float;
-in vec3 vW; in vec3 vN; uniform vec3 uEye, uCol, uShadow, uLight, uFogC; uniform vec4 uP; uniform vec2 uFog; uniform float uAlpha; uniform vec3 uGlow;
+in vec3 vW; in vec3 vN; in vec3 vObj; in mat3 vNM; uniform vec3 uEye, uCol, uFogC; uniform vec4 uP; uniform vec2 uFog; uniform float uAlpha; uniform vec3 uGlow;
+${LIGHT_UNIFORMS}${LIGHT_GLSL}
 out vec4 o;
 void main(){
   vec3 n = normalize(vN); if(!gl_FrontFacing) n = -n;
-  vec3 V = normalize(uEye - vW); vec3 L = normalize(vec3(-.5,.8,.6));
-  float wr = smoothstep(-.4,.9,dot(n,L));
-  vec3 c = uCol*mix(uShadow, uLight, wr);
-  c *= mix(.9,1.05,n.y*.5+.5);
-  float rim = pow(1.-max(dot(n,V),0.),3.);
-  c += uLight*rim*uP.z*.32;
-  vec3 R = reflect(-V,n);
-  c += uLight*pow(max(dot(R,L),0.),uP.y)*uP.x;
-  c += uGlow;
+  vec3 V = normalize(uEye - vW);
+  vec3 c = toDsp(shade(uCol, n, V, vW, uP, vObj, vNM)) + uGlow;
   float fd = length(uEye - vW); float f = smoothstep(uFog.x,uFog.y,fd);
   c = mix(c,uFogC,f*.8);
   o = vec4(c*uAlpha,uAlpha);
 }`;
+// solo profondità, per la mappa delle ombre
+const VS_SHADOW = V3 + `layout(location=0) in vec3 aPos; uniform mat4 uM; uniform mat4 uLVP; void main(){ gl_Position = uLVP*uM*vec4(aPos,1.); }`;
+const FS_SHADOW = V3 + `precision highp float; out vec4 o; void main(){ o = vec4(1.); }`;
 const VS_QUAD = V3 + `layout(location=0) in vec2 aP; uniform mat4 uMVP; out vec2 vUv; out vec2 vP;
 void main(){ vP = aP; vUv = vec2(aP.x+.5, .5-aP.y); gl_Position = uMVP*vec4(aP,0.,1.); }`;
 const FS_TEX = V3 + `precision highp float; in vec2 vUv; in vec2 vP; uniform sampler2D uTex; uniform float uAlpha, uMode, uBias, uPIn, uPOut, uAsp; uniform vec3 uTint, uPink, uRim; uniform vec2 uRes; out vec4 o;
@@ -172,10 +170,10 @@ void main(){ vec2 q = gl_PointCoord*2.-1.; float r = length(q); float a = (1.-sm
 
 /* ---------- contesto ---------- */
 export function createGL(canvas) {
-  const gl = canvas.getContext('webgl2', { antialias: true, alpha: false, premultipliedAlpha: false, powerPreference: 'high-performance' });
+  const gl = canvas.getContext('webgl2', { antialias: false, alpha: false, premultipliedAlpha: false, powerPreference: 'high-performance' });
   if (!gl) return null;
   const P = {
-    mesh: program(gl, VS_MESH, FS_MESH), tex: program(gl, VS_QUAD, FS_TEX), fx: program(gl, VS_QUAD, FS_FX),
+    mesh: program(gl, VS_MESH, FS_MESH), shadow: program(gl, VS_SHADOW, FS_SHADOW), tex: program(gl, VS_QUAD, FS_TEX), fx: program(gl, VS_QUAD, FS_FX),
     bg: program(gl, VS_BG, FS_BG), pt: program(gl, VS_PT, FS_PT),
   };
   // quadrato unitario e triangolo a schermo intero
