@@ -24,6 +24,7 @@ const FIG = [
   { k: 'p5', h: 3.2, ax: 0.0, ay: 1.45 },
 ];
 const NEEDW = [1.55, 2.3, 2.2, 2.2, 1.7]; // metà larghezza minima in mondo (su telefono)
+const TYK = [0.24, 0.2, 0.18, 0.24, 0.18]; // su telefono: quanto la scena sale rispetto al centro (frazione della mezza altezza)
 const NEEDH = [3.75, 3.6, 3.55, 3.3, 3.2]; // metà altezza visibile: la figura sta nella parte alta, il testo sotto
 
 export async function createScene(canvas, { base = '' } = {}) {
@@ -173,11 +174,11 @@ export async function createScene(canvas, { base = '' } = {}) {
     const need = NEEDW.reduce((a, v, i) => a + v * w[i], 0);
     const needH = NEEDH.reduce((a, v, i) => a + v * w[i], 0);
     let dist = 10;
-    if (S.asp < 1.25) dist = Math.max(10, need / (S.asp * TANH), S.mobile ? needH / TANH : 0);
+    if (S.asp < 1.25) dist = Math.max(10, need / (S.asp * TANH), S.mobile ? needH * 1.06 / TANH : 0);
     dist *= lerp(1.25, 1, eo(intro)); // dolly d'ingresso
     const Hv = TANH * dist, Wv = Hv * S.asp;
     const yaw = [0, -0.07, 0.05, -0.08, 0.04].reduce((a, v, i) => a + v * w[i], 0) + ptrS[0] * 0.06;
-    const ty = S.mobile ? -0.3 * Hv : 0;
+    const ty = S.mobile ? -TYK.reduce((a, v, i) => a + v * w[i], 0) * Hv : 0; // su telefono la figura scende verso il centro dello spazio libero
     const camY = ty + [0.1, 0.0, 0.25, -0.1, 0.15].reduce((a, v, i) => a + v * w[i], 0) + ptrS[1] * -0.12;
     eye = [Math.sin(yaw) * dist, camY + 0.0, Math.cos(yaw) * dist];
     const view = M.look(eye, [0, ty, 0]);
