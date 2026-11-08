@@ -47,8 +47,10 @@ function blend(poses, w) {
   return out;
 }
 
-// Viso: di base liscio e neutro (segnaposto in attesa del modello vero di Naomi). Con ?viso=cartoon torna quello disegnato.
-const FACE = new URLSearchParams(location.search).get('viso') === 'cartoon' ? 'cartoon' : 'neutro';
+// Viso: di base quello di Naomi dalla foto (texture sulla testa). ?viso=neutro lo lascia liscio, ?viso=cartoon è quello disegnato.
+const FQ = new URLSearchParams(location.search).get('viso');
+const FACE = FQ === 'cartoon' ? 'cartoon' : FQ === 'neutro' ? 'neutro' : 'foto';
+const SKIN_FOTO = [0.9059, 0.7196, 0.6569]; // la pelle del viso in foto: collo, braccia e mani hanno lo stesso colore
 
 export function addAvatar(X) {
   const { gl, G, PAL, M, mesh, cl, lin, sm, lerp, eo, pop, hooks, mixc } = X;
@@ -56,6 +58,8 @@ export function addAvatar(X) {
   const { SAND, MOCHA, PINK } = { SAND: PAL.sand, MOCHA: PAL.mocha, PINK: PAL.pink };
 
   /* ---------- geometrie ---------- */
+  // profilo della testa (uovo): lo stesso per la geometria e per posare il viso sulla pelle
+  const HEAD_PROF = smooth([[0, -0.42], [0.095, -0.405], [0.185, -0.35], [0.26, -0.24], [0.305, -0.08], [0.322, 0.08], [0.3, 0.25], [0.22, 0.35], [0.1, 0.405], [0, 0.42]], 10);
   const AG = {
     limb: up(lathe(smooth([[0, 0], [0.55, 0.004], [0.92, 0.04], [1, 0.1], [0.93, 0.72], [0.8, 0.93], [0.5, 0.99], [0, 1]], 4), 20)),
     tube: up(lathe(smooth([[0, 0], [0.6, 0.005], [0.95, 0.05], [1, 0.12], [1, 0.88], [0.95, 0.95], [0.6, 0.995], [0, 1]], 4), 14)),
@@ -63,16 +67,35 @@ export function addAvatar(X) {
     shirt: up(lathe(smooth([[0, -0.1], [0.37, -0.09], [0.405, -0.03], [0.385, 0.2], [0.33, 0.5], [0.355, 0.72], [0.405, 0.92], [0.43, 1.04], [0.37, 1.17], [0.22, 1.26], [0.12, 1.3], [0, 1.31]], 4), 32)),
     coat: up(lathe(smooth([[0, -0.5], [0.44, -0.48], [0.49, -0.4], [0.47, -0.1], [0.42, 0.25], [0.38, 0.55], [0.41, 0.75], [0.46, 0.95], [0.46, 1.06], [0.4, 1.18], [0.24, 1.27], [0.13, 1.31], [0, 1.32]], 4), 32)),
     rim: up(torus(1, 0.14, 44, 10)),
-    head: up(lathe(smooth([[0, -0.42], [0.12, -0.405], [0.22, -0.35], [0.285, -0.24], [0.315, -0.08], [0.325, 0.08], [0.3, 0.25], [0.22, 0.35], [0.1, 0.405], [0, 0.42]], 4), 48)),
+    head: up(lathe(HEAD_PROF, 64)),
     lock: up(lathe(smooth([[0, 0], [0.7, 0.01], [1, 0.12], [0.95, 0.45], [0.7, 0.8], [0.3, 0.96], [0, 1]], 4), 18)),
   };
   // raggio della testa a una data altezza e profondità della superficie nel punto (x, y): serve a posare il viso sulla pelle
-  const HPY = [-0.42, -0.405, -0.35, -0.24, -0.08, 0.08, 0.25, 0.35, 0.405, 0.42], HPR = [0, 0.12, 0.22, 0.285, 0.315, 0.325, 0.3, 0.22, 0.1, 0];
-  const hr = (y) => { y = Math.min(0.42, Math.max(-0.42, y)); for (let i = 1; i < HPY.length; i++) if (y <= HPY[i]) { const u = (y - HPY[i - 1]) / (HPY[i] - HPY[i - 1]); return HPR[i - 1] + (HPR[i] - HPR[i - 1]) * u; } return 0; };
+  const hr = (y) => { // raggio della testa all'altezza y, interpolato sul profilo vero (liscio)
+    y = Math.min(0.42, Math.max(-0.42, y));
+    for (let i = 1; i < HEAD_PROF.length; i++) if (y <= HEAD_PROF[i][1]) { const p = HEAD_PROF[i - 1], q = HEAD_PROF[i], u = q[1] === p[1] ? 0 : (y - p[1]) / (q[1] - p[1]); return p[0] + (q[0] - p[0]) * u; }
+    return 0;
+  };
   const sz = (x, y) => 1.06 * Math.sqrt(Math.max(0, hr(y) * hr(y) - x * x));
+  X.headSurface = sz; X.headRadius = hr; // per la texture del viso (viso.js)
+  // calotta dei capelli con la riga in mezzo: segue la testa, bordo sulla fronte che scende alle tempie
+  const smoothstep = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+  function capGeo(sd) {
+    const NP = 26, NT = 16, pos = [], nor = [], idx = [], ph0 = 0.035, ph1 = Math.PI * 0.97;
+    for (let j = 0; j <= NT; j++) for (let i = 0; i <= NP; i++) {
+      const ph = ph0 + (ph1 - ph0) * (i / NP), edge = 0.262 - 0.29 * smoothstep(0.3, 1.55, ph), t = j / NT;
+      const y = 0.432 + (edge - 0.432) * t, r = hr(Math.min(y, 0.418)) + 0.024 + 0.012 * Math.sin(Math.PI * Math.min(1, t * 1.4));
+      const x = sd * r * Math.sin(ph), z = 1.06 * r * Math.cos(ph);
+      pos.push(x, y, z); const l = Math.hypot(x, z / 1.06 / 1.06, 0.25) || 1; nor.push(x / l, 0.25 / l, z / 1.06 / 1.06 / l);
+    }
+    for (let j = 0; j < NT; j++) for (let i = 0; i < NP; i++) { const a = j * (NP + 1) + i, b = a + 1, c = a + NP + 1, d = c + 1; idx.push(a, c, b, b, c, d); }
+    return up({ pos: new Float32Array(pos), nor: new Float32Array(nor), idx: new Uint32Array(idx) });
+  }
+  AG.capL = capGeo(-1); AG.capR = capGeo(1);
   /* ---------- colori: tutte miscele dei tre ---------- */
-  const skin = mixc(mixc(SAND, MOCHA, 0.08), PINK, 0.14), skinD = mixc(skin, PINK, 0.22), blush = mixc(skin, PINK, 0.34);
-  const hair = mixc(mixc(SAND, MOCHA, 0.82), PINK, 0.1), hairHi = mixc(hair, SAND, 0.34), brow = mixc(MOCHA, SAND, 0.3);
+  const skin = FACE === 'foto' ? SKIN_FOTO : mixc(mixc(SAND, MOCHA, 0.08), PINK, 0.14), skinD = mixc(skin, PINK, 0.22), blush = mixc(skin, PINK, 0.34);
+  // capelli biondi come quelli di Naomi (biondo dorato, punte più chiare): l'unico colore fuori dai tre della palette
+  const hair = [0.77, 0.64, 0.44], hairHi = [0.89, 0.78, 0.59], brow = mixc(MOCHA, SAND, 0.3);
   const shirtC = mixc(PAL.sandL, MOCHA, 0.07), trousersC = mixc(SAND, MOCHA, 0.5), shoesC = mixc(MOCHA, [0, 0, 0], 0.1);
   const glassC = mixc(MOCHA, [0, 0, 0], 0.45), sportC = PAL.tan, leggC = mixc(MOCHA, SAND, 0.08);
   const coatC = mixc(PAL.sandL, [1, 1, 1], 0.5), innerC = PAL.pinkD, apronC = mixc(PINK, SAND, 0.62);
@@ -240,22 +263,21 @@ export function addAvatar(X) {
     // ---- collo e testa
     bm(AG.tube, boneM(M.pt(torsoM, [0, 1.15, 0]), v.add(M.pt(headM, [0, -0.2, 0]), [0, 0, 0]), 0.075), skin, soft);
     bm(AG.head, M.mul(headM, M.S(1, 1, 1.06)), skin, sk());
+    if (FACE === 'foto' && X.VISO && !glbOn) X.VISO.draw(headM);
     // capelli: calotta, frangia, massa dietro, ciocche ai lati o coda
     const pony = vis.pony, longH = 1 - pony, hs = { spec: 0.2, shin: 22, rim: 0.7 };
-    bm(G.sphere, M.mul(headM, M.chain(M.T(0, 0.1, -0.06), M.S(0.345, 0.375, 0.375))), hair, hs);
-    bm(G.sphere, M.mul(headM, M.chain(M.T(0, 0.275, 0.15), M.Rx(-0.5), M.S(0.285, 0.1, 0.17))), hair, hs);               // frangia
-    bm(G.sphere, M.mul(headM, M.chain(M.T(-0.14, 0.265, 0.17), M.Rz(0.55), M.Rx(-0.4), M.S(0.19, 0.075, 0.12))), hair, hs); // ciuffo di lato
+    bm(AG.capL, headM, hair, hs); bm(AG.capR, headM, hair, hs);   // capelli con la riga in mezzo
+    bm(G.sphere, M.mul(headM, M.chain(M.T(0, 0.05, -0.1), M.S(0.34, 0.34, 0.33))), hair, hs); // volume dietro la testa
     if (longH > 0.02) {
       const hm = M.chain(headM, M.T(0, 0.1, -0.08), M.Rx(swayX), M.Rz(swayZ), M.T(0, -0.62 * longH, -0.03));
       bm(G.sphere, M.mul(hm, M.S(0.4 * longH, 0.76 * longH, 0.28 * longH)), hair, hs);
       bm(G.sphere, M.mul(hm, M.chain(M.T(0, -0.55 * longH, 0.02), M.S(0.34 * longH, 0.34 * longH, 0.22 * longH))), hairHi, soft);
       const side = v.nrm(v.sub(M.pt(torsoM, [1, 0, 0]), M.pt(torsoM, [0, 0, 0])));
       [-1, 1].forEach((sd) => { // ciocche piatte ai lati del viso, che scendono sulle spalle
-        const A = M.pt(headM, [sd * 0.3, 0.14, 0.04]);
+        const A = M.pt(headM, [sd * 0.295, 0.09, 0.06]);
         const tp = M.pt(torsoM, [sd * 0.4, 0.9, 0.1]), gr = [A[0] + sd * 0.03, A[1] - 0.95, A[2] + 0.1];
         const B = v.mix(tp, gr, sm(0.35, 0.9, Math.abs(P.pitch + P.lean)));
-        bm(AG.lock, boneF(A, B, 0.1 * longH, 0.055 * longH, side), hair, hs);
-        bm(G.sphere, M.chain(M.T(A[0], A[1], A[2]), M.S(0.1 * longH, 0.12 * longH, 0.08 * longH)), hair, soft);
+        bm(AG.lock, boneF(A, B, 0.115 * longH, 0.06 * longH, side), hair, hs);
       });
     }
     if (pony > 0.02) { // coda di cavallo con fiocco rosa
@@ -348,6 +370,7 @@ export function addAvatar(X) {
     const intro = R.intro == null ? 1 : R.intro;
     draw(P, vis, t, R, intro);
   });
+  if (FACE === 'foto') import('./viso.js').then((m) => m.loadViso(X, 'img/viso.webp')).catch((e) => console.warn('[viso] non caricato, resta la testa liscia:', e.message));
   // ombra morbida a terra
   hooks.backdrops.push((pos, t, R, w) => {
     const r = AV.root; quadFXShadow(r);
